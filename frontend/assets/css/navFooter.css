@@ -1,0 +1,349 @@
+/*everything Nav bar - normal screen.....................................................................*/
+
+
+body {
+    overflow-x: hidden;
+}
+/* nav {
+    width: 100%;
+    display: flex;
+    background: #fff;
+    justify-content:space-between;
+    align-content: space-between;
+    align-items: center;
+    min-height: 5vh;
+    padding: 0px 15px;
+    z-index: 100000;
+} */
+
+.logo-image {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    transition: 0.6s;
+    width: 270px;
+    height: 100%;
+    margin: 0 0 0 25px;
+    border-radius: 50%;
+    padding: 7px 0;
+}
+
+.acc-links {
+    display: flex;
+    list-style-type: none;
+    justify-content: space-between;
+    align-items: center;
+}
+.acc-links a {
+    margin-right: 50px;
+    background: #083860;
+    border-radius: 45px;
+    min-height: 3vh;
+    color: #ffffff;
+    font-size: 12px;
+    /* letter-spacing: 1px; */
+    cursor: pointer;
+    text-decoration: none;
+    padding: 12px 58px;
+    line-height: 24px;
+    font-family: 'Okta Neue';
+    font-weight: 500;
+    font-style: normal;
+}
+
+.acc-links a:hover {
+    color: #083860;
+    transition: 0.5s;
+    background: #fff;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+    /* box-shadow: 0 3px 10px rgb(0 0 0 / 0.2); */
+    border: none;
+    outline: none;
+}
+
+
+.nav-links {
+    display: flex;
+    list-style-type: none;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #000;
+    font-size: 14px;
+    /* letter-spacing: 2px; */
+    transform: 0.3s;
+}
+
+/* .nav-links a:hover {
+    color: #083860;
+    background: #fff;
+    border-bottom: 2px solid #083860;
+    transition: 0.1s;
+} */
+
+.nav-links li {
+    margin-right: 80px;
+    font-family: 'Okta Neue';
+    font-weight: 500;
+    font-style: normal;
+    
+}
+
+
+.burger div {
+    width: 22px;
+    height: 3px;
+    background-color: rgb(204, 192, 192);
+    margin: 5px;
+    border-radius: 5px;
+    transition: all 0.3s ease ;
+    background: #083860;
+}
+
+.burger {
+    display: none;
+    cursor: pointer;
+}
+
+.cur {
+    background: rgb(0,0,0,0);
+    padding: 10px 17px;
+    /* border: 1px solid #fff; */
+    border-radius: 5px;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+    transition: 0.5s;
+}
+
+.navDispOff{
+    display: none;
+}
+
+.navDispOn{
+    display: flex;
+}
+
+.toggle .toggle1 {
+    transform: rotate(-45deg) translate(-5px,6px);
+}
+.toggle .toggle2 {
+   opacity: 0;
+}
+
+.toggle .toggle3 {
+    transform: rotate(45deg) translate(-5px,-6px);
+}
+
+
+#footer{
+    padding: 100px;
+    height: 650px;
+    background-color: #083860;
+    text-align: center;
+    color: #fff;
+    width: 100%;
+}
+
+#footer span{
+    padding: 28px 30px;
+    display: block;
+    font-family: 'Okta Neue';
+    font-weight: 300;
+    font-style: normal;
+    font-size: 18px;
+}
+
+#footer p{
+    padding: 20px 30%;
+    line-height: 25px;
+    font-family: 'Okta Neue';
+    font-weight: 300;
+    font-style: normal;
+    font-size: 16px;
+    color: #fff;
+}
+
+#footer img{
+    height: 70px;
+    width: 250px;
+    cursor: pointer;
+}
+
+#footer div {
+    margin: 0 auto;
+}
+
+#footer span i{
+    margin: 25px 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+#footer a {
+    text-decoration: none;
+    color: #fff;
+}
+
+#footer #locationfnt{
+    font-size: 1.2rem;
+}
+
+@media screen and (max-width:1200px) {
+    .nav-links li {
+        margin-right: 70px;
+               
+    }
+}
+
+@media screen and (max-width:1024px) {
+    .nav-links li {
+        margin-right: 40px;
+               
+    }
+}
+
+@media screen and (max-width:870px) {
+    .acc-links a {
+        font-size: 11px;
+        padding: 8px 25px;
+        font-weight: bold;
+        line-height: 24px;
+      }
+
+      .nav-links a {
+        font-size: 12px;
+      }
+
+      .nav-links li {
+        margin-right: 40px;
+               
+    }
+}
+
+@media screen and (max-width:780px) {
+
+    @media screen and (max-width:600px) {
+    .acc-links {
+        display: none;
+        list-style-type: none;
+        justify-content: start;
+        align-items: center;
+        /* margin-left: 100px; */
+      }
+
+      .acc-links li a {
+        /* margin-right: 10px; */
+        background: transparent;
+        border-radius: 20px;
+        /* width: 10px; */
+        min-height: 3vh;
+        color: #ffffff;
+        /* color: rgb(204, 192, 192); */
+        font-size: 10px;
+        letter-spacing: 2px;
+        /* border-color: rgb(204, 192, 192); */
+        border: solid 1px yellow;
+        margin-top: -5px;
+        cursor: pointer;
+        text-decoration: none;
+        padding: 2px 6px;
+    }
+}
+
+    /*everything Nav bar - Phone screen*/
+    body{
+       overflow-x: hidden;
+    }
+
+    /* nav {
+        height: 60px;
+        padding: 0px 10px 0 0;
+        z-index: 100000;
+    } */
+    
+    .nav-links {
+        position: absolute;
+        right: 0;
+        top:60px;
+        height:350px;
+        width: 50%;
+        background: #083860;
+        /* background: rgb(126, 52, 110); */
+        display: flex;
+        flex-direction: column;
+        align-content: space-around;
+        align-items:center;
+        margin-left: 0px;
+        padding: 50px 0 50px 50px;
+        transform: translateX(100%);
+        transition: transform 0.5s ease-in;     
+        z-index: 100000; 
+    }
+    .nav-links li {
+        opacity: 0;
+    }
+
+    .nav-links a {
+        color: #fff;
+    }
+
+      .nav-links a:hover {
+       background-color: #083860;
+       color:#fff;
+       border: 1px solid #083860;
+       padding: 5px 10px;
+       border-radius: 5px; 
+      }
+     
+
+    .logo-image {
+        width: 210px;
+        height: 100%;
+        margin: 1px 0 0 0;
+        border-radius: 50%;
+      }
+    
+
+    .burger{
+        display: block;
+    } 
+
+    #footer {
+        padding: 50px;
+        height: 100%;
+      }
+
+    #footer span i {
+        margin: 25px 10px;
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+
+    #footer p {
+        padding: 20px 1%;
+        line-height: 28px;
+        font-size: 16px;
+      }
+
+      #footer span {
+        padding: 28px 1px;
+        font-size: 1rem;
+      }
+}
+
+.nav-active {
+    transform: translateX(0%);
+}
+
+@keyframes navLinkFade{
+    from{
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to{
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}

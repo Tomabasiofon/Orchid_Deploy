@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Submission</title>
+</head>
+<body>
+    <form id="myForm" action="/submit" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Reusable function to handle form submission
+        function handleFormSubmission(event) {
+            event.preventDefault();
+
+            // Access form data
+            const form = $(this);
+            const formData = form.serialize();
+            console.log("Form data:", formData);
+
+            // You can perform additional validation or AJAX submission here
+            // ...
+
+            // Example: Submit the form data via AJAX
+            // $.ajax({
+            //     url: form.attr("action"),
+            //     method: form.attr("method"),
+            //     data: formData,
+            //     success: function(response) {
+            //         // Handle the server response
+            //     },
+            //     error: function(error) {
+            //         // Handle errors
+            //     }
+            // });
+        }
+
+        $(document).ready(function() {
+            // Attach the handleFormSubmission function to the form's submit event
+            $("#myForm").submit(handleFormSubmission);
+        });
+    </script>
+</body>
+</html>
