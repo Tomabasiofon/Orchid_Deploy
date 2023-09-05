@@ -337,53 +337,8 @@ function wowAnimation() {
 	wow.init();
 }
 
-$(document).ready(function() {
-	// The URL you want to make a request to
-	const apiUrl = 'http://localhost:8080/api/space';
-
-	// Make an AJAX GET request
-	$.ajax({
-		url: apiUrl,
-		method: 'GET',
-		dataType: 'json',
-		success: function(data) {
-			const dataContainer = $('#space-data-container');
-			$.each(data, function(key, value) {
-				const listItem = $('<option></option>').text(value.type);
-				dataContainer.append(listItem);
-			});
-		},
-		error: function(xhr, status, error) {
-			// Handle any errors here
-			console.error('Error:', error);
-		}
-	});
-});
-
-function handleFormSubmission(event) {
-	event.preventDefault();
-
-	// Access form data
-	const form = $(this);
-	const formData = form.serialize();
-	console.log("Form data:", formData);
-
-	// You can perform additional validation or AJAX submission here
-	// ...
-
-	// Example: Submit the form data via AJAX
-	// $.ajax({
-	//     url: form.attr("action"),
-	//     method: form.attr("method"),
-	//     data: formData,
-	//     success: function(response) {
-	//         // Handle the server response
-	//     },
-	//     error: function(error) {
-	//         // Handle errors
-	//     }
-	// });
-}
-
+// $('.selection-box').dblclick(function() {
+//     $('.selection-box').toggleClass("selected-box");
+// })
 
 })(jQuery);

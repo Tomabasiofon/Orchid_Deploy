@@ -1,4 +1,55 @@
 <!DOCTYPE html>
+<html>
+<head>
+    <title>Styled Checkbox with Number</title>
+    <style>
+        /* Hide the default checkbox */
+        input[type="checkbox"] {
+            display: none;
+        }
+
+        /* Style the custom checkbox container */
+        .checkbox-container {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 2px solid #333; /* Border color */
+            text-align: center;
+            line-height: 30px; /* Vertically center the number */
+            font-weight: bold;
+            font-size: 16px;
+            color: #333; /* Text color */
+            cursor: pointer;
+        }
+
+        /* Style the custom checkbox when checked */
+        input[type="checkbox"]:checked + .checkbox-container {
+            background-color: #333; /* Background color when checked */
+            color: #fff; /* Text color when checked */
+        }
+    </style>
+</head>
+<body>
+    <!-- The custom checkbox -->
+      <label>
+        <input type="checkbox" class="hide-checkbox">
+        <div class="checkbox-container">1</div>
+      </label>
+
+      <form action="/submitReservations" method="POST">
+        <input type="checkbox" name="reservation[]" value="space_id_1,start_date_1,end_date_1">
+        <!-- Add more checkboxes for other reservations -->
+        <input type="checkbox" name="reservation[]" value="space_id_2,start_date_2,end_date_2">
+        <!-- Add more checkboxes as needed -->
+        <button type="submit">Submit Reservations</button>
+    </form>
+    
+</body>
+</html>
+
+
+
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,44 +57,19 @@
     <title>Form Submission</title>
 </head>
 <body>
-    <form id="myForm" action="/submit" method="POST">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
-        <button type="submit">Submit</button>
-    </form>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        // Reusable function to handle form submission
-        function handleFormSubmission(event) {
-            event.preventDefault();
-
-            // Access form data
-            const form = $(this);
-            const formData = form.serialize();
-            console.log("Form data:", formData);
-
-            // You can perform additional validation or AJAX submission here
-            // ...
-
-            // Example: Submit the form data via AJAX
-            // $.ajax({
-            //     url: form.attr("action"),
-            //     method: form.attr("method"),
-            //     data: formData,
-            //     success: function(response) {
-            //         // Handle the server response
-            //     },
-            //     error: function(error) {
-            //         // Handle errors
-            //     }
-            // });
-        }
-
-        $(document).ready(function() {
-            // Attach the handleFormSubmission function to the form's submit event
-            $("#myForm").submit(handleFormSubmission);
-        });
-    </script>
+    <form method="POST" action="https://checkout.flutterwave.com/v3/hosted/pay">
+        <div>
+          Your order is ₦3,400
+        </div>
+        <input type="hidden" name="FLWPUBK-767889f3e84565e2ea31f78a22575581-X" value="FLWPUBK-767889f3e84565e2ea31f78a22575581-X" />
+        <input type="hidden" name="customer[email]" value="jessepinkman@walterwhite.org" />
+        <input type="hidden" name="customer[name]" value="Jesse Pinkman" />
+        <input type="hidden" name="tx_ref" value="bitethtx-019203" />
+        <input type="hidden" name="amount" value="3400" />
+        <input type="hidden" name="currency" value="NGN" />
+        <input type="hidden" name="meta[token]" value="54" />
+        <input type="hidden" name="redirect_url" value="https://google.com" />
+        <button type="submit" class="btn" id="start-payment-button">Pay Now</button>
+      </form>
 </body>
-</html>
+</html> -->

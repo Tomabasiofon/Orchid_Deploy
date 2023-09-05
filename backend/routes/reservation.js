@@ -1,9 +1,9 @@
 const express = require('express');
-const { checkReservation, createReservation } = require('../controllers/reservation.controller');
+const { createReservation, checkAvailability } = require('../controllers/reservation.controller');
 
 const router = express.Router();
 
-// router.get('/', checkReservation);
+router.post('/check', checkAvailability);
 
 router.post('/', createReservation);
 

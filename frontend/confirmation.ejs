@@ -1,0 +1,81 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <%- include('./partials/head.ejs') %>
+    <body class="white-background">
+        <%- include('./partials/nav.ejs') %>
+
+        <!-- main-area -->
+        <main>
+
+            <!-- breadcrumb-area -->
+            <section class="breadcrumb-area breadcrumb-bg">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="breadcrumb-content text-center">
+                                <h2 class="title">Booking Details</h2>
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Booking Confirmation</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- breadcrumb-area-end -->
+
+            <!-- customer-details-area -->
+            <section class="customer-details-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="customer-details-content">
+                                <div class="icon">
+                                    <img src="assets/img/icon/customer_det_icon.jpg" alt="">
+                                </div>
+                                <div class="content">
+                                    <h2 class="title"></h2>
+                                    <div class="customer-progress-wrap">
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0"
+                                                aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="customer-progress-step">
+                                            <ul>
+                                                <li>
+                                                    <span>4</span>
+                                                    <p>Confirmation</p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- customer-details-area-end -->
+
+            <!-- booking-details-area -->
+            <section class="booking-details-area">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-73">
+                            <div class="booking-details-wrap">
+                                Congratulations your space has been reserved
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- booking-details-area-end -->
+
+        </main>
+        <!-- main-area-end -->
+        <%- include('./partials/footer.ejs') %>
+    </body>
+</html>
