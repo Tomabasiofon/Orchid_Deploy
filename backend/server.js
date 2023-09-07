@@ -39,6 +39,11 @@ app.post('/api/test', (req,res) => {
 //Serve frontend
 app.use(express.static(path.join(__dirname, '../frontend')));
 
+app.get('/api',(req,res) => {
+    const title = "API"
+    res.render('welcome',{ title });
+})
+
 app.get('/', (req,res) => {
     const title = "Home"
     res.render('index',{ title });
@@ -83,7 +88,12 @@ app.get('/confirmation', async (req,res) => {
             const reservation = await axios.get(`http://localhost:8080/api/reservation/${id}`)
             const title = "Confirmation"
             res.render('confirmation',{ title, reservation: reservation.data, success })
+        }else if(id) {
+            const reservation = await axios.get(`http://localhost:8080/api/reservation/${id}`)
+            const title = "Confirmation"
+            res.render('confirmation',{ title, reservation: reservation.data, success: null })
         }
+
     } catch (error) {
         res.render('error',{ title: 'Bad request'})
     }
@@ -99,6 +109,10 @@ app.get('/contact', (req,res)=> {
 app.get('/about', (req,res) => {
     const title = "About"
     res.render('about',{ title })
+})
+app.get('/promo', async(req,res) => {
+    const title = "Promo"
+    res.render('promo',{ title })
 })
 
 app.get('*', (req,res) => {

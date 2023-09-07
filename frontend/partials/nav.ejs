@@ -32,7 +32,25 @@
                                     <div class="header-action d-none d-md-block">
                                         <ul>
                                             <% if(title === 'Home'){ %>
-                                                <li class="header-btn"><a  class="btn" id="book-now">Book Now!</a></li>
+                                                <% 
+                                                    function padTo2Digits(num) {
+                                                        return num.toString().padStart(2, '0');
+                                                    }
+                                                    function formatDate(date = new Date()) {
+                                                    return [
+                                                        date.getFullYear(),
+                                                        padTo2Digits(date.getMonth() + 1),
+                                                        padTo2Digits(date.getDate()),
+                                                    ].join('-');
+                                                    }
+                                                
+                                                %>  
+
+                                                <form action="/booking" id="" method="get">
+                                                    <input type="hidden" name="start_date" value="<%= formatDate() %>">
+                                                    <input type="hidden" name="end_date" value="<%= formatDate() %>">
+                                                    <li class="header-btn"><button type="submit" class="btn" id="book-now">Book Now!</button></li>
+                                                </form>
                                             <%}%>
                                         </ul>
                                     </div>
