@@ -33,7 +33,9 @@ const reservationSchema = new mongoose.Schema({
     timestamps: true
 })
 
+// reservationSchema.index({ space_id: 1, start_date: 1, end_date: 1 }, { unique: true });
 const Reservation = mongoose.model('Reservation', reservationSchema);
 
 module.exports = Reservation;
+
 

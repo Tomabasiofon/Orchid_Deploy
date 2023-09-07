@@ -2,7 +2,6 @@
 <html class="no-js" lang="">
     <%- include('./partials/head.ejs') %>
     <body class="white-background">
-        <%- include('./partials/nav.ejs') %>
 
         <!-- main-area -->
         <main>
@@ -13,13 +12,32 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-8">
                             <div class="breadcrumb-content text-center">
-                                <h2 class="title">Booking Details</h2>
-                                <nav aria-label="breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Booking Confirmation</li>
-                                    </ol>
-                                </nav>
+                                <% if(success){%>
+                                    <div>
+                                        <div class="success-checkmark">
+                                            <i class="checkmark">✓</i>
+                                        </div>
+                                        <h2 class="title">Congratulations your space has been reserved</h2>
+                                        <nav aria-label="breadcrumb">
+                                            <ol class="breadcrumb">
+                                                <li class="breadcrumb-item"><a href="/">Go Home</a></li>
+                                                <li class="breadcrumb-item"><a href="#payment-details">Check Details</a></li>
+                                            </ol>
+                                        </nav>
+                                    </div>
+                                    <% } else { %>
+                                    <div>
+                                        <div class="failure-checkmark">
+                                            <i class="checkmark">X</i>
+                                        </div>
+                                        <h2 class="title">Transaction failed</h2>
+                                        <nav aria-label="breadcrumb">
+                                            <ol class="breadcrumb">
+                                                <li class="breadcrumb-item"><a href="/">Go Home</a></li>
+                                            </ol>
+                                        </nav>
+                                    </div>
+                                    <% } %>
                             </div>
                         </div>
                     </div>
@@ -27,51 +45,47 @@
             </section>
             <!-- breadcrumb-area-end -->
 
-            <!-- customer-details-area -->
-            <section class="customer-details-area">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="customer-details-content">
-                                <div class="icon">
-                                    <img src="assets/img/icon/customer_det_icon.jpg" alt="">
-                                </div>
-                                <div class="content">
-                                    <h2 class="title"></h2>
-                                    <div class="customer-progress-wrap">
-                                        <div class="progress">
-                                            <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0"
-                                                aria-valuemax="100"></div>
-                                        </div>
-                                        <div class="customer-progress-step">
-                                            <ul>
-                                                <li>
-                                                    <span>4</span>
-                                                    <p>Confirmation</p>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
             <!-- customer-details-area-end -->
 
             <!-- booking-details-area -->
-            <section class="booking-details-area">
+            <% if(success){%>
+            <section class="booking-details-area"id="payment-details">
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-73">
-                            <div class="booking-details-wrap">
-                                Congratulations your space has been reserved
-                            </div>
+                            <aside class="booking-sidebar">
+                                <h2 class="main-title">Reservation Info</h2>
+
+                                <div class="widget">
+                                    <div class="price-summary-top">
+                                        <ul>
+                                            <li>Info</li>
+                                            <!-- <li>Amount</li> -->
+                                        </ul>
+                                    </div>
+                                        <div class="price-summary-detail">
+                                            <ul>
+                                                <li>Ticket <span><%= reservation._id %></span></li>
+                                                <li>Number of days<span><%= reservation.days %></span></li>
+                                                <% function formatDate(dateString) {
+                                                    const date = new Date(dateString);
+                                                    const year = date.getFullYear();
+                                                    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+                                                    const day = String(date.getDate()).padStart(2, '0');
+                                                    return `${year}-${month}-${day}`;
+                                                } %>                                            
+                                                <li>Start Date<span><%= formatDate(reservation.start_date) %></span></li>
+                                                <li>End Date<span><%= formatDate(reservation.end_date) %></span></li>
+                                                <li>Price<span>₦<%= reservation.price %></span></li>
+                                            </ul>
+                                        </div>
+                                </div>
+                            </aside>
                         </div>
                     </div>
                 </div>
             </section>
+            <%} %>
             <!-- booking-details-area-end -->
 
         </main>
@@ -79,3 +93,4 @@
         <%- include('./partials/footer.ejs') %>
     </body>
 </html>
+<!-- http://localhost:8080/confirmation?status=completed&tx_ref=1b4fcc5a-fba4-476d-aef9-288137ce0d0b&transaction_id=1053059604 -->

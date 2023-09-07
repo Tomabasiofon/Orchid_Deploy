@@ -64,93 +64,44 @@
             </section>
             <!-- customer-details-area-end -->
 
+            <div class="container">
+                <div class="alert alert-primary" role="alert" id="alert_date">
+                    A simple primary alert—check it out!
+                </div>
+            </div>
+
              <!-- booking-area -->
              <section class="booking-details-area">
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-73">
-                            <form action="/booking-details" method="get">
+                            <form action="/booking-details" method="get" id="reservationForm">
                                 <div class="primary-contact">
                                     <i class="fa-regular fa-user"></i>
                                     <h2 class="title">Office desk selection</h2>
                                 </div>
                                 <div class="booking-details-wrap">
-                                        <label>Entrance</label>
-                                        <div class="selection-container">
-                                            <div class="empty-container"></div>
-                                            <div class="selection-container-4">
-                                                <label>
-                                                    <input type="checkbox" class="hide-checkbox" name="spaceid[]" value="1">
-                                                    <div class="checkbox-container">1</div>
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" class="hide-checkbox" name="spaceid[]" value="2">
-                                                    <div class="checkbox-container">2</div>
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" class="hide-checkbox" name="spaceid[]" value="3">
-                                                    <div class="checkbox-container">3</div>
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" class="hide-checkbox" name="spaceid[]" value="4">
-                                                    <div class="checkbox-container">4</div>
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" class="hide-checkbox" name="space_id[]" value="5">
-                                                    <div class="checkbox-container">5</div>
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" class="hide-checkbox" name="space_id[]" value="6">
-                                                    <div class="checkbox-container">6</div>
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" class="hide-checkbox" name="space_id[]" value="7">
-                                                    <div class="checkbox-container">7</div>
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" class="hide-checkbox" name="space_id[]" value="8">
-                                                    <div class="checkbox-container">8</div>
-                                                </label>
-                                            </div>
-    
-                                            <div class="selection-container-2">
-                                                <label>
-                                                    <input type="checkbox" class="hide-checkbox" name="space_id[]" value="9">
-                                                    <div class="checkbox-container">9</div>
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" class="hide-checkbox" name="space_id[]" value="10">
-                                                    <div class="checkbox-container">10</div>
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" class="hide-checkbox" name="space_id[]" value="11">
-                                                    <div class="checkbox-container">11</div>
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" class="hide-checkbox" name="space_id[]" value="12">
-                                                    <div class="checkbox-container">12</div>
-                                                </label>
-                                            </div>
-                                            <div class="empty-container"></div>
-    
-                                            <div class="empty-container"></div>
-                                            <div class="selection-container-2">
-                                                <label>
-                                                    <input type="checkbox" class="hide-checkbox">
-                                                    <div class="checkbox-container">13</div>
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" class="hide-checkbox">
-                                                    <div class="checkbox-container">14</div>
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" class="hide-checkbox">
-                                                    <div class="checkbox-container">15</div>
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" class="hide-checkbox">
-                                                    <div class="checkbox-container">16</div>
-                                                </label>
+                                        
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-md-7">
+                                                    <div class="selection-container-4">
+                                                        <% if (deskspaces.length > 0) { %>
+                                                            <% deskspaces.forEach(function(space) { %>
+                                                                <label>
+                                                                    <input type="checkbox" class="hide-checkbox" data-space-price="<%= space.price %>" data-space-id="<%= space._id %>" name="space_id" value="<%= space._id %>">
+                                                                    <div class="checkbox-container" style="padding: 15px;" title="<%= space.name %>"><%= space.seat_number %></div>
+                                                                </label>
+                                                            <% }); %>
+                                                        <% } else { %>
+                                                            <p>No data available.</p>
+                                                        <% } %>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <label>Layout</label>
+                                                    <img src="assets/img/images/layout.png" alt="">
+                                                </div>
                                             </div>
                                         </div>
                                 </div>
@@ -160,61 +111,115 @@
                                     <h2 class="title">Seminar room selection</h2>
                                 </div>
                                 <div class="booking-details-wrap">
-                                    <label>
-                                        <input type="checkbox" class="hide-checkbox">
-                                        <div class="checkbox-container" style="padding: 15px;">Seminar room</div>
-                                    </label>
+                                    <div class="selection-container-2">
+                                        <% if (roomspaces.length > 0) { %>
+                                            <% roomspaces.forEach(function(space) { %>
+                                                <label>
+                                                    <input type="checkbox" class="hide-checkbox" data-space-price="<%= space.price %>" data-space-id="<%= space._id %>" id="space_<%= space._id %>" name="space_id">
+                                                    <div class="checkbox-container" style="padding: 15px;" title="<%= space.name %>"><%= space.name %></div>
+                                                </label>
+                                            <% }); %>
+                                        <% } else { %>
+                                            <p>No data available.</p>
+                                        <% } %>
+                                    </div>
+                                    
                                 </div>
+                                <input type="hidden" name="start_date" id="s-date">
+                                <input type="hidden" name="end_date" id="e-date">
 
                                 <button type="submit" class="btn pt-3 d-block" style="width: 100%;">Proceed</a>
-                                    <!-- <a href="/booking-details" class="btn">Proceed</a> -->
                             </form>
                         </div>
                     </div>
                 </div>
             </section>
             <!-- booking-area-end -->
+            
 
         </main>
         <!-- main-area-end -->
         <%- include('./partials/footer.ejs') %>
         <script>
-            // Get the full query string from the URL
-            const queryString = window.location.search;
+            document.addEventListener("DOMContentLoaded", function(event){
 
-            // Use a function to parse the query string into an object
-            function parseQueryString(queryString) {
-                const params = new URLSearchParams(queryString);
-                const queryParameters = {};
-                for (const [key, value] of params.entries()) {
-                    queryParameters[key] = value;
+                // Get the full query string from the URL
+                const queryString = window.location.search;
+    
+                // Use a function to parse the query string into an object
+                function parseQueryString(queryString) {
+                    const params = new URLSearchParams(queryString);
+                    const queryParameters = {};
+                    for (const [key, value] of params.entries()) {
+                        queryParameters[key] = value;
+                    }
+                    return queryParameters;
                 }
-                return queryParameters;
-            }
+    
+                // Call the function to parse the query string
+                const queryParams = parseQueryString(queryString);
+    
+                const sDate = document.querySelector('#s-date');
+                sDate.value=queryParams.start_date
+                const eDate = document.querySelector('#e-date');
+                eDate.value=queryParams.end_date
+    
+                function formatDate(inputDateString, outputFormat) {
+                    const inputDate = new Date(inputDateString);
+    
+                    // Check if the inputDate is valid
+                    if (isNaN(inputDate)) {
+                        return 'Invalid Date';
+                    }
+    
+                    const dateValues = {
+                        'yyyy': inputDate.getFullYear(),
+                        'MM': String(inputDate.getMonth() + 1).padStart(2, '0'),
+                        'dd': String(inputDate.getDate()).padStart(2, '0'),
+                    };
+    
+                    // Replace placeholders in the outputFormat with date values
+                    const formattedDate = outputFormat.replace(/(yyyy|MM|dd)/g, (match) => dateValues[match] || match);
+    
+                    return formattedDate;
+                }
+                const outputFormat = 'yyyy-MM-dd';
+    
+    
+                const startDate = document.querySelector('#alert_date')
+                startDate.innerText = `You are booking for: ${formatDate(queryParams.start_date, outputFormat)} to ${formatDate(queryParams.end_date, outputFormat)}`
+    
+                const checkboxes = document.querySelectorAll('.hide-checkbox');
+    
+                checkboxes.forEach(async (checkbox) => {
+                    const spaceId = checkbox.getAttribute('data-space-id');
+                    
+                    // Make an Axios request to check availability for the current space
+                    try {
+                        const response = await axios.post('/api/reservation/check', {
+                            space_id: spaceId,
+                            start_date: queryParams.start_date, 
+                            end_date: queryParams.end_date,
+                        });
+    
+                        if (response.data.available) {
+                            checkbox.checked = false; // Space is available
+                        } else if (response.data.available == false && response.data.overlappingReservations.status === 'completed'){
+                            checkbox.checked = true; // Space is not available
+                            checkbox.disabled = true
+                        } else {
+                            heckbox.checked = true; // Space is not available
+                            checkbox.disabled = true
+                        }
+                    } catch (error) {
+                        console.error('Error checking availability:', error);
+                    }
+                });
+    
 
-            // Call the function to parse the query string
-            const queryParams = parseQueryString(queryString);
+            });
 
-            // console.log(queryParams)
 
-            // const options = {
-            //     url: 'http://localhost:8080/api/reservation/check',
-            //     method: 'POST',
-            //     queryParams
-            // };
-      
-            axios.post("http://localhost:8080/api/reservation/check", queryParams)
-                .then(response => {
-                console.log(response.data);
-                }).catch(err=> console.log({err}))
-            // Access individual query parameters by their names
-            const spaceId = queryParams.space_id;
-            const startDate = queryParams.start_date;
-            const endDate = queryParams.end_date;
-
-            // console.log('space_id:', spaceId);
-            // console.log('start_date:', startDate);
-            // console.log('end_date:', endDate);
         </script>
     </body>
 </html>

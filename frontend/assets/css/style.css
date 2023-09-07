@@ -3845,3 +3845,39 @@ input[type="checkbox"]:checked + .checkbox-container {
 	background-color: #333; /* Background color when checked */
 	color: #fff; /* Text color when checked */
 }
+
+.success-checkmark {
+	border-radius:270px; 
+	height:270px; 
+	width:270px; 
+	background: #F8FAF5; 
+	margin:0 auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 5px solid green;
+}
+
+.success-checkmark i {
+	color: green;
+	font-size: 80px;
+	margin-bottom: 20px;
+}
+
+.failure-checkmark {
+	border-radius:270px; 
+	height:270px; 
+	width:270px; 
+	background: #F8FAF5; 
+	margin:0 auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 5px solid red;
+}
+
+.failure-checkmark i {
+	color: red;
+	font-size: 80px;
+	margin-bottom: 20px;
+}

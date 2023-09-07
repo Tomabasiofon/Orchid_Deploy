@@ -1,0 +1,166 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <%- include('./partials/head.ejs') %>
+    
+    <body class="white-background">
+        <%- include('./partials/nav.ejs') %>
+
+        <!-- main-area -->
+        <main>
+
+            <!-- breadcrumb-area -->
+            <section class="breadcrumb-area breadcrumb-bg">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="breadcrumb-content text-center">
+                                <h2 class="title">Payment Details</h2>
+                                <nav aria-label="breadcrumb">
+                                    <!-- <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page"></li>
+                                    </ol> -->
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- breadcrumb-area-end -->
+
+            <!-- customer-details-area -->
+            <section class="customer-details-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="customer-details-content">
+                                <div class="icon">
+                                    <img src="assets/img/icon/customer_det_icon.jpg" alt="">
+                                </div>
+                                <div class="content">
+                                    <h2 class="title">Payment</h2>
+                                    <div class="customer-progress-wrap">
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0"
+                                                aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="customer-progress-step">
+                                            <ul>
+                                                <li>
+                                                    <span>3</span>
+                                                    <p>Payment</p>
+                                                </li>
+                                                <li>
+                                                    <span>4</span>
+                                                    <p>Confirmation</p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- customer-details-area-end -->
+
+            <!-- booking-details-area -->
+            <section class="booking-details-area">
+                <div class="container">
+                    <div class="row justify-content-center">
+
+                        <div class="col-46">
+                            <aside class="booking-sidebar">
+                                <h2 class="main-title">Payment Info</h2>
+
+                                <div class="widget">
+                                    <h2 class="widget-title">Your price summary</h2>
+                                    <div class="price-summary-top">
+                                        <ul>
+                                            <li>Details</li>
+                                            <!-- <li>Amount</li> -->
+                                        </ul>
+                                    </div>
+                                        <div class="price-summary-detail">
+                                            <ul>
+                                                <li>Email<span><%= person.email %></span></li>
+                                                <li>Number of days<span><%= reservation.days %></span></li>
+                                                <% function formatDate(dateString) {
+                                                    const date = new Date(dateString);
+                                                    const year = date.getFullYear();
+                                                    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+                                                    const day = String(date.getDate()).padStart(2, '0');
+                                                    return `${year}-${month}-${day}`;
+                                                } %>                                            
+                                                <li>Start Date<span><%= formatDate(reservation.start_date) %></span></li>
+                                                <li>End Date<span><%= formatDate(reservation.end_date) %></span></li>
+                                                <li>Price<span>₦<%= reservation.price %></span></li>
+                                            </ul>
+                                            <!-- <a class="btn" onclick="makePayment()">Pay Now</a> -->
+                                            <form action="/api/reservation/start/<%= reservation._id %>" method="post">
+                                                <input type="hidden" name="reservation_id" value="<%= reservation._id %>">
+                                                <input type="hidden" name="email" value="<%= person.email %>">
+                                                <input type="hidden" name="phoneNumber" value="<%= person.phoneNumber %>">
+                                                <input type="hidden" name="name" value="<%= person.firstname %>">
+                                                <button class="btn" type="submit" style="width: 100%;">Pay Now</button>
+                                            </form>
+                                        </div>
+                                </div>
+                            </aside>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- booking-details-area-end -->
+
+        </main>
+        <!-- main-area-end -->
+        <%- include('./partials/footer.ejs') %>
+        <script>
+            function generateRandomString(length) {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                result += characters.charAt(randomIndex);
+            }
+                return result;
+            }
+
+            function generateUniqueString(prefix) {
+                const timestamp = Date.now().toString();
+                const randomString = generateRandomString(10);
+                return `${prefix}-${timestamp}${randomString}`;
+            }
+
+            const uniqueString = generateUniqueString('osl');
+
+          function makePayment() {
+            FlutterwaveCheckout({
+              public_key: "FLWPUBK-767889f3e84565e2ea31f78a22575581-X",
+              tx_ref: uniqueString,
+              amount: 50,
+              currency: "NGN",
+              payment_options: "card, banktransfer, ussd",
+              redirect_url: "http://localhost:8080/confirmation",
+              meta: {
+                consumer_id: 23,
+                consumer_mac: "92a3-912ba-1192a",
+              },
+              customer: {
+                email: "irochibuzor@gmail.com",
+                phone_number: "08102909304",
+                name: "Rose DeWitt Bukater",
+              },
+              customizations: {
+                title: "Orchadsprings",
+                description: "Payment for an awesome cruise",
+                logo: "https://www.logolynx.com/images/logolynx/22/2239ca38f5505fbfce7e55bbc0604386.jpeg",
+              },
+            });
+          }
+        </script>
+        
+    </body>
+</html>

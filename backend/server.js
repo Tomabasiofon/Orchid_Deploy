@@ -10,7 +10,7 @@ const bodyparser = require('body-parser');
 const officeSpaceRoutes = require('./routes/officespace');
 const reservationRoutes = require('./routes/reservation');
 const peopleRoutes = require('./routes/people');
-const homeRoutes = require('./routes/home');
+const paymentRoutes = require('./routes/payment');
 const axios = require('axios');
 
 const app = express();
@@ -24,46 +24,87 @@ app.use(bodyparser.urlencoded({ extended: true}));
 
 app.set('view engine', 'ejs');
 app.set('views', 'frontend');
-// app.set('views', path.join(__dirname, 'frontend'));
 
 app.use('/api/space', officeSpaceRoutes);
 app.use('/api/reservation', reservationRoutes);
 app.use('/api/people', peopleRoutes);
-// app.post
+app.use('/api/payment', paymentRoutes);
 app.post('/api/test', (req,res) => {
     // res.status(200).json(req.body)
-    console.log(req.body.spaceid)
-    res.render('booking')
+    console.log(req.body)
+    res.status(200).json(req.body)
+    // res.render('booking')
 })
 
 //Serve frontend
 app.use(express.static(path.join(__dirname, '../frontend')));
 
 app.get('/', (req,res) => {
-    res.render('index');
+    const title = "Home"
+    res.render('index',{ title });
 })
-app.get('/booking', (req,res) => {
-    console.log(req.body)
-    res.render('booking')
+app.get('/booking', async (req,res) => {
+    const title = "Booking"
+    const deskspaces = await axios.get('http://localhost:8080/api/space?type=space');
+    const roomspaces = await axios.get('http://localhost:8080/api/space?type=room');
+    if(deskspaces){
+        res.render('booking',{ title, deskspaces: deskspaces.data, roomspaces: roomspaces.data })
+    } else {
+        res.render('error',{ title: 'Bad request'})
+    }
 })
-app.get('/booking-details', (req,res) => {
-    res.render('booking-details')
+app.get('/booking-details', async(req,res) => {
+
+    const reservation = await axios.post('http://localhost:8080/api/reservation', req.query)
+    if(reservation) {
+        const title = "Booking Details"
+        res.render('booking-details',{ title, reservation: reservation.data })
+    } else {
+        res.render('error',{ title: 'Bad request'})
+    }
 })
-app.get('/confirmation', (req,res) => {
-    res.render('confirmation')
+app.get('/payment', async(req,res) => {
+    const id = req.query.id;
+    try {
+        if (id) {
+            const reservation = await axios.get(`http://localhost:8080/api/reservation/${id}`)
+            const person = await axios.get(`http://localhost:8080/api/people/reservation/${id}`)
+            const title = "Payment"
+            res.render('pay', { title, reservation: reservation.data, person: person.data });
+        }
+    } catch (error) {   
+        res.render('error',{ title: 'Bad request'})
+    }
+})
+app.get('/confirmation', async (req,res) => {
+    const { id, success } = req.query;
+    try {
+        if(id && success) {
+            const reservation = await axios.get(`http://localhost:8080/api/reservation/${id}`)
+            const title = "Confirmation"
+            res.render('confirmation',{ title, reservation: reservation.data, success })
+        }
+    } catch (error) {
+        res.render('error',{ title: 'Bad request'})
+    }
 })
 app.get('/list', (req,res) => {
-    res.render('booking-list')
+    const title = "Booking"
+    res.render('booking-list',{ title })
+})
+app.get('/contact', (req,res)=> {
+    const title = "Contact"
+    res.render('contact',{ title })
+})
+app.get('/about', (req,res) => {
+    const title = "About"
+    res.render('about',{ title })
 })
 
 app.get('*', (req,res) => {
-    res.render('404')
+    const title = "404"
+    res.render('404',{ title })
 })
-
-
-// app.get('*', (req,res) => {
-//     res.sendFile(path.resolve(__dirname, '../', 'frontend', 'index.html'))
-// })
 
 
 // Handle Errors

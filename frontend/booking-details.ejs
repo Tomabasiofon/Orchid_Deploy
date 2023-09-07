@@ -16,7 +16,7 @@
                                 <h2 class="title">Booking Details</h2>
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                        <li class="breadcrumb-item"><a href="/">Home</a></li>
                                         <li class="breadcrumb-item active" aria-current="page">Booking Details</li>
                                     </ol>
                                 </nav>
@@ -53,10 +53,10 @@
                                                     <span>3</span>
                                                     <p>Payment</p>
                                                 </li>
-                                                <li>
+                                                <!-- <li>
                                                     <span>4</span>
                                                     <p>Confirmation</p>
-                                                </li>
+                                                </li> -->
                                             </ul>
                                         </div>
                                     </div>
@@ -78,7 +78,7 @@
                                 <h2 class="title">Please fill in correctly</h2>
                             </div>
                             <div class="booking-details-wrap">
-                                <form action="#">                                   
+                                <form id="person-details-form" action="/api/test">                                   
                                     <ul>
                                         <li>
                                             <div class="form-grp">
@@ -87,30 +87,38 @@
                                                 </div>
                                                 <div class="form">
                                                     <select id="title" name="title" class="form-select" aria-label="Default select example">
-                                                        <option value="">Mr.</option>
-                                                        <option>Mrs.</option>
-                                                        <option>Others..</option>
+                                                        <option value="Mr">Mr.</option>
+                                                        <option value="Mrs">Mrs.</option>
+                                                        <option value="Others">Others..</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-grp">
-                                                <input type="text" placeholder="First Name" required>
+                                                <input type="text" name="firstname" placeholder="First Name" required>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-grp">
-                                                <input type="text" placeholder="Last Name*" required>
+                                                <input type="text" name="lastname" placeholder="Last Name*" required>
                                             </div>
                                         </li>
                                     </ul>
+
                                     <div class="gender-select">
                                         <h2 class="title">Select Your Gender*</h2>
-                                        <ul>
+                                        <!-- <ul>
                                             <li class="active"><i class="flaticon-little-kid"></i> Male</li>
                                             <li><i class="flaticon-little-girl"></i> Female</li>
-                                        </ul>
+                                        </ul> -->
+                                        <div class="form">
+                                            <select id="gender" name="gender" class="form-select" aria-label="Default select example" required>
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                                <option value="others">Others..</option>
+                                            </select>
+                                        </div>
                                     </div>
                                     
                                     <div class="row">
@@ -121,15 +129,15 @@
                                                 </div>
                                                 <div class="form">
                                                     <label for="nationality">Nationality</label>
-                                                    <select id="nationality" name="select" class="form-select" aria-label="Default select example">
-                                                        <option value="">Nigeria</option>
-                                                        <option>United States</option>
-                                                        <option>Dubai</option>
-                                                        <option>Saudi Arabia</option>
-                                                        <option>Australia</option>
-                                                        <option>South Africa</option>
-                                                        <option>Pakistan</option>
-                                                        <option>Others</option>
+                                                    <select id="nationality" name="country" class="form-select" aria-label="Default select example" required>
+                                                        <option value="Nigeria">Nigeria</option>
+                                                        <option value="United States">United States</option>
+                                                        <option value="Dubai">Dubai</option>
+                                                        <option value="Saudi Arabia">Saudi Arabia</option>
+                                                        <option value="Australia">Australia</option>
+                                                        <option value="South Africa">South Africa</option>
+                                                        <option value="Pakistan">Pakistan</option>
+                                                        <option value="Others">Others</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -141,33 +149,10 @@
                                                     <i class="flaticon-telephone-call"></i>
                                                 </div>
                                                 <div class="form">
-                                                    <input type="number" placeholder="Mobile Number *">
+                                                    <input type="number" name="phoneNumber" placeholder="Mobile Number *" required>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <!-- <div class="col-md-6">
-                                            <div class="form-grp">
-                                                <div class="icon">
-                                                    <i class="flaticon-calendar"></i>
-                                                </div>
-                                                <div class="form">
-                                                    <label for="shortBy">Date of Birth</label>
-                                                    <input type="text" class="date" placeholder="Select Date">
-                                                </div>
-                                            </div>
-                                        </div> -->
-
-                                        <!-- <div class="col-md-6">
-                                            <div class="form-grp">
-                                                <div class="icon">
-                                                    <i class="flaticon-home"></i>
-                                                </div>
-                                                <div class="form">
-                                                    <input type="text" placeholder="Post Code *">
-                                                </div>
-                                            </div>
-                                        </div> -->
 
                                         <div class="col-md-6">
                                             <div class="form-grp">
@@ -176,7 +161,7 @@
                                                 </div>
                                                 <div class="form">
                                                     <label for="email">Your Email</label>
-                                                    <input type="email" id="email" placeholder="youinfo@gmail.com" required>
+                                                    <input type="email" id="email" name="email" placeholder="youinfo@gmail.com" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -187,86 +172,17 @@
                                                     <i class="flaticon-home"></i>
                                                 </div>
                                                 <div class="form">
-                                                    <input type="text" placeholder="Address *">
+                                                    <input type="text" name="address" placeholder="Address *" required>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>                                 
+                                
+                                   <input type="hidden" name="reservation_id" value="<%= reservation._id %>">
 
-                                    <!-- <div class="optional-item">
-
-                                        <div class="form-grp">
-                                            <div class="form">
-                                                <select id="optional" name="select" class="form-select" aria-label="Default select example">
-                                                    <option value="">Select meal type ( optional )</option>
-                                                    <option>Select meal type ( optional )</option>
-                                                    <option>Select meal type ( optional )</option>
-                                                    <option>Select meal type ( optional )</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-grp">
-                                            <div class="form">
-                                                <select id="optionalTwo" name="select" class="form-select" aria-label="Default select example">
-                                                    <option value="">Request wheelchair ( optional )</option>
-                                                    <option>Request wheelchair ( optional )</option>
-                                                    <option>Select meal type ( optional )</option>
-                                                    <option>Select meal type ( optional )</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                    
-                                    
-                                    <div class="form-grp checkbox-grp">
-                                        <input type="checkbox" id="checkbox">
-                                        <label for="checkbox">Add to newsletter</label>
-                                    </div>
+                                    <button type="submit" class="btn mt-3">Proceed to payment</button>
                                 </form>
                             </div>
-                        </div>
-
-
-                        <div class="col-27">
-                            <aside class="booking-sidebar">
-                                <h2 class="main-title">Payment Info</h2>
-
-                                <div class="widget">
-                                    <h2 class="widget-title">Your price summary</h2>
-                                    <div class="price-summary-top">
-                                        <ul>
-                                            <li>Details</li>
-                                            <li>Amount</li>
-                                        </ul>
-                                    </div>
-                                    <div class="price-summary-detail">
-                                        <!-- <ul>
-                                            <li>Adult x 1 <span>$1,056</span></li>
-                                            <li>Tax x 1 <span>$35</span></li>
-                                            <li>Total Airfare: <span>$1,091</span></li>
-                                            <li>Discount<span>- $110</span></li>
-                                            <li>Total Payable<span>$981.00</span></li>
-                                        </ul> -->
-
-
-                                          <form method="POST" action="https://checkout.flutterwave.com/v3/hosted/pay">
-                                            <!-- <div>
-                                              Your order is ₦3,400
-                                            </div> -->
-                                            <input type="hidden" name="public_key" value="FLWPUBK-767889f3e84565e2ea31f78a22575581-X" />
-                                            <input type="hidden" name="customer[email]" value="jessepinkman@walterwhite.org" />
-                                            <input type="hidden" name="customer[name]" value="Jesse Pinkman" />
-                                            <input type="hidden" name="tx_ref" value="bitethtx-019203" />
-                                            <input type="hidden" name="amount" value="3400" />
-                                            <input type="hidden" name="currency" value="NGN" />
-                                            <input type="hidden" name="meta[token]" value="54" />
-                                            <input type="hidden" name="redirect_url" value="https://localhost:8080/confirmation" />
-                                            <button type="submit" id="start-payment-button">Pay Now</button>
-                                            <!-- <button type="submit" class="btn" id="start-payment-button" style="width: 100%;">Pay Now</button> -->
-                                          </form>
-                                    </div>
-                                </div>
-                            </aside>
                         </div>
                     </div>
                 </div>
@@ -276,5 +192,54 @@
         </main>
         <!-- main-area-end -->
         <%- include('./partials/footer.ejs') %>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function(event){
+
+                document.getElementById("person-details-form").addEventListener("submit", function(event) {
+                 event.preventDefault();
+                 
+                const paymentContainer = document.querySelector('#payment-container');
+
+                    // Access form data
+                  const form = event.target;
+                  const formData = new FormData(form);
+                  const formDataObject = {};
+                
+                  formData.forEach(function(value, key) {
+                    formDataObject[key] = value;
+                  });
+                    
+
+                  console.log(formDataObject);
+                  const paymentEmail = document.getElementById('payment-email');
+                  const paymentName = document.getElementById('payment-name');
+                  const paymentAmount = document.getElementById('payment-amount');
+                  // axios POST request
+                      const options = {
+                          url: 'http://localhost:8080/api/people',
+                          method: 'POST',
+                          headers: {
+                          'Accept': 'application/json',
+                          'Content-Type': 'application/json;charset=UTF-8'
+                          },
+                          data: formDataObject
+                      };
+                      axios(options)
+                      .then(response => {
+                          if(response.data) {
+
+                            window.location.href = `/payment?id=${formDataObject.reservation_id}`;
+                            // paymentContainer.style.display = "block"
+                            // console.log(response.data);
+                            // paymentEmail.setAttribute('value', response.data.email)
+                            // paymentName.setAttribute('value', `${response.data.firstname} ${response.data.lastname}`)
+                          }
+                      });
+             });
+            })
+
+        </script>
+        
     </body>
 </html>

@@ -11,8 +11,12 @@ const officeSpaceSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ['single_space', 'four_spaces', 'conference_room'],
-        default: 'single_space', 
+        enum: ['space', 'room'],
+        default: 'space', 
+    },
+    seat_number: {
+        type: Number,
+        required: true
     },
     price: {
         type: Number,
@@ -22,6 +26,8 @@ const officeSpaceSchema = new mongoose.Schema({
 {
     timestamps: true
 })
+
+officeSpaceSchema.index({ type: 1, seat_number: 1 }, { unique: true });
 
 const OfficeSpace = mongoose.model('OfficeSpace', officeSpaceSchema);
 module.exports = OfficeSpace;

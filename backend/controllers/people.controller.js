@@ -26,4 +26,18 @@ const createPerson = async (req,res,next)=>{
   }
 }
 
-module.exports = { createPerson, getPeople }
+const getPersonByReservationId = async (req,res,next) => {
+  const id = req.params.res_id
+  try {
+    if(id) {
+      const person = await People.findOne({ reservation_id: id });
+      res.status(200).json(person);
+    } else {
+      createError(404, "Person Details not found");
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { createPerson, getPeople, getPersonByReservationId }

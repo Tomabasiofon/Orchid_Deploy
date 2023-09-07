@@ -11,19 +11,20 @@ const createOfficeSpace = async (req,res,next) => {
 }
 
 const getAllOfficeSpace = async (req, res, next) => {
-  const { type } = req.query
-    try {
-        if(type) {
-          const spaces = await OfficeSpace.find({ where: { type }})
-          res.status(200).json(spaces)
-        } else {
-          const space = await OfficeSpace.find();
-          res.status(200).json(space);
-        }
-    } catch (error) {
-        next(error)
+  const { type } = req.query;
+
+  try {
+    if (type) {
+      const spaces = await OfficeSpace.find({ type }); 
+      res.status(200).json(spaces);
+    } else {
+      const space = await OfficeSpace.find();
+      res.status(200).json(space);
     }
-}
+  } catch (error) {
+    next(error);
+  }
+};
 
 const getOfficeSpace = async (req,res,next)=>{
   const { id } = req.params.id

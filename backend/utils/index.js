@@ -16,7 +16,11 @@ const calculateDays = (start_date, end_date) => {
     const timeDiff = end_date - start_date;
     const days = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-    return days;
+    if(days === 0){
+        return 1
+    } else {
+        return days;
+    }
 };
 
 

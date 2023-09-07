@@ -29,3 +29,28 @@ try {
     console.log(err.code);
     console.log(err.response.body);
 }
+
+
+const express = require('express');
+const app = express();
+const port = 3000;
+const ejs = require('ejs');
+
+app.set('view engine', 'ejs');
+
+// Your routes and middleware go here...
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    // Set a default error message and status code
+    const errorMessage = err.message || 'Internal Server Error';
+    const statusCode = err.status || 500;
+
+    // Render the error template with the error message and status code
+    res.status(statusCode).render('error', { message: errorMessage });
+});
+
+// Start the server
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});
