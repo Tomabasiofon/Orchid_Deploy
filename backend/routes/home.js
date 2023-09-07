@@ -5,7 +5,7 @@
 
 // // router.post('/start', (req,res,next) => {
 // //     try {
-// //         axios.post('http://localhost:8080/api/reservation/check')
+// //         axios.post('https://orchidspring2.onrender.com/api/reservation/check')
 // //         .then(function(response){
 // //             res.render('booking', { available : response.data });
 // //         })
