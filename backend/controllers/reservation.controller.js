@@ -183,13 +183,15 @@ const completeReservation = async (req, res, next) => {
       await session.startTransaction();
   
       // Perform operations within the transaction
-      if(status == 'failed') createError(400,'Payment failed') 
+      if(status == 'failed' || status == 'cancelled') createError(400,'Payment failed') 
         const payment = await Payment.findOne({ tx_ref });
         const reservation = await Reservation.findById(payment.reservation_id);
 
         if(!payment) createError(400,'Payment failed') 
-        const completedPayment = await Payment.findOneAndUpdate({_id: payment._id}, { status: 'completed', transaction_id }, { new: true })
         if(!reservation) createError(400,'Payment failed') 
+        if(payment.amount != reservation.price) createError(400,'Payment failed') 
+
+        const completedPayment = await Payment.findOneAndUpdate({_id: payment._id}, { status: 'completed', transaction_id }, { new: true })
         const completedReservation = await Reservation.findOneAndUpdate({ _id: reservation._id }, { status: 'completed'}, {new: true})
 
         const customResponse = {

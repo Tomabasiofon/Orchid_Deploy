@@ -12,7 +12,7 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-8">
                             <div class="breadcrumb-content text-center">
-                                <% if(success){%>
+                                <% if(success === true){%>
                                     <div>
                                         <div class="success-checkmark">
                                             <i class="checkmark">✓</i>
@@ -25,7 +25,7 @@
                                             </ol>
                                         </nav>
                                     </div>
-                                    <% } else if(success === false) { %>
+                                    <% } else if(success === 'failed') { %>
                                     <div>
                                         <div class="failure-checkmark">
                                             <i class="checkmark">X</i>
@@ -37,6 +37,18 @@
                                             </ol>
                                         </nav>
                                     </div>
+                                    <% } else if(success === 'cancelled') { %>
+                                        <div>
+                                            <div class="failure-checkmark">
+                                                <i class="checkmark">X</i>
+                                            </div>
+                                            <h2 class="title">Cancelled Transaction</h2>
+                                            <nav aria-label="breadcrumb">
+                                                <ol class="breadcrumb">
+                                                    <li class="breadcrumb-item"><a href="/">Go Home</a></li>
+                                                </ol>
+                                            </nav>
+                                        </div>
                                     <% } else { %>
                                         <div>
                                             <h2 class="title">Reservation Details</h2>
@@ -75,7 +87,8 @@
                                     </div>
                                         <div class="price-summary-detail">
                                             <ul>
-                                                <li>Ticket <span><%= reservation._id %></span></li>
+                                                <!-- <li>Ticket <span><%= reservation._id %></span></li> -->
+                                                <li>Status <span><%= reservation.status %></span></li>
                                                 <li>Number of days<span><%= reservation.days %></span></li>
                                                 <% function formatDate(dateString) {
                                                     const date = new Date(dateString);
