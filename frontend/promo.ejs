@@ -3,17 +3,6 @@
     <%- include('./partials/head.ejs') %>
     <body class="white-background">
 
-        <!-- preloader -->
-        <div id="preloader">
-            <div id="loading-center">
-                <div class="loader">
-                    <div class="loader-outter"></div>
-                    <div class="loader-inner"></div>
-                </div>
-            </div>
-        </div>
-        <!-- preloader-end -->
-
 		<!-- Scroll-top -->
         <button class="scroll-top scroll-to-target" data-target="html">
             <i class="fas fa-angle-up"></i>
@@ -33,12 +22,12 @@
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-lg-8">
-                            <div class="breadcrumb-content text-center">
+                            <div class="breadcrumb-content text-center mt-10">
                                 <h2 class="title">OrchidSpring Booking</h2>
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Booking</li>
+                                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Promos</li>
                                     </ol>
                                 </nav>
                             </div>
@@ -47,6 +36,8 @@
                 </div>
             </section>
             <!-- breadcrumb-area-end -->
+
+            
 
             <!-- booking-area -->
             <div class="booking-area booking-style-two">
@@ -58,25 +49,10 @@
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link active" id="bOOKing-tab" data-bs-toggle="tab"
                                             data-bs-target="#bOOKing-tab-pane" type="button" role="tab"
-                                            aria-controls="bOOKing-tab-pane" aria-selected="true"><i class="flaticon-flight"></i>air
-                                            BOOKing</button>
+                                            aria-controls="bOOKing-tab-pane" aria-selected="true"><i class="flaticon-calendar-1"></i>Our Weekly Promo</button>
                                     </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="trips-tab" data-bs-toggle="tab"
-                                            data-bs-target="#trips-tab-pane" type="button" role="tab" aria-controls="trips-tab-pane"
-                                            aria-selected="false"><i class="flaticon-file"></i> my trips</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="check-tab" data-bs-toggle="tab"
-                                            data-bs-target="#check-tab-pane" type="button" role="tab" aria-controls="check-tab-pane"
-                                            aria-selected="false"><i class="flaticon-tick"></i> check-in</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="flight-tab" data-bs-toggle="tab"
-                                            data-bs-target="#flight-tab-pane" type="button" role="tab"
-                                            aria-controls="flight-tab-pane" aria-selected="false"><i class="flaticon-clock"></i>
-                                            Flight status</button>
-                                    </li>
+                                   
+                                
                                 </ul>
                                 <div class="tab-content" id="myTabContent">
                                     <div class="tab-pane fade show active" id="bOOKing-tab-pane" role="tabpanel"
@@ -85,199 +61,45 @@
                                             <div class="col-lg-12">
                                                 <div class="tab-content-wrap">
                                                     <div class="content-top">
-                                                        <ul>
+                                                        <!-- <ul>
                                                             <li class="active"><a href="#">Roundtrip</a></li>
                                                             <li><a href="#">One-way</a></li>
-                                                            <li><a href="#">Multi-city</a></li>
-                                                        </ul>
+                                                            <li><a href="#">Multi-city jgfyugu</a></li>
+                                                        </ul> -->
+                                                            <label class="my-6 alert alert-primary">Please note you can only select a start date as the promo is valid for a 7 day selection only!</label>
                                                     </div>
                                                     <form action="#" class="booking-form">
                                                         <ul>
                                                             <li>
                                                                 <div class="form-grp">
-                                                                    <input type="text" placeholder="From">
+                                                                    <label for="">Starting date</label>
+                                                                    <input type="text" class="date"
+                                                                        placeholder="Select Date">
                                                                 </div>
                                                             </li>
                                                             <li>
                                                                 <div class="form-grp">
-                                                                    <input type="text" placeholder="To">
-                                                                    <button class="exchange-icon"><i
-                                                                            class="flaticon-exchange-1"></i></button>
+                                                                    <button class="exchange-icon" disabled><i
+                                                                            class="flaticon-arrow-right">&#8594;</i></button>
                                                                 </div>
                                                             </li>
                                                             <li>
-                                                                <div class="form-grp select">
-                                                                    <label for="shortBy">Trip</label>
-                                                                    <select id="shortBy" name="select" class="form-select"
-                                                                        aria-label="Default select example">
-                                                                        <option value="">Tour type</option>
-                                                                        <option>Adventure Travel</option>
-                                                                        <option>Family Tours</option>
-                                                                        <option>Newest Item</option>
-                                                                        <option>Nature & wildlife</option>
-                                                                    </select>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="form-grp date">
-                                                                    <ul>
-                                                                        <li>
-                                                                            <label for="shortBy">Depart</label>
-                                                                            <input type="text" class="date"
-                                                                                placeholder="Select Date">
-                                                                        </li>
-                                                                        <li>
-                                                                            <label for="shortBy">Return</label>
-                                                                            <input type="text" class="date"
-                                                                                placeholder="Select Date">
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="form-grp economy">
-                                                                    <label for="text">Passenger/ Class</label>
-                                                                    <input type="text" id="text" placeholder="1 Passenger, Economy">
+                                                                <div class="form-grp">
+                                                                    <label for="shortBy">Ends</label>
+                                                                    <input type="text" class="date"
+                                                                        placeholder="Select Date" disabled>
                                                                 </div>
                                                             </li>
                                                         </ul>
                                                     </form>
                                                     <div class="content-bottom">
-                                                        <a href="booking-details.html" class="promo-code">+ Add Promo code</a>
-                                                        <a href="booking-details.html" class="btn">Show Flights <i class="flaticon-flight-1"></i></a>
+                                                        <a class="btn">Proceed</a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                  
-                                    <div class="tab-pane fade" id="check-tab-pane" role="tabpanel" aria-labelledby="check-tab"
-                                        tabindex="0">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="tab-content-wrap">
-                                                    <form action="#" class="booking-form">
-                                                        <ul>
-                                                            <li>
-                                                                <div class="form-grp">
-                                                                    <input type="text" placeholder="From">
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="form-grp">
-                                                                    <input type="text" placeholder="To">
-                                                                    <button class="exchange-icon"><i class="flaticon-exchange-1"></i></button>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="form-grp select">
-                                                                    <label for="shortByThree">Trip</label>
-                                                                    <select id="shortByThree" name="select" class="form-select" aria-label="Default select example">
-                                                                        <option value="">Tour type</option>
-                                                                        <option>Adventure Travel</option>
-                                                                        <option>Family Tours</option>
-                                                                        <option>Newest Item</option>
-                                                                        <option>Nature & wildlife</option>
-                                                                    </select>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="form-grp date">
-                                                                    <ul>
-                                                                        <li>
-                                                                            <label for="shortBy">Depart</label>
-                                                                            <input type="text" class="date" placeholder="Select Date">
-                                                                        </li>
-                                                                        <li>
-                                                                            <label for="shortBy">Return</label>
-                                                                            <input type="text" class="date" placeholder="Select Date">
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="form-grp economy">
-                                                                    <label for="textThree">Passenger/ Class</label>
-                                                                    <input type="text" id="textThree" placeholder="1 Passenger, Economy">
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                    </form>
-                                                    <div class="content-bottom">
-                                                        <a href="booking-details.html" class="promo-code">+ Add Promo code</a>
-                                                        <a href="booking-details.html" class="btn">Show Flights <i class="flaticon-flight-1"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="flight-tab-pane" role="tabpanel" aria-labelledby="flight-tab"
-                                        tabindex="0">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="tab-content-wrap">
-                                                    <div class="content-top">
-                                                        <ul>
-                                                            <li class="active"><a href="#">Roundtrip</a></li>
-                                                            <li><a href="#">One-way</a></li>
-                                                            <li><a href="#">Multi-city</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <form action="#" class="booking-form">
-                                                        <ul>
-                                                            <li>
-                                                                <div class="form-grp">
-                                                                    <input type="text" placeholder="From">
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="form-grp">
-                                                                    <input type="text" placeholder="To">
-                                                                    <button class="exchange-icon"><i class="flaticon-exchange-1"></i></button>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="form-grp select">
-                                                                    <label for="shortByFour">Trip</label>
-                                                                    <select id="shortByFour" name="select" class="form-select" aria-label="Default select example">
-                                                                        <option value="">Tour type</option>
-                                                                        <option>Adventure Travel</option>
-                                                                        <option>Family Tours</option>
-                                                                        <option>Newest Item</option>
-                                                                        <option>Nature & wildlife</option>
-                                                                    </select>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="form-grp date">
-                                                                    <ul>
-                                                                        <li>
-                                                                            <label for="shortBy">Depart</label>
-                                                                            <input type="text" class="date" placeholder="Select Date">
-                                                                        </li>
-                                                                        <li>
-                                                                            <label for="shortBy">Return</label>
-                                                                            <input type="text" class="date" placeholder="Select Date">
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="form-grp economy">
-                                                                    <label for="textFour">Passenger/ Class</label>
-                                                                    <input type="text" id="textFour" placeholder="1 Passenger, Economy">
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                    </form>
-                                                    <div class="content-bottom">
-                                                        <a href="booking-details.html" class="promo-code">+ Add Promo code</a>
-                                                        <a href="booking-details.html" class="btn">Show Flights <i class="flaticon-flight-1"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -285,6 +107,7 @@
                 </div>
             </div>
             <!-- booking-area-end -->
+
 
         </main>
         <!-- main-area-end -->

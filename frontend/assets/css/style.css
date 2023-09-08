@@ -3882,3 +3882,18 @@ input[type="checkbox"]:checked + .checkbox-container {
 	font-size: 80px;
 	margin-bottom: 20px;
 }
+
+.test-header {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding-inline: 10px;
+	color: white;
+	background: #57112F;
+	width: 100%;
+	font-size: 32px;
+}
+
+.test-header h2 {
+	color: white;
+}
