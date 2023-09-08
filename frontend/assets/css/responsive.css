@@ -456,7 +456,7 @@
 	transform: translateX(-50%);
 }
 .booking-form ul li:nth-child(2) .form-grp input {
-	padding: 20px 20px 20px 20px;
+	padding: 0;
 }
 .booking-form .form-grp.select {
 	padding: 10px 10px;

@@ -39,6 +39,7 @@ body {
 	color: #606575;
 	font-style: normal;
 	background-color: #fbf9f2;
+	overflow-x: hidden;
 }
 .white-background {
 	background: #fff;

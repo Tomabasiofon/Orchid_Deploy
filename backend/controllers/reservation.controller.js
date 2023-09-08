@@ -102,6 +102,15 @@ const getReservation = async (req,res,next) => {
 
 }
 
+const getCompletedReservation = async (req,res,next) => {
+    try {
+        const reservations = await Reservation.find({ status: 'completed' })
+        res.status(200).json(reservations);
+    } catch (error) {
+        next(error)
+    }
+}
+
 
 const startReservation = async (req, res, next) => {
     const session = await mongoose.startSession();
@@ -193,8 +202,8 @@ const completeReservation = async (req, res, next) => {
   
       // If everything is successful, commit the transaction
       await session.commitTransaction();
+      res.redirect(`https://orchidspring2.onrender.com/confirmation?id=${completedReservation._id}&success=${status}`)
   
-      res.redirect(`https://orchidspring2.onrender.com/confirmation?id=${completedReservation._id}&success=${true}`)
     } catch (error) {
       await session.abortTransaction();
   
@@ -206,4 +215,4 @@ const completeReservation = async (req, res, next) => {
 
 
 
-module.exports = { createReservation, startReservation, checkAvailability, getReservation, completeReservation }
+module.exports = { createReservation, startReservation, checkAvailability, getReservation, completeReservation, getCompletedReservation }
