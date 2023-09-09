@@ -242,7 +242,7 @@
                 const days = calculateDays(queryParams.start_date, queryParams.end_date)
                 
                 const startDate = document.querySelector('#alert_date')
-                startDate.innerText = `You are booking for: ${formatDate(queryParams.start_date, outputFormat)} to ${formatDate(queryParams.end_date, outputFormat)} [${days +1} day(s)] please use the arrows to navigate and select your space(s)`
+                startDate.innerText = `You are booking for: ${formatDate(queryParams.start_date, outputFormat)} to ${formatDate(queryParams.end_date, outputFormat)} please use the arrows to navigate and select your space(s)`
 
                 function areDatesEqual(date1, date2) {
                     date1 = new Date(date1);
