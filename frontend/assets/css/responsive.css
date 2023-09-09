@@ -301,7 +301,7 @@
 	width: 60%;
 }
 .booking-form .form-grp.date {
-	padding: 10px 30px;
+	padding: 5px !important;
 }
 .booking-form ul li:last-child {
 	width: 40%;
@@ -404,7 +404,7 @@
 /* Medium devices (tablets, 768px and up) */
 @media (max-width: 767.98px) {
 .menu-area {
-	top: 20px !important;
+	top: 0 !important;
 }
 .custom-container {
     max-width: 100%;
@@ -738,6 +738,9 @@
 }
 
 @media (max-width: 420px) {
+.customer-details-content img {
+	display: none;
+}
 .tab-content-wrap .content-bottom .promo-code {
 	margin-right: 20px;
 	margin-bottom: 0;

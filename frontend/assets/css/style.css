@@ -3807,6 +3807,7 @@ label {
 	display: grid;
 	grid-template-columns: 1fr 1fr ;
 	gap: 6px;
+	margin-top: 15px !important;
 }
 
 .selection-box {
@@ -3837,7 +3838,9 @@ label {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	border: 1px solid #010E37;
+	/* border: 1px solid #010E37; */
+	color: #FFF;
+	background: #55CA7C;
 	cursor: pointer;
 }
 
@@ -3883,17 +3886,42 @@ input[type="checkbox"]:checked + .checkbox-container {
 	margin-bottom: 20px;
 }
 
-.test-header {
-	display: flex;
-	align-items: center;
-	gap: 6px;
-	padding-inline: 10px;
-	color: white;
-	background: #57112F;
-	width: 100%;
-	font-size: 32px;
+.booking-color-codes {
+	height: 50px;
+	padding: 5px;
 }
 
-.test-header h2 {
-	color: white;
+.booking-color-codes li {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.booking-color-codes {
+	display: flex;
+	gap: 20px;
+	align-items: center;
+}
+
+.booking-color-codes .green-box {
+	height: 20px;
+	width: 20px;
+	background: #55CA7C;
+}
+
+.booking-color-codes .ash-box {
+	height: 20px;
+	width: 20px;
+	background: #333;
+}
+
+.booking-color-codes .red-box {
+	height: 20px;
+	width: 20px;
+	background: #FF3131;
+}
+
+.test-slick > div {
+	/* min-height: 300px; */
+	width: 100%;
 }

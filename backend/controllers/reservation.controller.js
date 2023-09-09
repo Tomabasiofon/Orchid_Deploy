@@ -1,89 +1,102 @@
 const Reservation = require('../models/reservation.model');
 const OfficeSpace = require('../models/officespace.model');
 const Payment = require('../models/payments.model');
+const People = require('../models/people.model');
 const mongoose = require('mongoose');
 const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
-const { calculateDays, createError } = require('../utils');
+const { calculateDays, createError, calculateDaysWithDatesArray } = require('../utils');
 
-// Controller function to check if a date range is available for a space
-const checkAvailability = async (req, res) => {
+
+const checkSpaceAvailability = async (req, res) => {
+    const { space_id, start_date, end_date } = req.body;
+    const dates = calculateDaysWithDatesArray(start_date, end_date);
 
     try {
-        const { space_id, start_date, end_date } = req.body;
+        const space = await OfficeSpace.findById(space_id);
+        if (!space) createError(404, 'Space not found');
 
-        // Query the database to find overlapping reservations for the same space
         const overlappingReservations = await Reservation.find({
             space_id: space_id,
-            $or: [
-                {
-                    // Case 1: Existing reservation starts during the new reservation
-                    start_date: { $gte: start_date, $lte: end_date },
-                },
-                {
-                    // Case 2: Existing reservation ends during the new reservation
-                    end_date: { $gte: start_date, $lte: end_date },
-                },
-                {
-                    // Case 3: Existing reservation completely covers the new reservation
-                    start_date: { $lte: start_date },
-                    end_date: { $gte: end_date },
-                },
-            ],
-        }) // Select only the required fields
+            dates: {
+                $elemMatch: { $in: dates }
+            },
+            status: 'pending',
+        });
 
-
-        // If there are overlapping reservations, the date range is not available
-        if (overlappingReservations.length > 0) {
-            return res.status(200).json({ available: false, overlappingReservations });
+        if (overlappingReservations.length === 0) {
+            // No overlapping reservations found for the space and date range
+            return res.json({ available: true, overlappingReservations: [] });
+        } else {
+            // Overlapping reservations found for the space and date range
+            return res.json({ available: false, overlappingReservations });
         }
-
-        // If there are no overlapping reservations, the date range is available
-        return res.status(200).json({ available: true });
-
     } catch (error) {
-        console.error('Error checking availability:', error);
-        return res.status(500).json({ error: 'Internal server error' });
+        next(error)
     }
 };
 
 const createReservation = async (req, res, next) => {
+    const session = await mongoose.startSession();
     try {
-        // Get the selected space IDs from the request
-        const { space_id, start_date, end_date } = req.body;
+        await session.startTransaction();
 
-        const existingReservation = await Reservation.findOne({
+        const { start_date, end_date } = req.body;
+        let { space_id } = req.body;
+        const dates = calculateDaysWithDatesArray(start_date, end_date);
+
+        if (!Array.isArray(space_id)) {
+            space_id = [space_id];
+        }
+
+        const existingReservations = await Reservation.find({
             space_id: { $in: space_id },
-            start_date,
-            end_date,
+            dates: { $in: dates },
+            status: 'pending'
         });
 
-        if (existingReservation) {
-            createError(400, 'Reservation already exists for selected space and dates')
+        if (existingReservations.length > 0) {
+            createError(400, 'Reservation already exists for selected space and dates');
         }
 
-        const days = calculateDays(start_date, end_date);
         const selectedSpaces = await OfficeSpace.find({ _id: { $in: space_id } });
 
-        let totalPrice = 0;
-        for (const space of selectedSpaces) {
-            totalPrice += space.price * days;
+        if (selectedSpaces.length !== space_id.length) {
+            createError(404, 'One or more spaces not found');
         }
 
-        const reservationData = {
-            space_id,
-            start_date,
-            end_date,
-            status: 'pending',
-            days,
-            price: totalPrice, // Set the total price
-        };
+        const days = dates.length;
+        const reservationsToCreate = [];
 
-        const reservation = await Reservation.create(reservationData);
+        for (const space of selectedSpaces) {
+            const totalPrice = space.price * days;
 
-        res.status(201).json(reservation);
+            const reservationData = {
+                space_id: space._id,
+                dates,
+                status: 'pending',
+                price: totalPrice,
+            };
+
+            reservationsToCreate.push(reservationData);
+        }
+
+        const createdReservations = await Reservation.create(reservationsToCreate);
+        const createdReservationsIds = createdReservations.map(item => item._id);
+
+        const createdPersons = await People.create({
+            ...req.body,
+            reservation_ids: createdReservationsIds
+        })
+
+        await session.commitTransaction();
+
+        res.status(201).json({ person: createdPersons , reservations: createdReservations});
     } catch (error) {
-        next(error);
+      await session.abortTransaction();
+      next(error);
+    } finally {
+      session.endSession();
     }
 };
 
@@ -96,21 +109,19 @@ const getReservation = async (req,res,next) => {
         } else {
             createError(404, "Record was not found!")
         }
-    } catch (err) {
-        next(err);
+    } catch (error) {
+        next(error);
     }
-
 }
 
 const getCompletedReservation = async (req,res,next) => {
     try {
-        const reservations = await Reservation.find({ status: 'completed' })
+        const reservations = await Reservation.find({status: 'completed'})
         res.status(200).json(reservations);
     } catch (error) {
         next(error)
     }
 }
-
 
 const startReservation = async (req, res, next) => {
     const session = await mongoose.startSession();
@@ -129,7 +140,7 @@ const startReservation = async (req, res, next) => {
             tx_ref: uid,
                 amount: reservation.price,
                 currency: "NGN",
-                redirect_url: "https://orchidspring2.onrender.com/api/reservation/complete",
+                redirect_url: "http://localhost:8080/api/reservation/complete",
                 // meta: {
                 //     consumer_id: 23,
                 //     consumer_mac: "92a3-912ba-1192a"
@@ -204,7 +215,7 @@ const completeReservation = async (req, res, next) => {
   
       // If everything is successful, commit the transaction
       await session.commitTransaction();
-      res.redirect(`https://orchidspring2.onrender.com/confirmation?id=${completedReservation._id}&success=${status}`)
+      res.redirect(`http://localhost:8080/confirmation?id=${completedReservation._id}&success=${status}`)
   
     } catch (error) {
       await session.abortTransaction();
@@ -217,4 +228,4 @@ const completeReservation = async (req, res, next) => {
 
 
 
-module.exports = { createReservation, startReservation, checkAvailability, getReservation, completeReservation, getCompletedReservation }
+module.exports = { createReservation, startReservation, checkSpaceAvailability, getReservation, completeReservation, getCompletedReservation }

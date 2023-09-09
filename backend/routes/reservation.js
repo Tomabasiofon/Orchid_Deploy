@@ -1,9 +1,9 @@
 const express = require('express');
-const { createReservation, checkAvailability, getReservation, startReservation, completeReservation, getCompletedReservation } = require('../controllers/reservation.controller');
+const { createReservation, checkSpaceAvailability, getReservation, startReservation, completeReservation, getCompletedReservation } = require('../controllers/reservation.controller');
 
 const router = express.Router();
 
-router.post('/check', checkAvailability);
+router.post('/check', checkSpaceAvailability);
 
 router.get('/complete', completeReservation)
 

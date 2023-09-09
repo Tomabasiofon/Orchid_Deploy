@@ -78,7 +78,7 @@
                                 <h2 class="title">Please fill in correctly</h2>
                             </div>
                             <div class="booking-details-wrap">
-                                <form id="person-details-form" action="/api/test">                                   
+                                <form id="person-details-form" action="/payment" method="post">                                   
                                     <ul>
                                         <li>
                                             <div class="form-grp">
@@ -176,9 +176,18 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>                                 
-                                
-                                   <input type="hidden" name="reservation_id" value="<%= reservation._id %>">
+                                    </div>  
+   
+                                    <% Object.entries(data).forEach(([key, value]) => { %>
+                                        <% if (key === 'space_id' && Array.isArray(value)) { %>
+                                            <% value.forEach((spaceId, index) => { %>
+                                            <input type="hidden" name="space_id[]" value="<%= spaceId %>">
+                                            <% }); %>
+                                        <% } else { %>
+                                            <input type="hidden" name="<%= key %>" value="<%= value %>">
+                                        <% } %>
+                                    <% }); %>
+                                                                     
 
                                     <button type="submit" class="btn mt-3">Proceed to payment</button>
                                 </form>
@@ -192,54 +201,7 @@
         </main>
         <!-- main-area-end -->
         <%- include('./partials/footer.ejs') %>
-
-        <script>
-            document.addEventListener("DOMContentLoaded", function(event){
-
-                document.getElementById("person-details-form").addEventListener("submit", function(event) {
-                 event.preventDefault();
-                 
-                const paymentContainer = document.querySelector('#payment-container');
-
-                    // Access form data
-                  const form = event.target;
-                  const formData = new FormData(form);
-                  const formDataObject = {};
-                
-                  formData.forEach(function(value, key) {
-                    formDataObject[key] = value;
-                  });
-                    
-
-                  console.log(formDataObject);
-                  const paymentEmail = document.getElementById('payment-email');
-                  const paymentName = document.getElementById('payment-name');
-                  const paymentAmount = document.getElementById('payment-amount');
-                  // axios POST request
-                      const options = {
-                          url: 'https://orchidspring2.onrender.com/api/people',
-                          method: 'POST',
-                          headers: {
-                          'Accept': 'application/json',
-                          'Content-Type': 'application/json;charset=UTF-8'
-                          },
-                          data: formDataObject
-                      };
-                      axios(options)
-                      .then(response => {
-                          if(response.data) {
-
-                            window.location.href = `/payment?id=${formDataObject.reservation_id}`;
-                            // paymentContainer.style.display = "block"
-                            // console.log(response.data);
-                            // paymentEmail.setAttribute('value', response.data.email)
-                            // paymentName.setAttribute('value', `${response.data.firstname} ${response.data.lastname}`)
-                          }
-                      });
-             });
-            })
-
-        </script>
+        
         
     </body>
 </html>

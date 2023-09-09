@@ -76,55 +76,102 @@
                     <div class="row justify-content-center">
                         <div class="col-73">
                             <form action="/booking-details" method="get" id="reservationForm">
+
                                 <div class="primary-contact">
                                     <i class="fa-regular fa-user"></i>
                                     <h2 class="title">Office desk selection</h2>
                                 </div>
+                                
                                 <div class="booking-details-wrap">
-                                        
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col-md-7">
-                                                    <div class="selection-container-4">
-                                                        <% if (deskspaces.length > 0) { %>
-                                                            <% deskspaces.forEach(function(space) { %>
-                                                                <label>
-                                                                    <input type="checkbox" class="hide-checkbox" data-space-price="<%= space.price %>" data-space-id="<%= space._id %>" name="space_id" value="<%= space._id %>">
-                                                                    <div class="checkbox-container" style="padding: 15px;" title="<%= space.name %>"><%= space.seat_number %></div>
-                                                                </label>
-                                                            <% }); %>
-                                                        <% } else { %>
-                                                            <p>No data available.</p>
-                                                        <% } %>
+                                    <div class="row">
+                                        <div class="col-8">
+                                           
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="service-nav" title="Use arrow to navigate between days"></div>
+                                        </div>
+                                    </div>
+                                    <% 
+                                        const outputFormat = 'yyyy-MM-dd';
+                                        function formatDate(inputDateString, outputFormat) {
+                                            const inputDate = new Date(inputDateString);
+                                            if (isNaN(inputDate)) return 'Invalid Date';
+                            
+                                            const dateValues = {
+                                                'yyyy': inputDate.getFullYear(),
+                                                'MM': String(inputDate.getMonth() + 1).padStart(2, '0'),
+                                                'dd': String(inputDate.getDate()).padStart(2, '0'),
+                                            };
+                            
+                                            const formattedDate = outputFormat.replace(/(yyyy|MM|dd)/g, (match) => dateValues[match] || match);
+                            
+                                            return formattedDate;
+                                        }
+                    
+                                    %>
+                                    <div class="test-slick">
+                                        <% if (dates.length > 0) { %>
+                                            <% dates.forEach(function(date, i) { %>
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-md-7">
+                                                            <h5>Day <%= i +1 %> , <%= date %> </h5>
+                                                            <ul class="booking-color-codes">
+                                                                <div class="d-flex align-items-center gap-2">
+                                                                    <label class="green-box"></label>Available
+                                                                </div>
+                                                                <div class="d-flex align-items-center gap-2">
+                                                                    <label class="ash-box"></label>Selected
+                                                                </div>
+                                                            </ul>
+                                                            <div class="selection-container-4">
+                                                                <% if (deskspaces.length > 0) { %>
+                                                                    <% deskspaces.forEach(function(space) { %>
+                                                                        <label>
+                                                                            <input type="checkbox" class="hide-checkbox" id="space_<%= space._id %>" data-space-price="<%= space.price %>" data-space-id="<%= space._id %>" name="space_id" value="<%= space._id %>" data-current-date="<%= formatDate(date, 'yyyy-MM-dd') %>">
+                                                                            <div class="checkbox-container" style="padding: 15px;" title="<%= space.name %>"><%= space.seat_number %></div>
+                                                                        </label>
+                                                                    <% }); %>
+                                                                <% } else { %>
+                                                                    <p>No data available.</p>
+                                                                <% } %>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div class="col-md-5">
+                                                            <ul class="booking-color-codes">
+                                                                <div class="d-flex align-items-center gap-2">
+                                                                    <label class="red-box"></label>Doors
+                                                                </div>
+                                                                <div class="d-flex align-items-center gap-2"2>
+                                                                    <label class="green-box"></label>Windows
+                                                                </div>
+                                                            </ul>
+                                                            <img src="assets/img/images/layout.png" alt="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="div">
+                                                        <div class="selection-container-2 mt-6">
+                                                            <% if (roomspaces.length > 0) { %>
+                                                                <% roomspaces.forEach(function(space) { %>
+                                                                    <label>
+                                                                        <input type="checkbox" class="hide-checkbox" data-space-price="<%= space.price %>" data-space-id="<%= space._id %>" id="space_<%= space._id %>" name="space_id" data-current-date="<%= formatDate(date, 'yyyy-MM-dd') %>" >
+                                                                        <div class="checkbox-container" style="padding: 15px;" title="<%= space.name %>"><%= space.name %></div>
+                                                                    </label>
+                                                                <% }); %>
+                                                            <% } else { %>
+                                                                <p>No data available.</p>
+                                                            <% } %>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-5">
-                                                    <label>Layout</label>
-                                                    <img src="assets/img/images/layout.png" alt="">
-                                                </div>
-                                            </div>
-                                        </div>
+                                            <% }); %>
+                                        <%} %>
+                                        
+                                        
+                                    </div>
                                 </div>
     
-                                <div class="primary-contact">
-                                    <!-- <i class="fa-regular fa-bookmark-o"></i> -->
-                                    <h2 class="title">Seminar room selection</h2>
-                                </div>
-                                <div class="booking-details-wrap">
-                                    <div class="selection-container-2">
-                                        <% if (roomspaces.length > 0) { %>
-                                            <% roomspaces.forEach(function(space) { %>
-                                                <label>
-                                                    <input type="checkbox" class="hide-checkbox" data-space-price="<%= space.price %>" data-space-id="<%= space._id %>" id="space_<%= space._id %>" name="space_id">
-                                                    <div class="checkbox-container" style="padding: 15px;" title="<%= space.name %>"><%= space.name %></div>
-                                                </label>
-                                            <% }); %>
-                                        <% } else { %>
-                                            <p>No data available.</p>
-                                        <% } %>
-                                    </div>
-                                    
-                                </div>
                                 <input type="hidden" name="start_date" id="s-date">
                                 <input type="hidden" name="end_date" id="e-date">
 
@@ -142,11 +189,8 @@
         <%- include('./partials/footer.ejs') %>
         <script>
             document.addEventListener("DOMContentLoaded", function(event){
-
-                // Get the full query string from the URL
                 const queryString = window.location.search;
     
-                // Use a function to parse the query string into an object
                 function parseQueryString(queryString) {
                     const params = new URLSearchParams(queryString);
                     const queryParameters = {};
@@ -155,22 +199,14 @@
                     }
                     return queryParameters;
                 }
-    
-                // Call the function to parse the query string
+
                 const queryParams = parseQueryString(queryString);
-    
-                const sDate = document.querySelector('#s-date');
-                sDate.value=queryParams.start_date
-                const eDate = document.querySelector('#e-date');
-                eDate.value=queryParams.end_date
+                const sDate = document.querySelector('#s-date').value = queryParams.start_date;
+                const eDate = document.querySelector('#e-date').value = queryParams.end_date;
     
                 function formatDate(inputDateString, outputFormat) {
                     const inputDate = new Date(inputDateString);
-    
-                    // Check if the inputDate is valid
-                    if (isNaN(inputDate)) {
-                        return 'Invalid Date';
-                    }
+                    if (isNaN(inputDate)) return 'Invalid Date';
     
                     const dateValues = {
                         'yyyy': inputDate.getFullYear(),
@@ -178,43 +214,73 @@
                         'dd': String(inputDate.getDate()).padStart(2, '0'),
                     };
     
-                    // Replace placeholders in the outputFormat with date values
                     const formattedDate = outputFormat.replace(/(yyyy|MM|dd)/g, (match) => dateValues[match] || match);
     
                     return formattedDate;
                 }
+
                 const outputFormat = 'yyyy-MM-dd';
-    
-    
+
+                const calculateDays = (start_date, end_date) => {
+                    if (!(start_date instanceof Date)) {
+                        start_date = new Date(start_date);
+                    }
+                    if (!(end_date instanceof Date)) {
+                        end_date = new Date(end_date);
+                    }
+
+                    const timeDiff = end_date - start_date;
+                    const days = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+                    if(days === 0){
+                        return 1
+                    } else {
+                        return days;
+                    }
+                };
+
+                const days = calculateDays(queryParams.start_date, queryParams.end_date)
+                
                 const startDate = document.querySelector('#alert_date')
-                startDate.innerText = `You are booking for: ${formatDate(queryParams.start_date, outputFormat)} to ${formatDate(queryParams.end_date, outputFormat)}`
-    
+                startDate.innerText = `You are booking for: ${formatDate(queryParams.start_date, outputFormat)} to ${formatDate(queryParams.end_date, outputFormat)} [${days +1} day(s)] please use the arrows to navigate and select your space(s)`
+
+                function areDatesEqual(date1, date2) {
+                    date1 = new Date(date1);
+                    date2 = new Date(date2)
+                    return date1.toISOString().slice(0, 10) === date2.toISOString().slice(0, 10);
+                }
+
                 const checkboxes = document.querySelectorAll('.hide-checkbox');
-    
                 checkboxes.forEach(async (checkbox) => {
                     const spaceId = checkbox.getAttribute('data-space-id');
-                    
-                    // Make an Axios request to check availability for the current space
                     try {
                         const response = await axios.post('/api/reservation/check', {
                             space_id: spaceId,
-                            start_date: queryParams.start_date, 
+                            start_date: queryParams.start_date,
                             end_date: queryParams.end_date,
                         });
-    
+
                         if (response.data.available) {
-                            checkbox.checked = false; // Space is available
-                        } else if (response.data.available == false && response.data.overlappingReservations.status === 'completed'){
-                            checkbox.checked = true; // Space is not available
-                            checkbox.disabled = true
+                            checkbox.checked = false
+                        } else if (response.data.overlappingReservations.length > 0) {
+                            let currentDate = checkbox.getAttribute('data-current-date');
+                            response.data.overlappingReservations.forEach((element,i) => {
+                                element.dates.forEach(el => {
+                                    if(areDatesEqual(currentDate, el)) {
+                                        checkbox.checked = true;
+                                        checkbox.disabled = true;
+                                    }
+                                })
+                            });
                         } else {
-                            checkbox.checked = true; // Space is not available
-                            checkbox.disabled = true
+                            checkbox.checked = true;
+                            checkbox.disabled = true;
                         }
                     } catch (error) {
                         console.error('Error checking availability:', error);
                     }
                 });
+
     
 
             });

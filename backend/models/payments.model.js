@@ -1,12 +1,16 @@
 const mongoose = require('mongoose');
 const Reservation = require('./reservation.model');
+const People = require('./people.model');
 
 const paymentSchema = new mongoose.Schema({
-    reservation_id: {
+    reservation_ids: [{
         type: mongoose.Schema.ObjectId,
-        ref: Reservation,
-        required: true
-    }, 
+        ref: Reservation
+    }],
+    person_id: {
+        type: mongoose.Schema.ObjectId,
+        ref: People
+    },
     tx_ref: {
         type: String,
         required: true

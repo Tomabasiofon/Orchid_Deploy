@@ -1,3 +1,43 @@
+// const mongoose = require('mongoose');
+// const OfficeSpace = require('../models/officespace.model');
+
+// const reservationSchema = new mongoose.Schema({
+//     space_id: {
+//         type: mongoose.Schema.ObjectId,
+//         ref: OfficeSpace,
+//         required: true
+//     }, 
+//     days: {
+//         type: Number,
+//         required: true
+//     },
+//     start_date: {
+//         type: Date,
+//         required: true,
+//     },
+//     end_date: {
+//         type: Date,
+//         required: true
+//     },
+//     status: {
+//         type: String,
+//         enum: ['pending', 'completed', 'cancelled'],
+//         default: 'pending'
+//     },
+//     price: {
+//         type: Number,
+//         required: true
+//     }
+// },
+// {
+//     timestamps: true
+// })
+
+// // reservationSchema.index({ space_id: 1, start_date: 1, end_date: 1 }, { unique: true });
+// const Reservation = mongoose.model('Reservation', reservationSchema);
+
+// module.exports = Reservation;
+
 const mongoose = require('mongoose');
 const OfficeSpace = require('../models/officespace.model');
 
@@ -6,17 +46,9 @@ const reservationSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: OfficeSpace,
         required: true
-    }, 
-    days: {
-        type: Number,
-        required: true
     },
-    start_date: {
-        type: Date,
-        required: true,
-    },
-    end_date: {
-        type: Date,
+    dates: {
+        type: [Date], // Use an array to store a list of dates
         required: true
     },
     status: {
@@ -31,11 +63,11 @@ const reservationSchema = new mongoose.Schema({
 },
 {
     timestamps: true
-})
+});
 
-// reservationSchema.index({ space_id: 1, start_date: 1, end_date: 1 }, { unique: true });
 const Reservation = mongoose.model('Reservation', reservationSchema);
 
 module.exports = Reservation;
+
 
 
