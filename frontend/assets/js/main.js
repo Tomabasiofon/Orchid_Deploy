@@ -250,6 +250,68 @@ $(function () {
 	}).datepicker('update', new Date());
 });
 
+$(document).ready(function () {
+    $('#start_date').datepicker({
+        format: 'mm/dd/yyyy', // Set your desired date format
+        autoclose: true,
+        todayHighlight: true,
+    });
+
+    $('#end_date').datepicker({
+        format: 'mm/dd/yyyy', // Set your desired date format
+        autoclose: true,
+        todayHighlight: true,
+        startDate: new Date() // Set the initial date as the minimum selectable date
+    });
+
+    // Add an event listener to the start date input to update the endDate picker's startDate
+    $('#start_date').on('changeDate', function (selected) {
+        const startDate = new Date(selected.date);
+        startDate.setDate(startDate.getDate()); // Increment by 1 day to prevent selecting the same day
+        $('#end_date').datepicker('setStartDate', startDate);
+    });
+});
+
+$(document).ready(function(){
+	$('.test-slick').slick({
+		prevArrow: '<span class="slick-prev"><i class="fa-solid fa-arrow-left"></i></span>',
+		nextArrow: '<span class="slick-next"><i class="fa-solid fa-arrow-right"></i></span>',
+		appendArrows: ".service-nav",
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1,
+					infinite: true,
+				}
+			},
+			{
+				breakpoint: 992,
+				settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				}
+			},
+			{
+				breakpoint: 767,
+				settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1,
+				}
+			},
+			{
+				breakpoint: 575,
+				settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1,
+				}
+			},
+		]
+	});
+  });
+
+
 
 
 /*=============================================

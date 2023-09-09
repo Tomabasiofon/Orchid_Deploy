@@ -283,5 +283,66 @@ function makePayment() {
         <h1>Success</h1> 
         <p>We received your purchase request;<br/> we'll be in touch shortly!</p>
       </div>
+
+      <div class="checkbox-container" style="padding: 15px;" title="Single Spot">1</div>
     </body>
+
+
+    <% if (deskspaces.length > 0) { %>
+      <% deskspaces.forEach(function(space) { %>
+          <label>
+              <input type="checkbox" class="hide-checkbox" id="space_<%= space._id %>" data-space-price="<%= space.price %>" data-space-id="<%= space._id %>" name="space_id" value="<%= space._id %>" <%= isDayAvailable(space) ? '' : 'disabled' %>>
+              <div class="checkbox-container" style="padding: 15px;" title="<%= space.name %>"><%= space.seat_number %></div>
+          </label>
+      <% }); %>
+  <% } else { %>
+      <p>No data available.</p>
+  <% } %>
+  
+  <script>
+  function isDayAvailable(space) {
+      // Extract the overlapping reservation dates
+      const overlappingDates = space.overlappingReservations.map(reservation => reservation.dates);
+  
+      // Get the current date in ISO format (e.g., "2023-09-08T23:00:00.000Z")
+      const currentDate = new Date().toISOString().split('T')[0];
+  
+      // Check if the current date is in the overlapping reservation dates
+      return !overlappingDates.some(dates => dates.includes(currentDate));
+  }
+  </script>
+  
+    <script>
+
+
+const checkboxes = document.querySelectorAll('.hide-checkbox');
+                checkboxes.forEach(async (checkbox) => {
+                    const spaceId = checkbox.getAttribute('data-space-id');
+                    
+                    try {
+                        const response = await axios.post('/api/reservation/check', {
+                            space_id: spaceId,
+                            start_date: queryParams.start_date, 
+                            end_date: queryParams.end_date,
+                        });
+    
+                        if (response.data.available) {
+                            checkbox.checked = false; // Space is available
+                        } else if (response.data.available == false && response.data.overlappingReservations.status === 'pending'){
+                            checkbox.checked = true; // Space is not available
+                            checkbox.disabled = true
+                        } else {
+                            checkbox.checked = true; // Space is not available
+                            checkbox.disabled = true
+                        }
+                    } catch (error) {
+                        console.error('Error checking availability:', error);
+                    }
+                });
+
+
+
+
+
+    </script>
 </html>

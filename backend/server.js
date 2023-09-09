@@ -12,6 +12,7 @@ const reservationRoutes = require('./routes/reservation');
 const peopleRoutes = require('./routes/people');
 const paymentRoutes = require('./routes/payment');
 const axios = require('axios');
+const { calculateDaysWithDatesArray, calculateTotalReservationAmount, generateDatesArray, spacesToReserve } = require('./utils');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -48,48 +49,76 @@ app.get('/', (req,res) => {
     const title = "Home"
     res.render('index',{ title });
 })
-app.get('/booking', async (req,res) => {
-    const title = "Booking"
-    const deskspaces = await axios.get('https://orchidspring2.onrender.com/api/space?type=space');
-    const roomspaces = await axios.get('https://orchidspring2.onrender.com/api/space?type=room');
-    if(deskspaces){
-        res.render('booking',{ title, deskspaces: deskspaces.data, roomspaces: roomspaces.data })
-    } else {
-        res.render('error',{ title: 'Bad request'})
-    }
-})
-app.get('/booking-details', async(req,res) => {
 
-    const reservation = await axios.post('https://orchidspring2.onrender.com/api/reservation', req.query)
-    if(reservation) {
-        const title = "Booking Details"
-        res.render('booking-details',{ title, reservation: reservation.data })
-    } else {
-        res.render('error',{ title: 'Bad request'})
-    }
-})
-app.get('/payment', async(req,res) => {
-    const id = req.query.id;
+app.get('/booking', async (req,res) => {
     try {
-        if (id) {
-            const reservation = await axios.get(`https://orchidspring2.onrender.com/api/reservation/${id}`)
-            const person = await axios.get(`https://orchidspring2.onrender.com/api/people/reservation/${id}`)
-            const title = "Payment"
-            res.render('pay', { title, reservation: reservation.data, person: person.data });
-        }
-    } catch (error) {   
+        const title = "Booking"
+        const deskspaces = await axios.get('http://localhost:8080/api/space?type=space');
+        const roomspaces = await axios.get('http://localhost:8080/api/space?type=room');
+        const { start_date, end_date } = req.query;
+        if(!start_date || !end_date) res.redirect('/');
+    
+        const dates = calculateDaysWithDatesArray(start_date, end_date);
+
+        res.render('booking',{ title, deskspaces: deskspaces.data, roomspaces: roomspaces.data, dates })
+
+    } catch (error) {
         res.render('error',{ title: 'Bad request'})
     }
 })
+
+app.get('/booking-details', async(req,res) => {
+    const data = req.query
+    try {
+        const title = "Booking Details"
+        res.render('booking-details',{ title, data })
+    } catch (error) {
+        res.render('error',{ title: 'Bad request'})
+    }
+})
+
+app.post('/payment', async(req,res) => {
+    try {
+        const response = await axios.post('http://localhost:8080/api/reservation', req.body);
+        if(response) {
+            const { reservations, person } = response.data
+
+            const totalPrice = calculateTotalReservationAmount(reservations);
+            const dates = generateDatesArray(reservations);
+            const spaces = spacesToReserve(reservations)
+
+            const title = "Payment"
+            res.render('pay', { title, reservations , person, totalPrice, dates, spaces });
+        }
+    } catch (error) {
+        res.render('error',{ title: 'Bad request'})
+    }
+    
+    // try {
+    //     const response = await axios.post('http://localhost:8080/api/reservation', req.query);
+
+    //     if(response) {
+    //         const { reservations, person } = response.data
+
+    //         const title = "Payment"
+    //         res.render('pay', { title, reservation: reservations, person });
+    //     } else {
+    //         res.render('error',{ title: 'Bad request'})
+    //     }
+    // } catch (error) {   
+    //     res.render('error',{ title: 'Bad request'})
+    // }
+})
+
 app.get('/confirmation', async (req,res) => {
     const { id, success } = req.query;
     try {
         if(id && success) {
-            const reservation = await axios.get(`https://orchidspring2.onrender.com/api/reservation/${id}`)
+            const reservation = await axios.get(`http://localhost:8080/api/reservation/${id}`)
             const title = "Confirmation"
             res.render('confirmation',{ title, reservation: reservation.data, success })
         }else if(id) {
-            const reservation = await axios.get(`https://orchidspring2.onrender.com/api/reservation/${id}`)
+            const reservation = await axios.get(`http://localhost:8080/api/reservation/${id}`)
             const title = "Confirmation"
             res.render('confirmation',{ title, reservation: reservation.data, success: null })
         }

@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Reservation = require('./reservation.model');
-const validator = require('validator');
 
 const peopleSchema = new mongoose.Schema({
     title: {
@@ -22,11 +21,6 @@ const peopleSchema = new mongoose.Schema({
         type: String,
         required: true,
         lowercase: true,
-        validate(value){
-            if(!validator.isEmail(value)){
-                throw new Error("Email is not valid");
-            }
-        }
     },
     country: {
         type: String,
@@ -41,10 +35,10 @@ const peopleSchema = new mongoose.Schema({
         trim: true,
         required: true,
     },
-    reservation_id: {
+    reservation_ids: [{
         type: mongoose.Schema.ObjectId,
         ref: Reservation
-    }
+    }]
 }, {
     timestamps: true
 })

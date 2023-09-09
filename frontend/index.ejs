@@ -103,7 +103,7 @@
                                                                     </div>
                                                                 </li>
                                                                 <li>
-                                                                    <div class="form-grp date">
+                                                                    <!-- <div class="form-grp date">
                                                                         <ul>
                                                                             <li>
                                                                                 <label for="shortBy" >Start Date</label>
@@ -115,7 +115,20 @@
                                                                                 <input type="text" class="date" name="end_date" placeholder="Select Date" required>
                                                                             </li>
                                                                         </ul>
+                                                                    </div> -->
+                                                                    <div class="form-grp date">
+                                                                        <ul>
+                                                                            <li>
+                                                                                <label for="start_date">Start Date</label>
+                                                                                <input type="text" class="date" name="start_date" id="start_date" placeholder="Select Date" required>
+                                                                            </li>
+                                                                            <li>
+                                                                                <label for="end_date">End Date</label>
+                                                                                <input type="text" class="date" name="end_date" id="end_date" placeholder="Select Date" required>
+                                                                            </li>
+                                                                        </ul>
                                                                     </div>
+                                                                    
                                                                 </li>
                                                                 <li>
                                                                     <div class="form-grp economy">
@@ -140,12 +153,15 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="tab-content-wrap">
+                                                    <div class="content-top">
+                                                        <label for="" class="form-label">Enter ticket id</label>
+                                                    </div>
                                                    
                                                     <form action="/confirmation" method="get">
                                                         <div class="booking-form">
 
                                                             <div class="mb-3">
-                                                                <label for="" class="form-label">Enter ticket id</label>
+                                                                
                                                                 <input type="text" class="form-control form-control-lg" id="" name="id" placeholder="" style="border: 0.7px solid #15417F; width: 100%;">
                                                             </div>
                                                         </div>
