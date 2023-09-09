@@ -53,8 +53,8 @@ app.get('/', (req,res) => {
 app.get('/booking', async (req,res) => {
     try {
         const title = "Booking"
-        const deskspaces = await axios.get('http://localhost:8080/api/space?type=space');
-        const roomspaces = await axios.get('http://localhost:8080/api/space?type=room');
+        const deskspaces = await axios.get('https://orchidspring2.onrender.com//api/space?type=space');
+        const roomspaces = await axios.get('https://orchidspring2.onrender.com//api/space?type=room');
         const { start_date, end_date } = req.query;
         if(!start_date || !end_date) res.redirect('/');
     
@@ -79,7 +79,7 @@ app.get('/booking-details', async(req,res) => {
 
 app.post('/payment', async(req,res) => {
     try {
-        const response = await axios.post('http://localhost:8080/api/reservation', req.body);
+        const response = await axios.post('https://orchidspring2.onrender.com//api/reservation', req.body);
         if(response) {
             const { reservations, person } = response.data
 
@@ -95,7 +95,7 @@ app.post('/payment', async(req,res) => {
     }
     
     // try {
-    //     const response = await axios.post('http://localhost:8080/api/reservation', req.query);
+    //     const response = await axios.post('https://orchidspring2.onrender.com//api/reservation', req.query);
 
     //     if(response) {
     //         const { reservations, person } = response.data
@@ -114,11 +114,11 @@ app.get('/confirmation', async (req,res) => {
     const { id, success } = req.query;
     try {
         if(id && success) {
-            const reservation = await axios.get(`http://localhost:8080/api/reservation/${id}`)
+            const reservation = await axios.get(`https://orchidspring2.onrender.com//api/reservation/${id}`)
             const title = "Confirmation"
             res.render('confirmation',{ title, reservation: reservation.data, success })
         }else if(id) {
-            const reservation = await axios.get(`http://localhost:8080/api/reservation/${id}`)
+            const reservation = await axios.get(`https://orchidspring2.onrender.com//api/reservation/${id}`)
             const title = "Confirmation"
             res.render('confirmation',{ title, reservation: reservation.data, success: null })
         }

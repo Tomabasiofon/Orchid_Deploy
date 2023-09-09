@@ -19,7 +19,7 @@ const startPayment = async (req, res, next) => {
                 tx_ref: uid,
                 amount,
                 currency: "NGN",
-                redirect_url: "http://localhost:8080/",
+                redirect_url: "https://orchidspring2.onrender.com//",
                 meta: {
                     reservation_ids,
                 },
