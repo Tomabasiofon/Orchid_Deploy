@@ -140,7 +140,7 @@ const startReservation = async (req, res, next) => {
             tx_ref: uid,
                 amount: reservation.price,
                 currency: "NGN",
-                redirect_url: "https://orchidspring2.onrender.com//api/reservation/complete",
+                redirect_url: "https://orchidspring2.onrender.com/api/reservation/complete",
                 // meta: {
                 //     consumer_id: 23,
                 //     consumer_mac: "92a3-912ba-1192a"
@@ -215,7 +215,7 @@ const completeReservation = async (req, res, next) => {
   
       // If everything is successful, commit the transaction
       await session.commitTransaction();
-      res.redirect(`https://orchidspring2.onrender.com//confirmation?id=${completedReservation._id}&success=${status}`)
+      res.redirect(`https://orchidspring2.onrender.com/confirmation?id=${completedReservation._id}&success=${status}`)
   
     } catch (error) {
       await session.abortTransaction();

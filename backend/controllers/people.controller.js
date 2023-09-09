@@ -59,7 +59,7 @@ const getPeople = async (req, res, next) => {
 
 const createPerson = async (req,res,next)=>{
   try {
-    const reservations = await axios.post('https://orchidspring2.onrender.com//api/reservation', req.body);
+    const reservations = await axios.post('https://orchidspring2.onrender.com/api/reservation', req.body);
     // const reservationIds = reservations.map(item => {
     //   return item._id
     // })
