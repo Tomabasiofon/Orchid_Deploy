@@ -1,12 +1,7 @@
 const mongoose = require('mongoose');
 
 const contactSchema = mongoose.Schema({
-    firstName: {
-        type: String,
-        required: true,
-        lowercase: true
-    },
-    lastName: {
+    fullname: {
         type: String,
         required: true,
         lowercase: true
@@ -15,10 +10,15 @@ const contactSchema = mongoose.Schema({
         type: String,
         trim: true,
         required: true,
+        uniquie: true,
     },
-    phoneNumber: {
+    phonenumber: {
         type: String,
         required: true,
+    },
+    subject: {
+        type: String,
+        required: true
     },
     message: [{
         type: String,

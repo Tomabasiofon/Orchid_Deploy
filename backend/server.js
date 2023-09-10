@@ -11,6 +11,7 @@ const officeSpaceRoutes = require('./routes/officespace');
 const reservationRoutes = require('./routes/reservation');
 const peopleRoutes = require('./routes/people');
 const paymentRoutes = require('./routes/payment');
+const contactRoutes = require('./routes/contact');
 const axios = require('axios');
 const { calculateDaysWithDatesArray, calculateTotalReservationAmount, generateDatesArray, spacesToReserve } = require('./utils');
 
@@ -30,6 +31,8 @@ app.use('/api/space', officeSpaceRoutes);
 app.use('/api/reservation', reservationRoutes);
 app.use('/api/people', peopleRoutes);
 app.use('/api/payment', paymentRoutes);
+app.use('/api/contact', contactRoutes);
+
 app.post('/api/test', (req,res) => {
     // res.status(200).json(req.body)
     console.log(req.body)

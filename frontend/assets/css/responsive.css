@@ -262,6 +262,7 @@
 }
 .form-grp.date ul {
 	flex-wrap: unset;
+	padding-left: 10px;
 }
 .booking-form ul li:nth-child(3) {
 	width: 33.33%;
@@ -467,6 +468,10 @@
 .booking-form .form-grp.date {
 	padding: 10px 20px;
 }
+.booking-form > ul {
+	height: 230px !important;
+	padding: 10px;
+}
 .tab-content-wrap .content-bottom {
 	justify-content: center;
 }
@@ -660,7 +665,7 @@
 	margin-bottom: 15px;
 }
 .booking-list-item .booking-list-bottom ul {
-	flex-wrap: wrap;
+	flex-wrap: unset;
 	justify-content: center;
 	flex-direction: column-reverse;
 }
@@ -759,6 +764,11 @@
 	width: 270px;
 	height: 298px;
 }
+.form-grp.date ul {
+	flex-wrap: wrap;
+	padding-left: 10px;
+}
+
 
 
 }
