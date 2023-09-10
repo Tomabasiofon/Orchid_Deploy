@@ -87,7 +87,7 @@
                                                 <li>Email<span><%= person.email %></span></li>
                                                 <li>Spaces to reserve<span><%= spaces %></span></li>
                                                 <li>Number of days<span><%= dates.length %></span></li>
-                                                <% function formatDate(dateString) {
+                                                <!-- <% function formatDate(dateString) {
                                                     const date = new Date(dateString);
                                                     const year = date.getFullYear();
                                                     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
@@ -96,7 +96,7 @@
                                                 } %>
                                                 <% dates.forEach(day => {%>
                                                     <li><span><%= day %></span></li>
-                                                <%}) %>                                            
+                                                <%}) %>                                             -->
                                                 <li>Price<span>₦ <%= totalPrice %></span></li>
                                             </ul>
                                             <!-- <a class="btn" onclick="makePayment()">Pay Now</a> -->

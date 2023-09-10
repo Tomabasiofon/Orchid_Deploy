@@ -12,6 +12,7 @@ const reservationRoutes = require('./routes/reservation');
 const peopleRoutes = require('./routes/people');
 const paymentRoutes = require('./routes/payment');
 const contactRoutes = require('./routes/contact');
+const promoRoutes = require('./routes/promo');
 const axios = require('axios');
 const { calculateDaysWithDatesArray, calculateTotalReservationAmount, generateDatesArray, spacesToReserve } = require('./utils');
 
@@ -32,6 +33,7 @@ app.use('/api/reservation', reservationRoutes);
 app.use('/api/people', peopleRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/promo', promoRoutes);
 
 app.post('/api/test', (req,res) => {
     // res.status(200).json(req.body)
@@ -96,21 +98,6 @@ app.post('/payment', async(req,res) => {
     } catch (error) {
         res.render('error',{ title: 'Bad request'})
     }
-    
-    // try {
-    //     const response = await axios.post('https://orchidspring2.onrender.com/api/reservation', req.query);
-
-    //     if(response) {
-    //         const { reservations, person } = response.data
-
-    //         const title = "Payment"
-    //         res.render('pay', { title, reservation: reservations, person });
-    //     } else {
-    //         res.render('error',{ title: 'Bad request'})
-    //     }
-    // } catch (error) {   
-    //     res.render('error',{ title: 'Bad request'})
-    // }
 })
 
 app.get('/confirmation', async (req,res) => {

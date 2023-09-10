@@ -3,9 +3,11 @@ const OfficeSpace = require('../models/officespace.model');
 const Payment = require('../models/payments.model');
 const People = require('../models/people.model');
 const mongoose = require('mongoose');
+const Promos = require('../models/promo.model');
 const axios = require('axios');
+// const nanoid = require('nanoid');
 const { v4: uuidv4 } = require('uuid');
-const { calculateDays, createError, calculateDaysWithDatesArray } = require('../utils');
+const { calculateDays, createError, calculateDaysWithDatesArray, myNanoid } = require('../utils');
 
 
 const checkSpaceAvailability = async (req, res) => {
@@ -41,7 +43,7 @@ const createReservation = async (req, res, next) => {
     try {
         await session.startTransaction();
 
-        const { start_date, end_date } = req.body;
+        const { start_date, end_date, promoCode } = req.body; // Include promoCode in the request body
         let { space_id } = req.body;
         const dates = calculateDaysWithDatesArray(start_date, end_date);
 
@@ -69,13 +71,23 @@ const createReservation = async (req, res, next) => {
         const reservationsToCreate = [];
 
         for (const space of selectedSpaces) {
-            const totalPrice = space.price * days;
+            // Calculate the base price
+            const basePrice = space.price * days;
+
+            // Find the promo code associated with this reservation
+            const promo = await Promos.findOne({ code: promoCode });
+
+            // Calculate the new price with the promo discount
+            const discount = promo ? promo.discountPercentage : 0;
+            const totalPrice = basePrice * (1 - discount / 100);
 
             const reservationData = {
                 space_id: space._id,
                 dates,
                 status: 'pending',
                 price: totalPrice,
+                promoCode: promoCode, // Include the promo code in the reservation data
+                discountPercentage: discount, // Include discount percentage in the reservation data
             };
 
             reservationsToCreate.push(reservationData);
@@ -87,18 +99,20 @@ const createReservation = async (req, res, next) => {
         const createdPersons = await People.create({
             ...req.body,
             reservation_ids: createdReservationsIds
-        })
+        });
 
         await session.commitTransaction();
 
-        res.status(201).json({ person: createdPersons , reservations: createdReservations});
+        res.status(201).json({ person: createdPersons, reservations: createdReservations });
     } catch (error) {
-      await session.abortTransaction();
-      next(error);
+        await session.abortTransaction();
+        next(error);
     } finally {
-      session.endSession();
+        session.endSession();
     }
 };
+
+
 
 const getReservation = async (req,res,next) => {
     const { id } = req.params
@@ -134,10 +148,12 @@ const startReservation = async (req, res, next) => {
       const reservation = await Reservation.findById(reservation_id);
 
       if(!reservation) createError(404, 'No reservations found');
-      const uid = uuidv4()
+
+      const nanoid = await myNanoid();
+      const uid = nanoid.nanoid(7);
 
         const { data } = await axios.post('https://api.flutterwave.com/v3/payments', {
-            tx_ref: uid,
+                tx_ref: uid,
                 amount: reservation.price,
                 currency: "NGN",
                 redirect_url: "https://orchidspring2.onrender.com/api/reservation/complete",

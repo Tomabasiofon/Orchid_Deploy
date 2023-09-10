@@ -1,9 +1,7 @@
 const express = require('express');
-const { getPeople, createPerson, getPersonByReservationId } = require('../controllers/people.controller');
+const { getPeople, getPersonByReservationId } = require('../controllers/people.controller');
 
 const router = express.Router();
-
-router.post('/', createPerson);
 
 router.get('/', getPeople);
 

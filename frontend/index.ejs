@@ -19,7 +19,7 @@
             <!-- slider-area -->
             <section class="slider-area">
                 <div class="slider-active">
-                    <div class="single-slider slider-bg" data-background="assets/img/images/img7.jpg">
+                    <div class="single-slider slider-bg" data-background="assets/img/images/offer_img01.jpg">
                         <div class="container">
                             <div class="row">
                                 <div class="col-xl-8 col-lg-10">
@@ -120,7 +120,7 @@
                                                             </ul>
                                                         </div>
                                                         <div class="content-bottom">
-                                                            <button class="btn">Select Spots <i class="flaticon-calendar-1"></i></button>
+                                                            <button class="btn">Select Spots</button>
                                                         </div>
                                                     </form>
 
@@ -225,7 +225,7 @@
                         <div class="col-lg-6 col-md-10">
                             <div class="flight-offer-item">
                                 <div class="flight-offer-thumb">
-                                    <img src="assets/img/images/img7.jpg" alt="">
+                                    <img src="assets/img/images/offer_img01.jpg" alt="">
                                 </div>
                                 <div class="flight-offer-content">
                                     <h2 class="title">Conference Room</h2>
@@ -253,7 +253,7 @@
                                 <div class="col-sm-6">
                                     <div class="flight-offer-item offer-item-two">
                                         <div class="flight-offer-thumb">
-                                            <img src="assets/img/images/img1.JPG" alt="">
+                                            <img src="assets/img/images/offer_img02.jpg" alt="">
                                         </div>
                                         <div class="flight-offer-content">
                                             <h2 class="title">Team Space for 4</h2>
@@ -278,7 +278,7 @@
                                 <div class="col-sm-6">
                                     <div class="flight-offer-item offer-item-two">
                                         <div class="flight-offer-thumb">
-                                            <img src="assets/img/images/img1.jpg" alt="">
+                                            <img src="assets/img/images/offer_img02.jpg" alt="">
                                         </div>
                                         <div class="flight-offer-content">
                                             <h2 class="title">Team Space for 4</h2>
@@ -303,7 +303,7 @@
                                 <div class="col-sm-6">
                                     <div class="flight-offer-item offer-item-two">
                                         <div class="flight-offer-thumb">
-                                            <img src="assets/img/images/img2.jpg" alt="">
+                                            <img src="assets/img/images/offer_img03.jpg" alt="">
                                         </div>
                                         <div class="flight-offer-content">
                                             <h2 class="title">Single Spot</h2>
@@ -328,7 +328,7 @@
                                 <div class="col-sm-6">
                                     <div class="flight-offer-item offer-item-two">
                                         <div class="flight-offer-thumb">
-                                            <img src="assets/img/images/img2.jpg" alt="">
+                                            <img src="assets/img/images/offer_img03.jpg" alt="">
                                         </div>
                                         <div class="flight-offer-content">
                                             <h2 class="title">Single Spot</h2>
@@ -373,7 +373,7 @@
                                     <li>
                                         <div class="counter-item">
                                             <div class="counter-content">
-                                                <h2 class="count"><span class="odometer" data-count="10"></span>+</h2>
+                                                <h2 class="count"><span class="odometer" data-count="10" id="happy-client"></span>+</h2>
                                                 <p>Happy Customers</p>
                                             </div>
                                             <div class="counter-icon">
@@ -446,7 +446,7 @@
                         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 grid-item grid-sizer cat-one cat-two">
                             <div class="fly-next-item">
                                 <div class="fly-next-thumb">
-                                    <a href="booking-details.html"><img src="assets/img/images/fly_img02.jpg" alt=""></a>
+                                    <a href=""><img src="assets/img/images/fly_img02.jpg" alt=""></a>
                                 </div>
                                 <div class="fly-next-content">
                                     <span>09 Jun 2022 - 16 Jun 2022</span>
@@ -791,5 +791,26 @@
         <!-- main-area-end -->
 
         <%- include('./partials/footer.ejs') %>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function(event){
+                const clients = document.getElementById('happy-client')
+                const options = {
+                    url: 'https://orchidspring2.onrender.com/api/people',
+                    method: 'GET',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json;charset=UTF-8'
+                    },
+                };
+                axios(options)
+                    .then(response => {
+                        clients.setAttribute('data-count', response.data.length)
+                    });
+
+            });
+
+
+        </script>
     </body>
 </html>
