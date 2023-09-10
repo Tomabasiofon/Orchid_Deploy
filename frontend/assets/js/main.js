@@ -271,6 +271,62 @@ $(document).ready(function () {
         $('#end_date').datepicker('setStartDate', startDate);
     });
 });
+$(document).ready(function () {
+    $('#promo-start-date').datepicker({
+        format: 'mm/dd/yyyy', // Set your desired date format
+        autoclose: true,
+        todayHighlight: true,
+    });
+
+    $('#promo-end-date').datepicker({
+        format: 'mm/dd/yyyy', // Set your desired date format
+        autoclose: true,
+        todayHighlight: true,
+        startDate: new Date() // Set the initial date as the minimum selectable date
+    });
+
+    // Add an event listener to the start date input to update the end date
+    $('#promo-start-date').on('changeDate', function (selected) {
+        const startDate = new Date(selected.date);
+        const endDate = new Date(startDate);
+        endDate.setDate(startDate.getDate() + 6); // Set the end date 7 days from the start date
+        
+        // Format the end date as 'mm/dd/yyyy'
+        const formattedEndDate = (endDate.getMonth() + 1) + '/' + endDate.getDate() + '/' + endDate.getFullYear();
+        
+        // Set the end date input value to the calculated end date
+        $('#promo-end-date').val(formattedEndDate);
+    });
+});
+
+// $(document).ready(function () {
+//     $('#start_date').datepicker({
+//         format: 'mm/dd/yyyy', // Set your desired date format
+//         autoclose: true,
+//         todayHighlight: true,
+//     });
+
+//     $('#end_date').datepicker({
+//         format: 'mm/dd/yyyy', // Set your desired date format
+//         autoclose: true,
+//         todayHighlight: true,
+//         startDate: new Date() // Set the initial date as the minimum selectable date
+//     });
+
+//     // Add an event listener to the start date input to update the endDate picker's startDate
+//     $('#start_date').on('changeDate', function (selected) {
+//         const startDate = new Date(selected.date);
+//         startDate.setDate(startDate.getDate() + 1); // Increment by 1 day to prevent selecting the same day
+//         $('#end_date').datepicker('setStartDate', startDate);
+        
+//         // Check if the end date is currently set to a date before the new start date
+//         const endDate = $('#end_date').datepicker('getDate');
+//         if (endDate !== null && endDate < startDate) {
+//             $('#end_date').datepicker('setDate', startDate);
+//         }
+//     });
+// });
+
 
 $(document).ready(function(){
 	$('.test-slick').slick({

@@ -75,6 +75,9 @@
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-73">
+                            <div class="alert alert-warning text-center" id="loading-alert" style="display: none;">
+                                <h4>Please wait while spaces are loading...</h4>
+                            </div>
                             <form action="/booking-details" method="get" id="reservationForm">
 
                                 <div class="primary-contact">
@@ -155,7 +158,7 @@
                                                             <% if (roomspaces.length > 0) { %>
                                                                 <% roomspaces.forEach(function(space) { %>
                                                                     <label>
-                                                                        <input type="checkbox" class="hide-checkbox" data-space-price="<%= space.price %>" data-space-id="<%= space._id %>" id="space_<%= space._id %>" name="space_id" data-current-date="<%= formatDate(date, 'yyyy-MM-dd') %>" >
+                                                                        <input type="checkbox" class="hide-checkbox" data-space-price="<%= space.price %>" data-space-id="<%= space._id %>" id="space_<%= space._id %>" name="space_id" data-current-date="<%= formatDate(date, 'yyyy-MM-dd') %>" value="<%= space._id %>" >
                                                                         <div class="checkbox-container" style="padding: 15px;" title="<%= space.name %>"><%= space.name %></div>
                                                                     </label>
                                                                 <% }); %>
@@ -250,9 +253,14 @@
                     return date1.toISOString().slice(0, 10) === date2.toISOString().slice(0, 10);
                 }
 
+                const loadingAlert = document.querySelector('#loading-alert');
+                const reservationForm = document.querySelector('#reservationForm');
+
                 const checkboxes = document.querySelectorAll('.hide-checkbox');
                 checkboxes.forEach(async (checkbox) => {
                     const spaceId = checkbox.getAttribute('data-space-id');
+                    loadingAlert.style.display = 'block'
+                    // reservationForm.style.display = 'none'
                     try {
                         const response = await axios.post('/api/reservation/check', {
                             space_id: spaceId,
@@ -266,7 +274,7 @@
                             let currentDate = checkbox.getAttribute('data-current-date');
                             response.data.overlappingReservations.forEach((element,i) => {
                                 element.dates.forEach(el => {
-                                    if(areDatesEqual(currentDate, el)) {
+                                    if(areDatesEqual(currentDate, el) && element.status === 'completed') {
                                         checkbox.checked = true;
                                         checkbox.disabled = true;
                                     }
@@ -276,9 +284,12 @@
                             checkbox.checked = true;
                             checkbox.disabled = true;
                         }
+
                     } catch (error) {
                         console.error('Error checking availability:', error);
                     }
+                    loadingAlert.style.display = 'none'
+                    // reservationForm.style.display = 'block'
                 });
 
     

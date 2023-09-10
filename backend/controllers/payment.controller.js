@@ -20,9 +20,9 @@ const startPayment = async (req, res, next) => {
                 amount,
                 currency: "NGN",
                 redirect_url: "https://orchidspring2.onrender.com/",
-                meta: {
-                    reservation_ids,
-                },
+                // meta: {
+                //     reservation_ids,
+                // },
                 customer: {
                     email,
                     phonenumber,

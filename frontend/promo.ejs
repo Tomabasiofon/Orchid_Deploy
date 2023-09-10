@@ -49,10 +49,14 @@
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link active" id="bOOKing-tab" data-bs-toggle="tab"
                                             data-bs-target="#bOOKing-tab-pane" type="button" role="tab"
-                                            aria-controls="bOOKing-tab-pane" aria-selected="true"><i class="flaticon-calendar-1"></i>Our Weekly Promo</button>
+                                            aria-controls="bOOKing-tab-pane" aria-selected="true">Weekly Promo</button>
                                     </li>
-                                   
-                                
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="trips-tab" data-bs-toggle="tab"
+                                            data-bs-target="#trips-tab-pane" type="button" role="tab" aria-controls="trips-tab-pane"
+                                            aria-selected="false">Daily Promo</button>
+                                    </li>
+                            
                                 </ul>
                                 <div class="tab-content" id="myTabContent">
                                     <div class="tab-pane fade show active" id="bOOKing-tab-pane" role="tabpanel"
@@ -61,45 +65,76 @@
                                             <div class="col-lg-12">
                                                 <div class="tab-content-wrap">
                                                     <div class="content-top">
-                                                        <!-- <ul>
-                                                            <li class="active"><a href="#">Roundtrip</a></li>
-                                                            <li><a href="#">One-way</a></li>
-                                                            <li><a href="#">Multi-city jgfyugu</a></li>
-                                                        </ul> -->
-                                                            <label class="my-6 alert alert-primary">Please note you can only select a start date as the promo is valid for a 7 day selection only!</label>
+                                                        <p class="alert alert-primary"> Please select a start date as this promo is only valid for a 7 day selections</p>
                                                     </div>
-                                                    <form action="#" class="booking-form">
+                                                    <form action="/booking" id="weekly-promo-form" method="get">
+                                                        <div class="booking-form">
+
+                                                            <ul>
+                                                                <li>
+                                                                    <div class="form-grp date">
+                                                                        <ul>
+                                                                            <li>
+                                                                                <label for="shortBy">Start Date</label>
+                                                                                <input type="text" class="date"
+                                                                                    placeholder="Select Date" name="start_date" id="promo-start-date" required>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </li>
+                                                                <li>
+                                                                    <div class="form-grp date">
+                                                                        <button class="exchange-icon"><i
+                                                                            class="flaticon-exchange-1"></i></button>
+                                                                        <ul>
+                                                                            <li>
+                                                                                <label for="shortBy">End Date</label>
+                                                                                <input type="text" class="date"
+                                                                                    placeholder="Select Date" name="end_date" required id="promo-end-date">
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="content-bottom">
+                                                            <button type="submit" class="btn">Select Spots </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="trips-tab-pane" role="tabpanel" aria-labelledby="trips-tab"
+                                        tabindex="0">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="tab-content-wrap">
+                                                    <!-- <div class="content-top">
+                                                       
+                                                    </div> -->
+                                                    <form action="" class="booking-form">
                                                         <ul>
                                                             <li>
-                                                                <div class="form-grp">
-                                                                    <label for="">Starting date</label>
-                                                                    <input type="text" class="date"
-                                                                        placeholder="Select Date">
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="form-grp">
-                                                                    <button class="exchange-icon" disabled><i
-                                                                            class="flaticon-arrow-right">&#8594;</i></button>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="form-grp">
-                                                                    <label for="shortBy">Ends</label>
-                                                                    <input type="text" class="date"
-                                                                        placeholder="Select Date" disabled>
+                                                                <div class="form-grp date">
+                                                                    <ul>
+                                                                        <li>
+                                                                            <label for="shortBy">Select date</label>
+                                                                            <input type="text" class="date" placeholder="Select Date">
+                                                                        </li>
+                                                                    </ul>
                                                                 </div>
                                                             </li>
                                                         </ul>
                                                     </form>
                                                     <div class="content-bottom">
-                                                        <a class="btn">Proceed</a>
+                                                        <button class="btn">Select Spots</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                 
+                                    
                                 </div>
                             </div>
                         </div>
@@ -114,6 +149,47 @@
 
         <!-- footer-area -->
         <%- include('./partials/footer.ejs') %>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // document.getElementById('promo-start-date').value = new Date()
+                const wPromoForm = document.getElementById('weekly-promo-form');
+
+                const calculateDays = (start_date, end_date) => {
+                    if (!(start_date instanceof Date)) {
+                        start_date = new Date(start_date);
+                    }
+                    if (!(end_date instanceof Date)) {
+                        end_date = new Date(end_date);
+                    }
+
+                    const timeDiff = end_date - start_date;
+                    const days = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+                    if(days === 0){
+                        return 1
+                    } else {
+                        return days;
+                    }
+                };
+
+                wPromoForm.addEventListener('submit', (e) => {
+                    // Assuming you've obtained start_date and end_date values from your date input fields
+                    const start_date = document.getElementById('promo-start-date').value;
+                    const end_date = document.getElementById('promo-end-date').value;
+
+                    // Calculate the number of days between start_date and end_date using your calculateDays function
+                    const daysDifference = calculateDays(start_date, end_date);
+
+                    // Prevent form submission if the date range is less than 7 days
+                    if (daysDifference < 6) {
+                        e.preventDefault();
+                        alert("Date range must be at least 7 days. Select a start date to begin!");
+                    }
+                });
+
+            })
+        </script>
 
     </body>
 </html>

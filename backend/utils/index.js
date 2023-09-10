@@ -156,9 +156,13 @@ const sendEmail = async (fullname, email, phonenumber, message) => {
   }
 };
 
+const myNanoid = async () => {
+  const nanoidModule = await import('nanoid');
+  return nanoidModule;
+};
   
 
 
 
 
-module.exports = { createError, calculateDays, calculateDaysWithDatesArray, calculateTotalReservationAmount, generateDatesArray, spacesToReserve, sendEmail }
+module.exports = { createError, calculateDays, calculateDaysWithDatesArray, calculateTotalReservationAmount, generateDatesArray, spacesToReserve, sendEmail, myNanoid }
