@@ -97,10 +97,12 @@ app.post('/payment', async(req,res) => {
 app.get('/confirmation', async (req,res) => {
     const { status, tx_ref } = req.query;
     try {
+        console.log({tx_ref})
        
-        const { data } = await axios.get(`https://orchidspring2.onrender.com/${tx_ref}`)
+        const { data } = await axios.get(`https://orchidspring2.onrender.com/api/payment/${tx_ref}`);
+        console.log({ status, data })
         const title = "Confirmation"
-        res.render('confirmation',{ title, status })
+        res.render('confirmation',{ title, status, data })
 
     } catch (error) {
         res.render('error',{ title: 'Bad request'})

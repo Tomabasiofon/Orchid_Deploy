@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post('/', startPayment)
 
-router.get('/', completePayment)
+router.get('/pay', completePayment)
 
 router.get('/:ref', getPayment)
 
