@@ -4,6 +4,7 @@ const Payment = require('../models/payments.model');
 const People = require('../models/people.model');
 const mongoose = require('mongoose');
 const axios = require('axios');
+const dayjs = require('dayjs');
 const { v4: uuidv4 } = require('uuid');
 const { myNanoid, calculateTotalReservationAmount, sendEmailWithPDF, createError } = require('../utils');
 
@@ -18,7 +19,7 @@ const startPayment = async (req, res, next) => {
                 tx_ref,
                 amount,
                 currency: "NGN",
-                redirect_url: "https://orchidspring2.onrender.com/api/payment",
+                redirect_url: "https://orchidspring2.onrender.com/api/payment/pay",
                 // meta: {
                 //     reservation_ids,
                 // },
@@ -53,11 +54,10 @@ const startPayment = async (req, res, next) => {
 const completePayment = async (req,res,next) => {
   const session = await mongoose.startSession();
   const { tx_ref, status, transaction_id } = req.query
-
   try {
     await session.startTransaction();
 
-    if(status === "success") {
+    if(status === "successful") {
       const person = await People.findOne({ tx_ref }).populate('reservation_ids').exec();
   
       const reservations = person.reservation_ids.map(item => item);
@@ -73,29 +73,23 @@ const completePayment = async (req,res,next) => {
   
           const amount = calculateTotalReservationAmount(reservations);
           const reservation_ids = reservations.map(item => item._id);
-  
-          if(transaction_id) {
 
+        
+  
             const newPayment = await Payment.create({
               reservation_ids,
               person_id: person._id,
               tx_ref,
               status: 'completed',
               amount,
-              transaction_id
+              transaction_id: transaction_id || null
             })
-            } else {
-              const newPayment = await Payment.create({
-                reservation_ids,
-                person_id: person._id,
-                tx_ref,
-                status: 'completed',
-                amount,
-              })
-            }
+
+            console.log({ newPayment })
           
         await sendEmailWithPDF((person.firstname + ' ' + person.lastname), person.email, amount, tx_ref )
 
+        if(!newPayment) createError(500, 'Error creating payment')
         res.redirect(`https://orchidspring2.onrender.com/confirmation?status=${status}&tx_ref=${tx_ref}`)
     } else {
       res.redirect(`https://orchidspring2.onrender.com/confirmation?status=${status}&tx_ref=${tx_ref}`)
@@ -115,7 +109,38 @@ const getPayment = async(req, res, next) => {
   const tx_ref = req.params.ref
   try {
     const payment = await Payment.findOne({ tx_ref }).populate('person_id').exec()
-    res.status(200).json(payment)
+
+    if(payment) {
+      let reservation_ids = payment.reservation_ids;
+  
+      if (reservation_ids !== undefined && !Array.isArray(reservation_ids)) {
+        reservation_ids = [reservation_ids];
+      }
+  
+  
+      let reservations
+      if (reservation_ids && reservation_ids.length > 0) {
+        reservations = await Promise.all(
+          reservation_ids.map(async (id) => {
+            const reservation = await Reservation.findById(id).populate('space_id').exec();
+            return reservation;
+          })
+        );
+      }
+
+      const structuredResponse = {
+        name: payment.person_id.firstname + ' ' + payment.person_id.lastname,
+        email: payment.person_id.email,
+        tx_ref,
+        reservations,
+        amount: payment.amount,
+        paymentDate: dayjs(payment.createdAt).format('YYYY-MM-DD')
+      }
+      res.status(200).json(structuredResponse)
+    } else {
+
+      res.status(200).json(payment)
+    }
   } catch (error) {
     next(error)
   }
