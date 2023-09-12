@@ -78,7 +78,7 @@
                             <div class="alert alert-warning text-center" id="loading-alert" style="display: none;">
                                 <h4>Please wait while spaces are loading...</h4>
                             </div>
-                            <form action="/booking-details" method="get" id="reservationForm">
+                            <form id="reservationForm">
 
                                 <div class="primary-contact">
                                     <i class="fa-regular fa-user"></i>
@@ -112,6 +112,7 @@
                                         }
                     
                                     %>
+                                    
                                     <div class="test-slick">
                                         <% if (dates.length > 0) { %>
                                             <% dates.forEach(function(date, i) { %>
@@ -127,17 +128,47 @@
                                                                     <label class="ash-box"></label>Selected
                                                                 </div>
                                                             </ul>
+
                                                             <div class="selection-container-4">
                                                                 <% if (deskspaces.length > 0) { %>
                                                                     <% deskspaces.forEach(function(space) { %>
                                                                         <label>
-                                                                            <input type="checkbox" class="hide-checkbox" id="space_<%= space._id %>" data-space-price="<%= space.price %>" data-space-id="<%= space._id %>" name="space_id" value="<%= space._id %>" data-current-date="<%= formatDate(date, 'yyyy-MM-dd') %>">
+                                                                            <input type="checkbox" class="hide-checkbox"
+                                                                                id="space_<%= space._id %>"
+                                                                                data-space-price="<%= space.price %>"
+                                                                                data-space-id="<%= space._id %>"
+                                                                                name="space_id"
+                                                                                value="<%= space._id %>"
+                                                                                data-current-date="<%= formatDate(date, 'yyyy-MM-dd') %>"
+                                                                                onchange="handleCheckboxChange(this)"
+                                                                            >
                                                                             <div class="checkbox-container" style="padding: 15px;" title="<%= space.name %>"><%= space.seat_number %></div>
                                                                         </label>
                                                                     <% }); %>
                                                                 <% } else { %>
                                                                     <p>No data available.</p>
                                                                 <% } %>
+                                                            </div>
+
+                                                            <div class="div">
+                                                                <div class="selection-container-2 mt-6">
+                                                                    <% if (roomspaces.length > 0) { %>
+                                                                        <% roomspaces.forEach(function(space) { %>
+                                                                            <label>
+                                                                                <input type="checkbox" class="hide-checkbox"            data-space-price="<%= space.price %>" 
+                                                                                data-space-id="<%= space._id %>" 
+                                                                                id="space_<%= space._id %>" 
+                                                                                name="space_id" 
+                                                                                data-current-date="<%= formatDate(date, 'yyyy-MM-dd') %>" value="<%= space._id %>"
+                                                                                onchange="handleCheckboxChange(this)"
+                                                                                >
+                                                                                <div class="checkbox-container" style="padding: 15px;" title="<%= space.name %>"><%= space.name %></div>
+                                                                            </label>
+                                                                        <% }); %>
+                                                                    <% } else { %>
+                                                                        <p>No data available.</p>
+                                                                    <% } %>
+                                                                </div>
                                                             </div>
                                                             
                                                         </div>
@@ -153,32 +184,14 @@
                                                             <img src="assets/img/images/layout.png" alt="">
                                                         </div>
                                                     </div>
-                                                    <div class="div">
-                                                        <div class="selection-container-2 mt-6">
-                                                            <% if (roomspaces.length > 0) { %>
-                                                                <% roomspaces.forEach(function(space) { %>
-                                                                    <label>
-                                                                        <input type="checkbox" class="hide-checkbox" data-space-price="<%= space.price %>" data-space-id="<%= space._id %>" id="space_<%= space._id %>" name="space_id" data-current-date="<%= formatDate(date, 'yyyy-MM-dd') %>" value="<%= space._id %>" >
-                                                                        <div class="checkbox-container" style="padding: 15px;" title="<%= space.name %>"><%= space.name %></div>
-                                                                    </label>
-                                                                <% }); %>
-                                                            <% } else { %>
-                                                                <p>No data available.</p>
-                                                            <% } %>
-                                                        </div>
-                                                    </div>
+                                                  
                                                 </div>
                                             <% }); %>
                                         <%} %>
-                                        
-                                        
                                     </div>
                                 </div>
-    
-                                <input type="hidden" name="start_date" id="s-date">
-                                <input type="hidden" name="end_date" id="e-date">
 
-                                <button type="submit" class="btn pt-3 d-block" style="width: 100%;">Proceed</a>
+                                <button type="submit" id="booking-submit-btn" class="btn pt-3 d-block" style="width: 100%;" onclick="sendSelectedData()">Proceed</button>
                             </form>
                         </div>
                     </div>
@@ -190,7 +203,63 @@
         </main>
         <!-- main-area-end -->
         <%- include('./partials/footer.ejs') %>
+
         <script>
+            const submitBtn = document.getElementById('booking-submit-btn');
+            const selectedData = [];
+            function handleCheckboxChange(checkbox) {
+                const currentDate = checkbox.getAttribute('data-current-date');
+                const spaceId = checkbox.getAttribute('data-space-id');
+                const isChecked = checkbox.checked;
+                if (isChecked) {
+                    selectedData.push({ space_id: spaceId, current_date: currentDate });
+                } else {
+                    const indexToRemove = selectedData.findIndex(data => data.space_id === spaceId && data.current_date === currentDate);
+                    if (indexToRemove !== -1) {
+                        selectedData.splice(indexToRemove, 1);
+                    }
+                }
+            }
+
+            
+            const reservationForm = document.querySelector('#reservationForm');
+            reservationForm.addEventListener('submit', async (e) => {
+                e.preventDefault()
+            })
+        
+            const sendSelectedData = async ()=> {
+                submitBtn.innerHTML = "Loading please wait...";
+                const options = {
+                    url: 'https://orchidspring2.onrender.com/api/reservation',
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json;charset=UTF-8'
+                    },
+                    data: {
+                        formData: selectedData
+                    }
+                };
+
+                axios(options)
+                    .then(response => {
+                        console.log({res: response.data, data: selectedData })
+
+                        const reservation = response.data;
+                        const reservationIds =  []
+                        reservation.forEach(item => {
+                            reservationIds.push(item._id)
+                        })
+
+                        window.location.href = `/booking-details?id=${JSON.stringify(reservationIds)}`;
+
+                        submitBtn.innerText = "Proceed";
+                    }).catch(err => {
+                        submitBtn.innerText = "Proceed";
+                        alert('Please endeavour to pick a space before proceeding')
+                    });
+            }
+
             document.addEventListener("DOMContentLoaded", function(event){
                 const queryString = window.location.search;
     
@@ -202,101 +271,49 @@
                     }
                     return queryParameters;
                 }
-
                 const queryParams = parseQueryString(queryString);
-                const sDate = document.querySelector('#s-date').value = queryParams.start_date;
-                const eDate = document.querySelector('#e-date').value = queryParams.end_date;
-    
-                function formatDate(inputDateString, outputFormat) {
-                    const inputDate = new Date(inputDateString);
-                    if (isNaN(inputDate)) return 'Invalid Date';
-    
-                    const dateValues = {
-                        'yyyy': inputDate.getFullYear(),
-                        'MM': String(inputDate.getMonth() + 1).padStart(2, '0'),
-                        'dd': String(inputDate.getDate()).padStart(2, '0'),
-                    };
-    
-                    const formattedDate = outputFormat.replace(/(yyyy|MM|dd)/g, (match) => dateValues[match] || match);
-    
-                    return formattedDate;
-                }
 
-                const outputFormat = 'yyyy-MM-dd';
-
-                const calculateDays = (start_date, end_date) => {
-                    if (!(start_date instanceof Date)) {
-                        start_date = new Date(start_date);
-                    }
-                    if (!(end_date instanceof Date)) {
-                        end_date = new Date(end_date);
-                    }
-
-                    const timeDiff = end_date - start_date;
-                    const days = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
-                    if(days === 0){
-                        return 1
-                    } else {
-                        return days;
-                    }
-                };
-
-                const days = calculateDays(queryParams.start_date, queryParams.end_date)
-                
                 const startDate = document.querySelector('#alert_date')
-                startDate.innerText = `You are booking for: ${formatDate(queryParams.start_date, outputFormat)} to ${formatDate(queryParams.end_date, outputFormat)} please use the arrows to navigate and select your space(s)`
-
-                function areDatesEqual(date1, date2) {
-                    date1 = new Date(date1);
-                    date2 = new Date(date2)
-                    return date1.toISOString().slice(0, 10) === date2.toISOString().slice(0, 10);
-                }
+                startDate.innerText = `You are booking for: ${new Date(queryParams.start_date)} to ${queryParams.end_date} please use the arrows to navigate and select your space(s)`
 
                 const loadingAlert = document.querySelector('#loading-alert');
-                const reservationForm = document.querySelector('#reservationForm');
-
                 const checkboxes = document.querySelectorAll('.hide-checkbox');
-                checkboxes.forEach(async (checkbox) => {
-                    const spaceId = checkbox.getAttribute('data-space-id');
-                    loadingAlert.style.display = 'block'
-                    // reservationForm.style.display = 'none'
-                    try {
-                        const response = await axios.post('/api/reservation/check', {
-                            space_id: spaceId,
-                            start_date: queryParams.start_date,
-                            end_date: queryParams.end_date,
-                        });
+                const requests = [];
 
-                        if (response.data.available) {
-                            checkbox.checked = false
-                        } else if (response.data.overlappingReservations.length > 0) {
-                            let currentDate = checkbox.getAttribute('data-current-date');
-                            response.data.overlappingReservations.forEach((element,i) => {
-                                element.dates.forEach(el => {
-                                    if(areDatesEqual(currentDate, el) && element.status === 'completed') {
-                                        checkbox.checked = true;
-                                        checkbox.disabled = true;
-                                    }
-                                })
-                            });
-                        } else {
-                            checkbox.checked = true;
-                            checkbox.disabled = true;
-                        }
+                loadingAlert.style.display = 'block';
 
-                    } catch (error) {
-                        console.error('Error checking availability:', error);
+                checkboxes.forEach((checkbox) => {
+                const spaceId = checkbox.getAttribute('data-space-id');
+                const currentDate = checkbox.getAttribute('data-current-date');
+                const requestPromise = axios
+                    .post('/api/reservation/check', {
+                    space_id: spaceId,
+                    current_date: currentDate,
+                    })
+                    .then((response) => {
+                    if (response.data.available) {
+                        checkbox.checked = false;
+                    } else {
+                        checkbox.checked = true;
+                        checkbox.disabled = true;
                     }
-                    loadingAlert.style.display = 'none'
-                    // reservationForm.style.display = 'block'
+                    })
+                    .catch((error) => {
+                    console.error('Error checking availability:', error);
+                    });
+
+                requests.push(requestPromise);
                 });
 
-    
+                Promise.all(requests)
+                .then(() => {
+                    loadingAlert.style.display = 'none';
+                })
+                .catch((error) => {
+                    console.error('Error in one or more requests:', error);
+                });
 
             });
-
-
         </script>
     </body>
 </html>

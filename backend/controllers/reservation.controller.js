@@ -5,105 +5,102 @@ const People = require('../models/people.model');
 const mongoose = require('mongoose');
 const Promos = require('../models/promo.model');
 const axios = require('axios');
-// const nanoid = require('nanoid');
 const { v4: uuidv4 } = require('uuid');
-const { calculateDays, createError, calculateDaysWithDatesArray, myNanoid } = require('../utils');
+const { calculateDays, createError, calculateDaysWithDatesArray, myNanoid, groupBySpaceId, calculateTotalReservationAmount } = require('../utils');
 
+const checkReservationAvailability = async (req, res, next) => {
+  try {
+    const { space_id, current_date } = req.body; 
 
-const checkSpaceAvailability = async (req, res) => {
-    const { space_id, start_date, end_date } = req.body;
-    const dates = calculateDaysWithDatesArray(start_date, end_date);
+    const conflictingReservation = await Reservation.findOne({
+      $and: [
+        { space_id },
+        {
+          dates: {
+            $in: [new Date(current_date)], 
+          },
+        },
+        { status: 'completed' },
+      ],
+    });
 
-    try {
-        const space = await OfficeSpace.findById(space_id);
-        if (!space) createError(404, 'Space not found');
-
-        const overlappingReservations = await Reservation.find({
-            space_id: space_id,
-            dates: {
-                $elemMatch: { $in: dates }
-            },
-            status: 'pending',
-        });
-
-        if (overlappingReservations.length === 0) {
-            // No overlapping reservations found for the space and date range
-            return res.json({ available: true, overlappingReservations: [] });
-        } else {
-            // Overlapping reservations found for the space and date range
-            return res.json({ available: false, overlappingReservations });
-        }
-    } catch (error) {
-        next(error)
+    if (!conflictingReservation) {
+      res.status(200).json({ available: true });
+    } else {
+      res.status(200).json({ available: false });
     }
+  } catch (error) {
+    next(error)
+  }
 };
 
 const createReservation = async (req, res, next) => {
     const session = await mongoose.startSession();
+    const { formData, promoCode } = req.body
     try {
         await session.startTransaction();
 
-        const { start_date, end_date, promoCode } = req.body; // Include promoCode in the request body
-        let { space_id } = req.body;
-        const dates = calculateDaysWithDatesArray(start_date, end_date);
+        if(!formData) res.status(200).json({});
 
-        if (!Array.isArray(space_id)) {
-            space_id = [space_id];
-        }
+        
+        const spaces = groupBySpaceId(formData)
 
         const existingReservations = await Reservation.find({
-            space_id: { $in: space_id },
-            dates: { $in: dates },
-            status: 'pending'
-        });
+            $or: spaces.map(({space_id, dates}) => ({
+              space_id,
+              dates: {
+                $elemMatch: { $in: dates },
+              },
+              status: 'completed',
+            })),
+          });
 
         if (existingReservations.length > 0) {
             createError(400, 'Reservation already exists for selected space and dates');
         }
 
-        const selectedSpaces = await OfficeSpace.find({ _id: { $in: space_id } });
+        const spaceIds = spaces.map((item) => item.space_id); 
+        const selectedSpaces = await OfficeSpace.find({ _id: { $in: spaceIds } });
 
-        if (selectedSpaces.length !== space_id.length) {
-            createError(404, 'One or more spaces not found');
+        // console.log({spaceIds, selectedSpaces})
+
+        if (selectedSpaces.length !== spaceIds.length) createError(404, 'One or more spaces not found');
+
+        let discountPercentage = 0; 
+        if (promoCode) {
+          const promo = await Promos.findOne({ code: promoCode });
+          if (promo) {
+            discountPercentage = promo.discountPercentage;
+          } else {
+            createError(400, 'Invalid promo code');
+          }
         }
 
-        const days = dates.length;
         const reservationsToCreate = [];
 
-        for (const space of selectedSpaces) {
-            // Calculate the base price
-            const basePrice = space.price * days;
+        spaces.forEach((space) => {
+            const matchingSpace = selectedSpaces.find((selectedSpace) => {
+                return space.space_id.toString() === selectedSpace._id.toString();
+            });
 
-            // Find the promo code associated with this reservation
-            const promo = await Promos.findOne({ code: promoCode });
-
-            // Calculate the new price with the promo discount
-            const discount = promo ? promo.discountPercentage : 0;
-            const totalPrice = basePrice * (1 - discount / 100);
-
-            const reservationData = {
-                space_id: space._id,
-                dates,
-                status: 'pending',
-                price: totalPrice,
-                promoCode: promoCode, // Include the promo code in the reservation data
-                discountPercentage: discount, // Include discount percentage in the reservation data
-            };
-
-            reservationsToCreate.push(reservationData);
-        }
-
-        const createdReservations = await Reservation.create(reservationsToCreate);
-        const createdReservationsIds = createdReservations.map(item => item._id);
-
-        const createdPersons = await People.create({
-            ...req.body,
-            reservation_ids: createdReservationsIds
+            if (matchingSpace) {
+                const data = {
+                    space_id: space.space_id,
+                    dates: space.dates,
+                    status: 'pending',
+                    price: space.dates.length * matchingSpace.price * ((100 - discountPercentage) / 100 || 1),
+                    discountPercentage,
+                    promoCode: promoCode || null
+                };
+                reservationsToCreate.push(data);
+            }
         });
 
-        await session.commitTransaction();
+        const createdReservations = await Reservation.create(reservationsToCreate);
 
-        res.status(201).json({ person: createdPersons, reservations: createdReservations });
+        res.status(200).json(createdReservations);
+
+        await session.commitTransaction();
     } catch (error) {
         await session.abortTransaction();
         next(error);
@@ -111,8 +108,6 @@ const createReservation = async (req, res, next) => {
         session.endSession();
     }
 };
-
-
 
 const getReservation = async (req,res,next) => {
     const { id } = req.params
@@ -130,12 +125,182 @@ const getReservation = async (req,res,next) => {
 
 const getCompletedReservation = async (req,res,next) => {
     try {
-        const reservations = await Reservation.find({status: 'completed'})
+        const reservations = await Reservation.find({status: 'completed'}).populate('space_id').exec()
         res.status(200).json(reservations);
     } catch (error) {
         next(error)
     }
 }
+
+const costReservation = async (req, res, next) => {
+  let { reservation_id } = req.body;
+  const reservation_ids = reservation_id
+  
+  try {
+    const nanoid = await myNanoid();
+    const uid = nanoid.nanoid(7);
+    const newPerson = await People.create({
+      ...req.body,
+      tx_ref: uid,
+      reservation_ids
+    });
+
+    // Check if reservation_id is defined and not an array, then convert it
+    if (reservation_id !== undefined && !Array.isArray(reservation_id)) {
+      reservation_id = [reservation_id];
+    }
+
+    if (reservation_id && reservation_id.length > 0) {
+      const reservations = await Promise.all(
+        reservation_id.map(async (id) => {
+          const reservation = await Reservation.findById(id).populate('space_id').exec();
+          return reservation;
+        })
+      );
+
+      const total = calculateTotalReservationAmount(reservations);
+
+      const details = reservations.map((reservation) => {
+        return {
+          seatNumber: reservation.space_id.seat_number,
+          seatType: reservation.space_id.type,
+          dates: reservation.dates,
+          status: reservation.status
+        };
+      });
+
+      const structuredResponse = {
+        name: newPerson.firstname + ' ' + newPerson.lastname,
+        email: newPerson.email,
+        phonenumber: newPerson.phoneNumber,
+        tx_ref: newPerson.tx_ref,
+        details,
+        total
+      };
+
+      res.status(200).json(structuredResponse);
+    } else {
+      createError(404, "No IDs provided for reservation lookup!");
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+// const costReservation = async(req,res,next) => {
+//   let { reservation_id } = req.body;
+//   try {
+//     const nanoid = await myNanoid();
+//     const uid = nanoid.nanoid(7);
+//     const newPerson = await People.create({
+//       ...req.body,
+//       tx_ref: uid
+//     });
+
+//     // Convert to an array if not an array
+//     if(!Array.isArray(reservation_id)) {
+//       reservation_id = Array.from(reservation_id)
+//     }
+
+
+//     if (reservation_id) {
+//       const reservations = await Promise.all(
+//         reservation_id.map(async (id) => {
+//           const reservation = await Reservation.findById(id).populate('space_id').exec();
+//           return reservation;
+//         })
+//       );
+
+//     const total = calculateTotalReservationAmount(reservations);
+
+//     const details = reservations.map(reservation => {
+//       return {
+//         seatNumber: reservation.space_id.seat_number,
+//         seatType: reservation.space_id.type,
+//         dates: reservation.dates,
+//         status: reservation.status
+//       }
+//     })
+
+//     const structuredResponse = {
+//       name: newPerson.firstname + ' ' + newPerson.lastname,
+//       email: newPerson.email,
+//       phonenumber: newPerson.phoneNumber,
+//       tx_ref: newPerson.tx_ref,
+//       details,
+//       total
+//     }
+      
+//       res.status(200).json(structuredResponse);
+//     } else {
+//       createError(404, "No IDs provided for reservation lookup!");
+//     }
+//   } catch (error) {
+//     next(error)
+//   }
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const getArrReservations = async (req, res, next) => {
+  const { ids } = req.params;
+
+  try {
+    if (ids) {
+      // Split the comma-separated IDs into an array
+      const idArray = ids.split(',');
+
+      // Find reservations for each ID and store them in an array
+      const reservations = await Promise.all(
+        idArray.map(async (id) => {
+          const reservation = await Reservation.findById(id);
+          return reservation;
+        })
+      );
+
+      res.status(200).json(reservations);
+    } else {
+      createError(404, "No IDs provided for reservation lookup!");
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 
 const startReservation = async (req, res, next) => {
     const session = await mongoose.startSession();
@@ -244,4 +409,4 @@ const completeReservation = async (req, res, next) => {
 
 
 
-module.exports = { createReservation, startReservation, checkSpaceAvailability, getReservation, completeReservation, getCompletedReservation }
+module.exports = { createReservation, startReservation, getReservation, completeReservation, getCompletedReservation, checkReservationAvailability, costReservation }

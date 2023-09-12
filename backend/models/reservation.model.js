@@ -9,7 +9,7 @@ const reservationSchema = new mongoose.Schema({
         required: true
     },
     dates: {
-        type: [Date], // Use an array to store a list of dates
+        type: [Date],
         required: true
     },
     status: {
@@ -22,8 +22,7 @@ const reservationSchema = new mongoose.Schema({
         required: true
     },
     promoCode: {
-        type: mongoose.Schema.ObjectId,
-        ref: Promos, 
+        type: String, 
     },
     discountPercentage: {
         type: Number,

@@ -83,31 +83,34 @@
                                     </div>
                                         <div class="price-summary-detail">
                                             <ul>
-                                                <li>Name<span><%= person.firstname + ' ' + person.lastname %></span></li>
-                                                <li>Email<span><%= person.email %></span></li>
-                                                <li>Spaces to reserve<span><%= spaces %></span></li>
-                                                <li>Number of days<span><%= dates.length %></span></li>
-                                                <!-- <% function formatDate(dateString) {
-                                                    const date = new Date(dateString);
-                                                    const year = date.getFullYear();
-                                                    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
-                                                    const day = String(date.getDate()).padStart(2, '0');
-                                                    return `${year}-${month}-${day}`;
-                                                } %>
-                                                <% dates.forEach(day => {%>
-                                                    <li><span><%= day %></span></li>
-                                                <%}) %>                                             -->
-                                                <li>Price<span>₦ <%= totalPrice %></span></li>
+                                                <li>Name<span><%= data.name %></span></li>
+                                                <li>Email<span><%= data.email %></span></li>
+                                                <li>Spaces to reserve
+                                                    <span>
+                                                      <% if (data.details.length > 0) { %>
+                                                        <% data.details.forEach((detail) => { %>
+                                                          <% if (detail.seatType === 'room') { %>
+                                                            <span>Conference Room (<%= detail.seatNumber %>)</span><br>
+                                                          <% } else { %>
+                                                            <span>Seat (<%= detail.seatNumber %>)</span><br>
+                                                          <% } %>
+                                                          <% detail.dates.forEach((date) => { %>
+                                                            <span>Date (<%= date %>)</span><br>
+                                                          <% }); %>
+                                                        <% }); %>
+                                                      <% } %>
+                                                    </span>
+                                                  </li>
+                                                  
+                                                <li>Price<span>₦ <%= data.total %></span></li>
                                             </ul>
-                                            <!-- <a class="btn" onclick="makePayment()">Pay Now</a> -->
+
                                             <form action="/api/payment" method="post">
-                                                <% reservations.forEach(reservation => { %>
-                                                    <input type="hidden" name="reservation_ids[]" value="<%= reservation._id %>">
-                                                <% }) %>
-                                                <input type="hidden" name="email" value="<%= person.email %>">
-                                                <input type="hidden" name="phonenumber" value="<%= person.phoneNumber %>">
-                                                <input type="hidden" name="amount" value="<%= totalPrice %>">
-                                                <input type="hidden" name="name" value="<%= person.firstname + ' ' + person.lastname %>">
+                                                <input type="hidden" name="email" value="<%= data.email %>">
+                                                <input type="hidden" name="phonenumber" value="<%= data.phonenumber %>">
+                                                <input type="hidden" name="amount" value="<%= data.total %>">
+                                                <input type="hidden" name="name" value="<%= data.name %>">
+                                                <input type="hidden" name="tx_ref" value="<%= data.tx_ref %>">
                                                 
                                                 <button class="btn" type="submit" style="width: 100%;">Pay Now</button>
                                             </form>
@@ -122,51 +125,6 @@
 
         </main>
         <!-- main-area-end -->
-        <%- include('./partials/footer.ejs') %>
-        <script>
-            function generateRandomString(length) {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let result = '';
-            for (let i = 0; i < length; i++) {
-                const randomIndex = Math.floor(Math.random() * characters.length);
-                result += characters.charAt(randomIndex);
-            }
-                return result;
-            }
-
-            function generateUniqueString(prefix) {
-                const timestamp = Date.now().toString();
-                const randomString = generateRandomString(10);
-                return `${prefix}-${timestamp}${randomString}`;
-            }
-
-            const uniqueString = generateUniqueString('osl');
-
-          function makePayment() {
-            FlutterwaveCheckout({
-              public_key: "FLWPUBK-767889f3e84565e2ea31f78a22575581-X",
-              tx_ref: uniqueString,
-              amount: 50,
-              currency: "NGN",
-              payment_options: "card, banktransfer, ussd",
-              redirect_url: "https://orchidspring2.onrender.com/confirmation",
-              meta: {
-                consumer_id: 23,
-                consumer_mac: "92a3-912ba-1192a",
-              },
-              customer: {
-                email: "irochibuzor@gmail.com",
-                phone_number: "08102909304",
-                name: "Rose DeWitt Bukater",
-              },
-              customizations: {
-                title: "Orchadsprings",
-                description: "Payment for an awesome cruise",
-                logo: "https://www.logolynx.com/images/logolynx/22/2239ca38f5505fbfce7e55bbc0604386.jpeg",
-              },
-            });
-          }
-        </script>
-        
+        <%- include('./partials/footer.ejs') %>       
     </body>
 </html>

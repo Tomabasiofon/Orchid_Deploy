@@ -12,7 +12,7 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-8">
                             <div class="breadcrumb-content text-center">
-                                <% if(success === true){%>
+                                <% if(status === "success"){%>
                                     <div>
                                         <div class="success-checkmark">
                                             <i class="checkmark">✓</i>
@@ -25,7 +25,7 @@
                                             </ol>
                                         </nav>
                                     </div>
-                                    <% } else if(success === 'failed') { %>
+                                    <% } else if(status === 'failed') { %>
                                     <div>
                                         <div class="failure-checkmark">
                                             <i class="checkmark">X</i>
@@ -37,7 +37,7 @@
                                             </ol>
                                         </nav>
                                     </div>
-                                    <% } else if(success === 'cancelled') { %>
+                                    <% } else if(status === 'cancelled') { %>
                                         <div>
                                             <div class="failure-checkmark">
                                                 <i class="checkmark">X</i>
@@ -70,45 +70,6 @@
             <!-- customer-details-area-end -->
 
             <!-- booking-details-area -->
-            <% if(success !== false){%>
-            <section class="booking-details-area"id="payment-details">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-73">
-                            <aside class="booking-sidebar">
-                                <h2 class="main-title">Reservation Info</h2>
-
-                                <div class="widget">
-                                    <div class="price-summary-top">
-                                        <ul>
-                                            <li>Info</li>
-                                            <!-- <li>Amount</li> -->
-                                        </ul>
-                                    </div>
-                                        <div class="price-summary-detail">
-                                            <ul>
-                                                <!-- <li>Ticket <span><%= reservation._id %></span></li> -->
-                                                <li>Status <span><%= reservation.status %></span></li>
-                                                <li>Number of days<span><%= reservation.days %></span></li>
-                                                <% function formatDate(dateString) {
-                                                    const date = new Date(dateString);
-                                                    const year = date.getFullYear();
-                                                    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
-                                                    const day = String(date.getDate()).padStart(2, '0');
-                                                    return `${year}-${month}-${day}`;
-                                                } %>                                            
-                                                <li>Start Date<span><%= formatDate(reservation.start_date) %></span></li>
-                                                <li>End Date<span><%= formatDate(reservation.end_date) %></span></li>
-                                                <li>Price<span>₦<%= reservation.price %></span></li>
-                                            </ul>
-                                        </div>
-                                </div>
-                            </aside>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <%} %>
             <!-- booking-details-area-end -->
 
         </main>

@@ -73,27 +73,21 @@ app.get('/booking', async (req,res) => {
 })
 
 app.get('/booking-details', async(req,res) => {
-    const data = req.query
     try {
         const title = "Booking Details"
-        res.render('booking-details',{ title, data })
+        res.render('booking-details',{ title })
     } catch (error) {
         res.render('error',{ title: 'Bad request'})
     }
 })
 
 app.post('/payment', async(req,res) => {
+    // const data = await axios.post('https://orchidspring2.onrender.com/api/reservation/cost', req.body);
     try {
-        const response = await axios.post('https://orchidspring2.onrender.com/api/reservation', req.body);
-        if(response) {
-            const { reservations, person } = response.data
-
-            const totalPrice = calculateTotalReservationAmount(reservations);
-            const dates = generateDatesArray(reservations);
-            const spaces = spacesToReserve(reservations)
-
+        const { data } = await axios.post('https://orchidspring2.onrender.com/api/reservation/cost', req.body);
+        if(data) {
             const title = "Payment"
-            res.render('pay', { title, reservations , person, totalPrice, dates, spaces });
+            res.render('pay', { title, data });
         }
     } catch (error) {
         res.render('error',{ title: 'Bad request'})
@@ -101,17 +95,12 @@ app.post('/payment', async(req,res) => {
 })
 
 app.get('/confirmation', async (req,res) => {
-    const { id, success } = req.query;
+    const { status, tx_ref } = req.query;
     try {
-        if(id && success) {
-            const reservation = await axios.get(`https://orchidspring2.onrender.com/api/reservation/${id}`)
-            const title = "Confirmation"
-            res.render('confirmation',{ title, reservation: reservation.data, success })
-        }else if(id) {
-            const reservation = await axios.get(`https://orchidspring2.onrender.com/api/reservation/${id}`)
-            const title = "Confirmation"
-            res.render('confirmation',{ title, reservation: reservation.data, success: null })
-        }
+       
+        const { data } = await axios.get(`https://orchidspring2.onrender.com/${tx_ref}`)
+        const title = "Confirmation"
+        res.render('confirmation',{ title, status })
 
     } catch (error) {
         res.render('error',{ title: 'Bad request'})

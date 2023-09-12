@@ -35,6 +35,11 @@ const peopleSchema = new mongoose.Schema({
         trim: true,
         required: true,
     },
+    tx_ref: {
+        type: String,
+        unique: true,
+        required: true
+    },
     reservation_ids: [{
         type: mongoose.Schema.ObjectId,
         ref: Reservation
