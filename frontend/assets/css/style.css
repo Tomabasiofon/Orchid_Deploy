@@ -3887,7 +3887,7 @@ input[type="checkbox"]:checked + .checkbox-container {
 }
 
 .booking-color-codes {
-	height: 50px;
+	min-height: 50px;
 	padding: 5px;
 }
 

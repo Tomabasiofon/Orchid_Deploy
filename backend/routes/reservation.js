@@ -1,19 +1,21 @@
 const express = require('express');
-const { createReservation, checkSpaceAvailability, getReservation, startReservation, completeReservation, getCompletedReservation } = require('../controllers/reservation.controller');
+const { createReservation, checkReservationAvailability, getReservation, startReservation, completeReservation, getCompletedReservation, costReservation } = require('../controllers/reservation.controller');
 
 const router = express.Router();
-
-router.post('/check', checkSpaceAvailability);
-
-router.get('/complete', completeReservation)
-
-router.post('/start/:id', startReservation);
 
 router.post('/', createReservation);
 
 router.get('/', getCompletedReservation)
 
+router.post('/check', checkReservationAvailability);
+
+router.post('/cost', costReservation)
+
 router.get('/:id', getReservation);
+
+router.get('/complete', completeReservation)
+
+router.post('/start/:id', startReservation);
 
 
 

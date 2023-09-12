@@ -108,10 +108,6 @@
 
                                     <div class="gender-select">
                                         <h2 class="title">Select Your Gender*</h2>
-                                        <!-- <ul>
-                                            <li class="active"><i class="flaticon-little-kid"></i> Male</li>
-                                            <li><i class="flaticon-little-girl"></i> Female</li>
-                                        </ul> -->
                                         <div class="form">
                                             <select id="gender" name="gender" class="form-select" aria-label="Default select example" required>
                                                 <option value="male">Male</option>
@@ -177,17 +173,8 @@
                                             </div>
                                         </div>
                                     </div>  
-   
-                                    <% Object.entries(data).forEach(([key, value]) => { %>
-                                        <% if (key === 'space_id' && Array.isArray(value)) { %>
-                                            <% value.forEach((spaceId, index) => { %>
-                                            <input type="hidden" name="space_id[]" value="<%= spaceId %>">
-                                            <% }); %>
-                                        <% } else { %>
-                                            <input type="hidden" name="<%= key %>" value="<%= value %>">
-                                        <% } %>
-                                    <% }); %>
-                                                                     
+                                                                    
+                                    <div id="hidden-input-container"></div>
 
                                     <button type="submit" class="btn mt-3">Proceed to payment</button>
                                 </form>
@@ -201,6 +188,24 @@
         </main>
         <!-- main-area-end -->
         <%- include('./partials/footer.ejs') %>
+
+        <script>
+            const queryString = window.location.search;
+            const parameters = new URLSearchParams(queryString);
+            let parsedData = parameters.get('id');
+            const dataArr = JSON.parse(parsedData);
+
+            const container = document.getElementById("hidden-input-container")
+
+            dataArr.forEach((item, index) => {
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name =  'reservation_id';
+                hiddenInput.value = item;
+
+                container.appendChild(hiddenInput);
+            });
+        </script>
         
         
     </body>
