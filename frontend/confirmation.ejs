@@ -19,6 +19,13 @@
                         <div class="bg-primary">
                             <img src="https://i.ibb.co/56GqzQ6/logo-last.png" alt="logo-last" border="0">
                         </div>
+                        <nav style="--bs-breadcrumb-divider: '>'; min-height: 40px; margin-top: 20px;" aria-label="breadcrumb">
+                          <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Reservation Details</li>
+                          </ol>
+                        </nav>
+                        <% if(data){ %>
                         <h6 class="lead" style="margin-top: 20px; margin-bottom: 20px;">Thanks for choosing Orchid Springs Spaces</h6>
                         <div class="row">
                           <ul class="list-unstyled">
@@ -64,7 +71,11 @@
                             <a class="text-info">Print</a>
                           <p>Orchid Springs Limited is a registered Energy, Data and Optimization consultancy. Our focus is on our clients' most critical concerns and opportunities. </p>
                         </div> -->
-                  
+                        <%} else {%>
+                          <h6 class="alert alert-danger my-6">
+                            No reservation with such Invoice number exists!!
+                          </h6>
+                        <% } %>
                       </div>
                     </div>
                   </div>

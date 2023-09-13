@@ -300,20 +300,21 @@ const groupBySpaceId = (arr) => {
   return Object.values(grouped);
 }
 
-// const groupBySpaceId = (arr) => {
-//   const grouped = [];
-//   arr.forEach((item) => {
-//     if(grouped.includes(item.space_id)) {
-//       grouped[item.space_id].dates.push(item.current_date)
-//     } else {
-//       grouped.push(item)
-//     }
-//   });
-//   return grouped
-// }
+function calculateTotalAmount(data) {
+  let totalAmount = 0;
+  
+    data.forEach((pay) => {
+      if (pay.amount) {
+        totalAmount += pay.amount;
+      }
+    });
+  
+  return totalAmount;
+}
 
 
 
 
 
-module.exports = { createError, calculateDays, calculateDaysWithDatesArray, calculateTotalReservationAmount, generateDatesArray, spacesToReserve, sendEmail, myNanoid, groupBySpaceId, sendEmailWithPDF }
+
+module.exports = { createError, calculateDays, calculateDaysWithDatesArray, calculateTotalReservationAmount, generateDatesArray, spacesToReserve, sendEmail, myNanoid, groupBySpaceId, sendEmailWithPDF, calculateTotalAmount }

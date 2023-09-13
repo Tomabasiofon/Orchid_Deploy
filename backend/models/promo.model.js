@@ -12,7 +12,9 @@ const promoCodeSchema = new mongoose.Schema({
     },
     expiringPromoDate: {
         type: Date,
-    },
+        required: true,
+        index: { expireAfterSeconds: 604800 }, 
+    }
 }, {
     timestamps: true
 });
@@ -20,3 +22,4 @@ const promoCodeSchema = new mongoose.Schema({
 const Promos = mongoose.model('PromoCode', promoCodeSchema);
 
 module.exports = Promos;
+

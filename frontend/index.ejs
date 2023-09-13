@@ -134,15 +134,14 @@
                                             <div class="col-lg-12">
                                                 <div class="tab-content-wrap">
                                                     <div class="content-top">
-                                                        <label for="" class="form-label">Enter ticket id</label>
+                                                        <label for="" class="form-label">Enter Invoice#</label>
                                                     </div>
                                                    
-                                                    <form action="/confirmation" method="get">
+                                                    <form id="retrieve-booking-form">
                                                         <div class="booking-form">
 
                                                             <div class="mb-3">
-                                                                
-                                                                <input type="text" class="form-control form-control-lg" id="" name="id" placeholder="" style="border: 0.7px solid #15417F; width: 100%;">
+                                                                <input type="text" class="form-control form-control-lg" id="tx-ref-input" placeholder="" style="border: 0.7px solid #15417F; width: 100%;">
                                                             </div>
                                                         </div>
                                                         <div class="content-bottom">
@@ -195,7 +194,7 @@
                                     <i class="flaticon-money-back-guarantee"></i>
                                 </div>
                                 <div class="features-content">
-                                    <h6 class="title">Check Refund</h6>
+                                    <h6 class="title">More Services</h6>
                                     <p>Call +234 806 578 4393 to check status.</p>
                                 </div>
                             </div>
@@ -253,7 +252,7 @@
                                 <div class="col-sm-6">
                                     <div class="flight-offer-item offer-item-two">
                                         <div class="flight-offer-thumb">
-                                            <img src="assets/img/images/offer_img02.jpg" alt="">
+                                            <img src="assets/img/images/offer_img04.jpg" alt="">
                                         </div>
                                         <div class="flight-offer-content">
                                             <h2 class="title">Team Space for 4</h2>
@@ -278,7 +277,7 @@
                                 <div class="col-sm-6">
                                     <div class="flight-offer-item offer-item-two">
                                         <div class="flight-offer-thumb">
-                                            <img src="assets/img/images/offer_img02.jpg" alt="">
+                                            <img src="assets/img/images/offer_img04.jpg" alt="">
                                         </div>
                                         <div class="flight-offer-content">
                                             <h2 class="title">Team Space for 4</h2>
@@ -794,6 +793,23 @@
 
         <script>
             document.addEventListener("DOMContentLoaded", function(event){
+
+                const retrieveForm = document.getElementById('retrieve-booking-form');
+                const retieveInput = document.getElementById('tx-ref-input');
+
+                retrieveForm.addEventListener('submit', (e) =>{
+                    e.preventDefault();
+                    console.log(retieveInput.value.length);
+                    const tx_ref = retieveInput.value;
+
+                    if(tx_ref.length > 7) {
+                        alert('Please eneter a valid Invoice id')
+                    } else {
+                        window.location.href = `https://orchidspring2.onrender.com/confirmation?tx_ref=${tx_ref}&status=successful`;
+                    }
+
+                })
+
                 const clients = document.getElementById('happy-client')
                 const options = {
                     url: 'https://orchidspring2.onrender.com/api/people',

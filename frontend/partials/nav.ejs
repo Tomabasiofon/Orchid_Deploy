@@ -23,11 +23,17 @@
                                 <nav class="menu-nav">
                                     <div class="logo"><a href="/"><img src="assets/img/logo/logo.png" alt=""></a></div>
                                     <div class="navbar-wrap main-menu d-none d-lg-flex">
-                                        <ul class="navigation">
-                                            <li class="active"><a href="/">Home</a></li>
-                                            <li><a href="/about">About</a></li>
-                                            <li><a href="/contact">Contact</a></li>
-                                        </ul>
+                                        <% if(title === 'Dashboard') {%>
+                                            <ul class="navigation">
+                                                <li class="active"><a href="/api/auth/logout">Logout</a></li>
+                                            </ul>
+                                        <%} else {%>
+                                            <ul class="navigation">
+                                                <li class="active"><a href="/">Home</a></li>
+                                                <li><a href="/about">About</a></li>
+                                                <li><a href="/contact">Contact</a></li>
+                                            </ul>
+                                        <% } %>
                                     </div>
                                     <div class="header-action d-none d-md-block">
                                         <ul>

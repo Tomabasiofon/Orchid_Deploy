@@ -1,0 +1,107 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <%- include('./partials/head.ejs') %>
+    <body class="white-background">
+
+        <!-- header-area -->
+        <%- include('./partials/nav.ejs') %>
+        <!-- header-area-end -->
+
+
+        <!-- main-area -->
+        <main>
+
+            <!-- breadcrumb-area -->
+            <section class="container-fluid" style="height: 120px; background: #232B38;">
+               
+            </section>
+
+        </main>
+        <!-- main-area-end -->
+
+        <!-- footer-area -->
+        <%- include('./partials/footer.ejs') %>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+
+                const addSpaceForm = document.getElementById('add-space-form');
+                const addSpaceBtn =document.getElementById('add-space-button');
+    
+                addSpaceForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+
+                    // Access form data
+                    addSpaceBtn.innerText = "Processing..."
+                    const form = e.target;
+                    const formData = new FormData(form);
+                    const formDataObject = {};
+                
+                    formData.forEach(function(value, key) {
+                        formDataObject[key] = value;
+                    })
+
+                      //   // axios POST request
+                    const options = {
+                        url: 'https://orchidspring2.onrender.com/api/space',
+                        method: 'POST',
+                        headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json;charset=UTF-8'
+                        },
+                        data: formDataObject
+                    };
+                    
+                    axios(options)
+                    .then(response => {
+                        alert("New Space Added Succesfully")
+                        addSpaceForm.reset()
+                    }).catch(err => {
+                        alert("There was an error adding space")
+                    });
+                    addSpaceBtn.innerText = "Add"
+
+                })
+
+                const addPromoForm = document.getElementById('add-promo-form');
+                const addPromoBtn = document.getElementById('add-promo-button');
+
+                addPromoForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+
+                    // Access form data
+                    addPromoBtn.innerText = "Processing..."
+                    const form = e.target;
+                    const formData = new FormData(form);
+                    const formDataObject = {};
+                
+                    formData.forEach(function(value, key) {
+                        formDataObject[key] = value;
+                    })
+
+                      //   // axios POST request
+                    const options = {
+                        url: 'https://orchidspring2.onrender.com/api/promo',
+                        method: 'POST',
+                        headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json;charset=UTF-8'
+                        },
+                        data: formDataObject
+                    };
+                    
+                    axios(options)
+                    .then(response => {
+                        alert("New Promo Added Succesfully")
+                        addPromoForm.reset()
+                    }).catch(err => {
+                        alert("There was an error adding space")
+                    });
+                    addPromoBtn.innerText = "Add"
+
+                })
+            })
+        </script>
+
+    </body>
+</html>

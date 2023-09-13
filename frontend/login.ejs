@@ -1,0 +1,103 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <%- include('./partials/head.ejs') %>
+    <body class="white-background">
+
+		<!-- Scroll-top -->
+        <button class="scroll-top scroll-to-target" data-target="html">
+            <i class="fas fa-angle-up"></i>
+        </button>
+        <!-- Scroll-top-end-->
+        <main>
+            <%- include('./partials/nav.ejs') %>
+              <section class="container-fluid" style="height: 120px; background: #19498C;">
+               
+              </section>
+
+            <!-- contact-area -->
+            <section class="contact-area">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-10" style="background: #FBF9F2; padding: 35px;">
+                            <p class="alert alert-danger" style="display: none;" id="login-alert"></p>
+                            <div class="section-title text-center mb-40">
+                                <span class="sub-title">For more information contact the admin about this page</span>
+                                <h2 class="title">OSL Login</h2>
+                            </div>
+                            <div class="contact-form">
+                                <form action="" id="login-form">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-grp">
+                                                <input type="text" name="email" placeholder="Email" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-grp">
+                                                <input type="password" name="password" placeholder="Your Email *" required>
+                                            </div>
+                                        </div>
+                                        <div class="submit-btn text-center">
+                                            <button type="submit" class="btn" id="login-btn">Login</button>
+                                        </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- contact-area-end -->
+        </main>
+        <!-- main-area-end -->
+
+        <%- include('./partials/footer.ejs') %>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+
+                const loginForm = document.getElementById('login-form');
+                const loginBtn =document.getElementById('login-btn');
+                const loginAlert = document.getElementById('login-alert');
+    
+                loginForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+
+                    // Access form data
+                    loginBtn.innerText = "Processing..."
+                    const form = e.target;
+                    const formData = new FormData(form);
+                    const formDataObject = {};
+                
+                    formData.forEach(function(value, key) {
+                        formDataObject[key] = value;
+                    })
+
+                      //   // axios POST request
+                    const options = {
+                        url: 'https://orchidspring2.onrender.com/api/auth/login',
+                        method: 'POST',
+                        headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json;charset=UTF-8'
+                        },
+                        data: formDataObject
+                    };
+                    
+                    axios(options).then(response => {
+                        window.location.href = '/dashboard'
+                    }).catch(err => {
+                        loginAlert.style.display = 'block'
+                        loginAlert.innerText = err?.response?.data?.message
+
+                        setTimeout(() => {
+                            loginAlert.style.display = 'none'
+                        }, 4000)
+                    });
+                    loginBtn.innerText = "Login"
+
+                })
+
+            })
+        </script>
+    </body>
+</html>

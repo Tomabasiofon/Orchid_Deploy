@@ -1,0 +1,463 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <%- include('./partials/head.ejs') %>
+    <body class="white-background">
+
+        <!-- header-area -->
+        <%- include('./partials/nav.ejs') %>
+        <!-- header-area-end -->
+
+
+        <!-- main-area -->
+        <main>
+
+            <!-- breadcrumb-area -->
+            <section class="container-fluid" style="height: 120px; background: #232B38;">
+               
+            </section>
+
+             <!-- features-area -->
+             <section class="features-area">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-xl-4 col-lg-6 col-sm-10">
+                            <div class="features-item">
+                                <div class="features-icon">
+                                    <i class="flaticon-help"></i>
+                                </div>
+                                <div class="features-content">
+                                    <h6 class="title">Customers</h6>
+                                    <p><%= people && people.length %></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-6 col-sm-10">
+                            <div class="features-item">
+                                <div class="features-icon">
+                                    <i class="flaticon-calendar"></i>
+                                </div>
+                                <div class="features-content">
+                                    <h6 class="title">Total Reservations</h6>
+                                    <p><%= reservations.length %></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-6 col-sm-10">
+                            <div class="features-item">
+                                <div class="features-icon">
+                                    <i class="flaticon-money-back-guarantee"></i>
+                                </div>
+                                <div class="features-content">
+                                    <h6 class="title">Total Payments</h6>
+                                    <p>₦ <%= totalPayments %></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- features-area-end -->
+
+            <!-- booking-list-area -->
+            <div class="booking-list-area">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <!-- Payments -->
+                        <div class="col-100">
+                            <div class="booking-sidebar">
+                                <div class="widget filters">
+                                    <h2 class="title">Check Payments</h2>
+                                </div>
+                            </div>
+                            <div class="booking-list-item">
+                                <div class="booking-list-item-inner">
+                                    <div class="booking-list-bottom">
+                                        <ul>
+                                            <li class="detail"><i class="fa-solid fa-angle-down"></i> Details</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="flight-detail-wrap">
+                                    <table class="table table-striped text-xs">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Amount</th>
+                                                <th>Transaction Reference</th>
+                                                <th>Transaction ID</th>
+                                                <th>Status</th>
+                                                <th>Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for (let item of payments) { %>
+                                                <tr>
+                                                    <td><%= item.person_id?.firstname %> <%= item.person_id?.lastname %></td>
+                                                    <td><%= item.person_id?.email %></td>
+                                                    <td><%= item.amount %></td>
+                                                    <td><%= item.tx_ref %></td>
+                                                    <td><%= item.transaction_id %></td>
+                                                    <td><%= item.status %></td>
+                                                    <td><%= formatDate(item.createdAt).format('YYYY-MM-DD') %></td>
+                                                </tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <!-- Reservations -->
+                        <div class="col-100">
+                            <div class="booking-sidebar">
+                                <div class="widget filters">
+                                    <h2 class="title">Check Reservations</h2>
+                                </div>
+                            </div>
+                            <div class="booking-list-item">
+                                <div class="booking-list-item-inner">
+
+                                    <div class="booking-list-bottom">
+                                        <ul>
+                                            <li class="detail"><i class="fa-solid fa-angle-down"></i> Details</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="flight-detail-wrap">
+                                    <table class="table table-striped text-xs">
+                                        <thead>
+                                            <tr>
+                                                <th>Seat Number</th>
+                                                <th>Type</th>
+                                                <th>Reserved Dates</th>
+                                                <th>Price</th>
+                                                <th>Discount Percentage</th>
+                                                <th>Promo Code</th>
+                                                <th>Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for (let item of reservations) { %>
+                                                <tr>
+                                                    <td><%= item.space_id.seat_number %></td>
+                                                    <td><%= item.space_id.type %></td>
+                                                    <td class="fw-bold">
+                                                        <% for (let date of item.dates) { %>
+                                                            <%= formatDate(date).format('YYYY-MM-DD') %><br>
+                                                        <% } %>
+                                                    </td>
+                                                    <td><%= item.price %></td>
+                                                    <td><%= item.discountPercentage %></td>
+                                                    <td><%= item.promoCode %></td>
+                                                    <td ><%= formatDate(item.createdAt).format('YYYY-MM-DD') %></td>
+                                                </tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <!-- Spaces -->
+                        <div class="col-100 ">
+                            <div class="booking-sidebar">
+                                <div class="widget filters">
+                                    <h2 class="title">Spaces</h2>
+                                </div>
+                            </div>
+                            <div class="booking-list-item">
+                                <div class="booking-list-item-inner">
+                                    <div class="booking-list-top">
+                                        <ul class="flight-info">
+                                            <li class="fw-bold">Desk spaces<span><%= deskspaces?.length %></span></li>
+                                            <li class="fw-bold">Room spaces<span><%= roomspaces?.length %></span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="booking-list-bottom">
+                                        <ul>
+                                            <li class="detail"><i class="fa-solid fa-angle-down"></i> Add new</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="flight-detail-wrap">
+                                    <div class="flight-date">
+                                    </div>
+                                    <div class="flight-detail-right text-xs lead">
+                                        <form id="add-space-form">
+                                            <p class="alert" id="add-space-alert"></p>
+                                            <div class="mb-3">
+                                                <label class="form-label">Name</label>
+                                                <input type="text" class="form-control" name="name" placeholder="Enter space name..." required>
+                                            </div>
+    
+                                            <label class="form-label">Space type</label>
+                                            <select name="type" class="form-control" required>
+                                                <option value="space">Single Spot</option>
+                                                <option value="room">Conference room</option>
+                                            </select>
+                                            
+                                            <div>
+    
+                                                <label class="form-label">Price</label>
+                                                <div class="input-group mb-3">
+                                                    <span class="input-group-text">₦</span>
+                                                    <input type="number" class="form-control" name="price" required>
+                                                    <span class="input-group-text">.00</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label">Seat Number</label>
+                                                <input type="number" class="form-control" name="seat_number" placeholder="" required>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label">Description</label>
+                                                <textarea class="form-control" name="description" rows="3"></textarea>
+                                            </div>
+                                            <button class="btn" id="add-space-button">Add</button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="booking-list-item">
+                                    <div class="booking-list-item-inner">
+                                        <div class="booking-list-bottom">
+                                            <ul>
+                                                <li class="detail"><i class="fa-solid fa-angle-down"></i>View Spaces</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="flight-detail-wrap">
+                                        <div class="flight-detail-right text-xs lead">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Type</th>
+                                                        <th>Seat Number</th>
+                                                        <th>Price</th>
+                                                        <th>Created At</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% officeSpaces.forEach(function(space) { %>
+                                                        <tr>
+                                                            <td><%= space.name %></td>
+                                                            <td><%= space.type %></td>
+                                                            <td><%= space.seat_number %></td>
+                                                            <td><%= space.price %></td>
+                                                            <td><%= formatDate(space.createdAt).format('YYYY-MM-DD') %></td>
+                                                        </tr>
+                                                    <% }); %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <!-- Promo's -->
+                        <div class="col-100">
+                            <div class="booking-sidebar">
+                                <div class="widget filters">
+                                    <h2 class="title">Promo's</h2>
+                                </div>
+                            </div>
+                            <div class="booking-list-item">
+                                <div>
+                                    <div class="booking-list-item">
+                                        <div class="booking-list-item-inner">
+                                            <div class="booking-list-bottom">
+                                                <ul>
+                                                    <li class="detail"><i class="fa-solid fa-angle-down"></i> View Promo's</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="flight-detail-wrap">
+                                            <table class="table table-striped text-xs">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Code</th>
+                                                        <th>Discount Percentage</th>
+                                                        <th>Expiry Date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% promos.forEach(function(promoCode) { %>
+                                                        <tr>
+                                                            <td><%= promoCode?.code %></td>
+                                                            <td><%= promoCode?.discountPercentage %>%</td>
+                                                            <td><%= formatDate(promoCode?.expiringPromoDate).format('YYYY-MM-DD') %></td>
+                                                        </tr>
+                                                    <% }); %>
+                                                </tbody>
+                                            </table>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="booking-list-item-inner">
+                                    <div class="booking-list-bottom">
+                                        <ul>
+                                            <li class="detail"><i class="fa-solid fa-angle-down"></i> Add New</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="flight-detail-wrap">
+                                    <div class="flight-date">
+                                    </div>
+                                    <div class="flight-detail-right text-xs lead">
+                                        <form id="add-promo-form">
+                                            <div class="mb-3">
+                                                <label class="form-label">Code</label>
+                                                <input type="text" class="form-control" name="code" placeholder="Enter a promo code..." required>
+                                            </div>
+                                            
+                                            <div>
+                                                <label class="form-label">Discount Percentage</label>
+                                                <div class="input-group mb-3">
+                                                    <input type="number" class="form-control" name="discountPercentage" required>
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                            <div class="booking-form mb-3">
+                                                <!-- <div class="form-grp date">
+                                                    <ul>
+                                                        <li>
+                                                            <label for="end_date">Expiring Date</label>
+                                                            <input type="text" class="date" name="expiringPromoDate" placeholder="Select Date" required>
+                                                        </li>
+                                                    </ul>
+                                                </div> -->
+                                            </div>
+                                            <button class="btn" id="add-promo-button">Add</button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="booking-list-item">
+                                    <div class="booking-list-item-inner">
+                                        <div class="booking-list-bottom">
+                                            <ul>
+                                                <li class="detail"><i class="fa-solid fa-angle-down"></i> Delete Promo</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="flight-detail-wrap">
+                                        <div class="flight-date">
+                                        </div>
+                                        <form>
+                                            <div class="mb-3">
+                                                <label class="form-label">Code</label>
+                                                <input type="text" class="form-control" name="code" placeholder="Enter promo code..." required>
+                                            </div>
+                                            
+                                            <button class="btn-danger">Delete</button>
+                                        </form>
+                                        
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- booking-list-area-end -->
+
+        </main>
+        <!-- main-area-end -->
+
+        <!-- footer-area -->
+        <%- include('./partials/footer.ejs') %>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+
+                const addSpaceForm = document.getElementById('add-space-form');
+                const addSpaceBtn =document.getElementById('add-space-button');
+    
+                addSpaceForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+
+                    // Access form data
+                    addSpaceBtn.innerText = "Processing..."
+                    const form = e.target;
+                    const formData = new FormData(form);
+                    const formDataObject = {};
+                
+                    formData.forEach(function(value, key) {
+                        formDataObject[key] = value;
+                    })
+
+                      //   // axios POST request
+                    const options = {
+                        url: 'https://orchidspring2.onrender.com/api/space',
+                        method: 'POST',
+                        headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json;charset=UTF-8'
+                        },
+                        data: formDataObject
+                    };
+                    
+                    axios(options)
+                    .then(response => {
+                        alert("New Space Added Succesfully")
+                        addSpaceForm.reset()
+                    }).catch(err => {
+                        alert("There was an error adding space")
+                    });
+                    addSpaceBtn.innerText = "Add"
+
+                })
+
+                const addPromoForm = document.getElementById('add-promo-form');
+                const addPromoBtn = document.getElementById('add-promo-button');
+
+                addPromoForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+
+                    // Access form data
+                    addPromoBtn.innerText = "Processing..."
+                    const form = e.target;
+                    const formData = new FormData(form);
+                    const formDataObject = {};
+                
+                    formData.forEach(function(value, key) {
+                        formDataObject[key] = value;
+                    })
+
+                      //   // axios POST request
+                    const options = {
+                        url: 'https://orchidspring2.onrender.com/api/promo',
+                        method: 'POST',
+                        headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json;charset=UTF-8'
+                        },
+                        data: formDataObject
+                    };
+                    
+                    axios(options)
+                    .then(response => {
+                        alert("New Promo Added Succesfully")
+                        addPromoForm.reset()
+                    }).catch(err => {
+                        alert("There was an error adding space")
+                    });
+                    addPromoBtn.innerText = "Add"
+
+                })
+            })
+        </script>
+
+    </body>
+</html>

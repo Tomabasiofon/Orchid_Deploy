@@ -5,8 +5,7 @@ const People = require('../models/people.model');
 const mongoose = require('mongoose');
 const axios = require('axios');
 const dayjs = require('dayjs');
-const { v4: uuidv4 } = require('uuid');
-const { myNanoid, calculateTotalReservationAmount, sendEmailWithPDF, createError } = require('../utils');
+const { calculateTotalReservationAmount, sendEmailWithPDF, createError } = require('../utils');
 
 const startPayment = async (req, res, next) => {
     const session = await mongoose.startSession();
@@ -146,5 +145,21 @@ const getPayment = async(req, res, next) => {
   }
 }
 
+const allPayments = async(req,res,next) => {
+  try {
 
-module.exports = { startPayment, completePayment, getPayment }
+    const payments = await Payment.find({ status: 'completed' })
+    .populate('person_id')
+    .sort({ createdAt: -1 }) 
+    .exec();
+
+
+    res.status(200).json(payments)
+
+  } catch (error) {
+    next(error)
+  }
+}
+
+
+module.exports = { startPayment, completePayment, getPayment, allPayments }
