@@ -32,7 +32,7 @@ const sendContactDetails = async (req,res,next) => {
 
 const getContacts = async (req,res,next) => {
     try {
-        const allcontacts = await Contact.find();
+        const allcontacts = await Contact.find().sort({ createdAt: -1 });
         res.status(200).json(allcontacts);
     } catch (error) {
         next(error);

@@ -13,8 +13,12 @@ const peopleRoutes = require('./routes/people');
 const paymentRoutes = require('./routes/payment');
 const contactRoutes = require('./routes/contact');
 const promoRoutes = require('./routes/promo');
+const authRoutes = require('./routes/auth');
+
+const dayjs = require('dayjs');
 const axios = require('axios');
-const { calculateDaysWithDatesArray, calculateTotalReservationAmount, generateDatesArray, spacesToReserve } = require('./utils');
+const { calculateDaysWithDatesArray, calculateTotalAmount } = require('./utils');
+const { verifyToken } = require('./middleware/authHandler');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -28,12 +32,14 @@ app.use(bodyparser.urlencoded({ extended: true}));
 app.set('view engine', 'ejs');
 app.set('views', 'frontend');
 
+app.get('/api',(req,res) => res.render('welcome',{ title: "API" }))
 app.use('/api/space', officeSpaceRoutes);
 app.use('/api/reservation', reservationRoutes);
 app.use('/api/people', peopleRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/promo', promoRoutes);
+app.use('/api/auth', authRoutes);
 
 app.post('/api/test', (req,res) => {
     // res.status(200).json(req.body)
@@ -44,11 +50,6 @@ app.post('/api/test', (req,res) => {
 
 //Serve frontend
 app.use(express.static(path.join(__dirname, '../frontend')));
-
-app.get('/api',(req,res) => {
-    const title = "API"
-    res.render('welcome',{ title });
-})
 
 app.get('/', (req,res) => {
     const title = "Home"
@@ -82,7 +83,6 @@ app.get('/booking-details', async(req,res) => {
 })
 
 app.post('/payment', async(req,res) => {
-    // const data = await axios.post('https://orchidspring2.onrender.com/api/reservation/cost', req.body);
     try {
         const { data } = await axios.post('https://orchidspring2.onrender.com/api/reservation/cost', req.body);
         if(data) {
@@ -97,10 +97,7 @@ app.post('/payment', async(req,res) => {
 app.get('/confirmation', async (req,res) => {
     const { status, tx_ref } = req.query;
     try {
-        console.log({tx_ref})
-       
         const { data } = await axios.get(`https://orchidspring2.onrender.com/api/payment/${tx_ref}`);
-        console.log({ status, data })
         const title = "Confirmation"
         res.render('confirmation',{ title, status, data })
 
@@ -108,21 +105,56 @@ app.get('/confirmation', async (req,res) => {
         res.render('error',{ title: 'Bad request'})
     }
 })
-app.get('/list', (req,res) => {
-    const title = "Booking"
-    res.render('booking-list',{ title })
-})
+
 app.get('/contact', (req,res)=> {
     const title = "Contact"
     res.render('contact',{ title })
 })
+
 app.get('/about', (req,res) => {
     const title = "About"
     res.render('about',{ title })
 })
+
 app.get('/promo', async(req,res) => {
     const title = "Promo"
     res.render('promo',{ title })
+})
+
+app.get('/dashboard', verifyToken ,async (req,res) => {
+    const formatDate = dayjs
+    try {
+        const payments = await axios.get(`https://orchidspring2.onrender.com/api/payment/all`);
+        const reservations = await axios.get('https://orchidspring2.onrender.com/api/reservation');
+        const deskspaces = await axios.get('https://orchidspring2.onrender.com/api/space?type=space');
+        const roomspaces = await axios.get('https://orchidspring2.onrender.com/api/space?type=room');
+        const officeSpaces = await axios.get('https://orchidspring2.onrender.com/api/space');
+        const promos = await axios.get('https://orchidspring2.onrender.com/api/promo');
+        const people = await axios.get('https://orchidspring2.onrender.com/api/people');
+        const total = calculateTotalAmount(payments.data);
+
+        const title = "Dashboard"
+        res.render('dashboard',{ title, payments: payments.data, reservations: reservations.data, formatDate, deskspaces: deskspaces.data,roomspaces: roomspaces.data, officeSpaces: officeSpaces.data, promos: promos.data, people: people.data, totalPayments: total })
+    } catch (error) {
+        res.render('error',{ title: 'Bad request'})
+    }
+})
+
+app.get('/login', async(req,res) => {
+    const { err } = req.query;
+
+    const title = "Login"
+    res.render('login', { title })
+})
+
+app.get('/settings', async(req,res) => {
+    try {
+        const title = "Settings"
+        res.render('settings',{ title })
+
+    } catch (error) {
+        res.render('error',{ title: 'Bad request'})
+    }
 })
 
 app.get('*', (req,res) => {

@@ -1,7 +1,7 @@
 {
-  "name": "gamehub",
+  "name": "oslspaces",
   "version": "1.0.0",
-  "description": "A MERN stack video game player",
+  "description": "Orchid Springs Spaces Booking Site",
   "main": "server.js",
   "author": "Irobuisi Chibuzor",
   "scripts": {
@@ -25,12 +25,7 @@
     "mongoose": "^7.5.0",
     "nanoid": "^4.0.2",
     "nodemailer": "^6.9.5",
-    "pg": "^8.11.3",
-    "pg-hstore": "^2.3.4",
-    "puppeteer": "^21.1.1",
-    "react-card-slider-component": "^1.0.9",
-    "sequelize": "^6.32.1",
-    "uuid": "^9.0.0"
+    "puppeteer": "^21.1.1"
   },
   "devDependencies": {
     "concurrently": "^8.2.0",

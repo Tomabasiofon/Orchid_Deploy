@@ -130,8 +130,15 @@
                               if(response.data.sent) {
                                 failedAlert.style.display = 'block'
                                 submitButton.innerText = 'Submit'
+
+                                setTimeout(() => {
+                                    failedAlert.style.display = 'none'
+                                }, 4000)
                               } else {
                                 successAlert.style.display = 'block'
+                                setTimeout(() => {
+                                    successAlert.style.display = 'none'
+                                }, 4000)
                                 submitButton.innerText = 'Submit'
                                 form.reset()
                               }
