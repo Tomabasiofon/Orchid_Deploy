@@ -10,6 +10,10 @@ const promoCodeSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    type: {
+        type: String,
+        required: true,
+    },
     expiringPromoDate: {
         type: Date,
         required: true,

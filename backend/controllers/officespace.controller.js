@@ -15,10 +15,10 @@ const getAllOfficeSpace = async (req, res, next) => {
 
   try {
     if (type) {
-      const spaces = await OfficeSpace.find({ type }); 
+      const spaces = await OfficeSpace.find({ type }).sort({ createdAt: -1 }); 
       res.status(200).json(spaces);
     } else {
-      const space = await OfficeSpace.find();
+      const space = await OfficeSpace.find().sort({ createdAt: -1 });
       res.status(200).json(space);
     }
   } catch (error) {
@@ -27,7 +27,7 @@ const getAllOfficeSpace = async (req, res, next) => {
 };
 
 const getOfficeSpace = async (req,res,next)=>{
-  const { id } = req.params.id
+  const { id } = req.params
   try {
     if(id){
       const space = await OfficeSpace.findById(id);
@@ -41,23 +41,32 @@ const getOfficeSpace = async (req,res,next)=>{
 }
 
 const deleteOfficeSpace = async (req,res,next)=>{
-  // try {
-  //   const space = await OfficeSpace.findByPk(req.params.id);
-  //   if(!space) createError(404, "Cannot perform delete operation")    
-  //   await space.destroy();
-  //   res.status(200).json(`Space has been deleted.`);
-  // } catch (err) {
-  //   next(err);
-  // }
+  const { id } = req.params
+  try {
+    if(id) {
+      const space = await OfficeSpace.findByIdAndDelete(id);
+      if(!space) createError(404, "Cannot perform delete operation")    
+      res.status(200).json(space);
+    } else {
+      createError(404, "Record was not found!")
+    }
+  } catch (err) {
+    next(err);
+  }
 }
 
 const updateOfficeSpace = async (req,res,next)=>{
-  // try {
-  //   const space = await OfficeSpace.update(req.body,{ where: { id: req.params.id }, returning: true});
-  //   res.status(200).json(space);
-  // } catch (err) {
-  //   next(err);
-  // }
+  const { id } = req.params
+  try {
+    if(id) {
+      const space = await OfficeSpace.findByIdAndUpdate(id, {...req.body}, { new: true },);
+      res.status(200).json(space);
+    } else {
+      createError(500, "Error retrieving space record")
+    }
+  } catch (err) {
+    next(err);
+  }
 }
 
 module.exports = { 

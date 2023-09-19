@@ -56,17 +56,26 @@ app.get('/', (req,res) => {
     res.render('index',{ title });
 })
 
+app.get('/admin', (req,res) => {
+    const title = "Admin"
+    res.render('./admin', {title})
+})
+
 app.get('/booking', async (req,res) => {
     try {
         const title = "Booking"
         const deskspaces = await axios.get('https://orchidspring2.onrender.com/api/space?type=space');
         const roomspaces = await axios.get('https://orchidspring2.onrender.com/api/space?type=room');
-        const { start_date, end_date } = req.query;
+        const { start_date, end_date, pcode } = req.query;
+        let promoCode = null
+        if(pcode) {
+            promoCode = await axios.get(`https://orchidspring2.onrender.com/api/promo/${pcode}`)
+        }
         if(!start_date || !end_date) res.redirect('/');
     
         const dates = calculateDaysWithDatesArray(start_date, end_date);
 
-        res.render('booking',{ title, deskspaces: deskspaces.data, roomspaces: roomspaces.data, dates })
+        res.render('booking',{ title, deskspaces: deskspaces.data, roomspaces: roomspaces.data, dates, promoCode: promoCode?.data })
 
     } catch (error) {
         res.render('error',{ title: 'Bad request'})
