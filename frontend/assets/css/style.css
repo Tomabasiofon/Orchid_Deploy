@@ -1184,6 +1184,15 @@ label {
 	font-family: 'Barlow', sans-serif;
 	margin-right: 25px;
 }
+.tab-content-wrap .content-bottom .my-promo {
+	font-size: 16px;
+	color: #945274;
+	font-weight: 500;
+	font-family: 'Barlow', sans-serif;
+	margin-right: 25px;
+	border: 1px solid #ffa903;
+	padding: 12px;
+}
 .tab-content-wrap .content-bottom .promo-code:hover {
 	color: #ffa903;
 }

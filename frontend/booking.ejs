@@ -130,7 +130,7 @@
                                                                 </div>
                                                             </ul>
 
-                                                            <% if(promoCode && promoCode.type == 'weekly-room'){%>
+                                                            <% if (promoCode && promoCode?.type == 'room'){%>
                                                                 <div class="selection-container-4"></div>
                                                             <%} else {%>
                                                                 <div class="selection-container-4">
@@ -152,29 +152,35 @@
                                                                     <% } else { %>
                                                                         <p>No data available.</p>
                                                                     <% } %>
+                                                             <% } %>
+                                                                
                                                                 </div>
-                                                            <%} %>
 
                                                             <div class="div">
-                                                                <div class="selection-container-2 mt-6">
-                                                                    <% if (roomspaces.length > 0) { %>
-                                                                        <% roomspaces.forEach(function(space) { %>
-                                                                            <label>
-                                                                                <input type="checkbox" class="hide-checkbox"            data-space-price="<%= space.price %>" 
-                                                                                data-space-id="<%= space._id %>" 
-                                                                                id="space_<%= space._id %>" 
-                                                                                name="space_id" 
-                                                                                data-current-date="<%= formatDate(date, 'yyyy-MM-dd') %>" value="<%= space._id %>"
-                                                                                onchange="handleCheckboxChange(this)"
-                                                                                >
-                                                                                <div class="checkbox-container" style="padding: 15px;" title="<%= space.name %>"><%= space.name %></div>
-                                                                            </label>
-                                                                        <% }); %>
-                                                                    <% } else { %>
-                                                                        <p>No data available.</p>
-                                                                    <% } %>
-                                                                </div>
+                                                                <% if (promoCode && promoCode?.type == 'space'){%>
+                                                                    <div class="selection-container-2 mt-6"></div>
+                                                                <%} else {%>
+                                                                    <div class="selection-container-2 mt-6">
+                                                                        <% if (roomspaces.length > 0) { %>
+                                                                            <% roomspaces.forEach(function(space) { %>
+                                                                                <label>
+                                                                                    <input type="checkbox" class="hide-checkbox"            data-space-price="<%= space.price %>" 
+                                                                                    data-space-id="<%= space._id %>" 
+                                                                                    id="space_<%= space._id %>" 
+                                                                                    name="space_id" 
+                                                                                    data-current-date="<%= formatDate(date, 'yyyy-MM-dd') %>" value="<%= space._id %>"
+                                                                                    onchange="handleCheckboxChange(this)"
+                                                                                    >
+                                                                                    <div class="checkbox-container" style="padding: 15px;" title="<%= space.name %>"><%= space.name %></div>
+                                                                                </label>
+                                                                            <% }); %>
+                                                                        <% } else { %>
+                                                                            <p>No data available.</p>
+                                                                        <% } %>
+                                                                    </div>
+                                                                <% } %>
                                                             </div>
+
                                                             
                                                         </div>
                                                         <div class="col-md-5">
@@ -335,7 +341,7 @@
                 const queryParams = parseQueryString(queryString);
 
                 const startDate = document.querySelector('#alert_date')
-                startDate.innerText = `You are booking for: ${new Date(queryParams.start_date)} to ${queryParams.end_date} please use the arrows to navigate and select your space(s)`
+                startDate.innerText = `You are booking for: ${queryParams.start_date} to ${queryParams.end_date} please use the arrows to navigate and select your space(s)`
 
                 const loadingAlert = document.querySelector('#loading-alert');
                 const checkboxes = document.querySelectorAll('.hide-checkbox');
