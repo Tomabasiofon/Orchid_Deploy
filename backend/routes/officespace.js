@@ -11,10 +11,10 @@ router.get("/", getAllOfficeSpace);
 router.get("/:id", getOfficeSpace);
 
 // Update
-router.put('/:id', verifyAdmin, updateOfficeSpace);
+router.patch('/:id', updateOfficeSpace);
 
 // Delete
-router.delete(':/id', verifyAdmin, deleteOfficeSpace);
+router.delete('/:id', deleteOfficeSpace);
 
 
 module.exports = router;

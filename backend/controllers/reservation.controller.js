@@ -61,8 +61,6 @@ const createReservation = async (req, res, next) => {
         const spaceIds = spaces.map((item) => item.space_id); 
         const selectedSpaces = await OfficeSpace.find({ _id: { $in: spaceIds } });
 
-        // console.log({spaceIds, selectedSpaces})
-
         if (selectedSpaces.length !== spaceIds.length) createError(404, 'One or more spaces not found');
 
         let discountPercentage = 0; 
@@ -131,6 +129,35 @@ const getCompletedReservation = async (req,res,next) => {
     }
 }
 
+const getReservees = async (req,res,next) => {
+  try {
+    const reservations = await Reservation.find({status: 'completed'}).populate('space_id').sort({ createdAt: -1 }).exec()
+    const updatedReservations = await Promise.all(
+      reservations.map(async (reservation) => {
+        const person = await People.findOne({ reservation_ids: {
+          $in: [reservation._id]
+        }})
+        return {
+          _id: reservation._id,
+          name: person.firstname + " " + person.lastname,
+          email: person.email,
+          seat_number: reservation.space_id.seat_number,
+          type: reservation.space_id.type,
+          dates: reservation.dates,
+          price: reservation.price,
+          status: reservation.status,
+          promoCode: reservation.promoCode,
+          discountPercentage: reservation.discountPercentage,
+          createdAt: reservation.createdAt
+        };
+      }))
+
+    res.status(200).json(updatedReservations);
+  } catch (error) {
+      next(error)
+  }
+}
+
 const costReservation = async (req, res, next) => {
   let { reservation_id } = req.body;
   const reservation_ids = reservation_id
@@ -188,4 +215,4 @@ const costReservation = async (req, res, next) => {
 
 
 
-module.exports = { createReservation, getReservation, getCompletedReservation, checkReservationAvailability, costReservation }
+module.exports = { createReservation, getReservation, getCompletedReservation, checkReservationAvailability, costReservation, getReservees }
