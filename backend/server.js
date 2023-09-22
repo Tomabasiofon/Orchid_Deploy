@@ -130,41 +130,11 @@ app.get('/promo', async(req,res) => {
     res.render('promo',{ title })
 })
 
-app.get('/dashboard', verifyToken ,async (req,res) => {
-    const formatDate = dayjs
-    try {
-        const payments = await axios.get(`https://orchidspring2.onrender.com/api/payment/all`);
-        const reservations = await axios.get('https://orchidspring2.onrender.com/api/reservation');
-        const deskspaces = await axios.get('https://orchidspring2.onrender.com/api/space?type=space');
-        const roomspaces = await axios.get('https://orchidspring2.onrender.com/api/space?type=room');
-        const officeSpaces = await axios.get('https://orchidspring2.onrender.com/api/space');
-        const promos = await axios.get('https://orchidspring2.onrender.com/api/promo');
-        const people = await axios.get('https://orchidspring2.onrender.com/api/people');
-        const total = calculateTotalAmount(payments.data);
-
-        const title = "Dashboard"
-        res.render('dashboard',{ title, payments: payments.data, reservations: reservations.data, formatDate, deskspaces: deskspaces.data,roomspaces: roomspaces.data, officeSpaces: officeSpaces.data, promos: promos.data, people: people.data, totalPayments: total })
-    } catch (error) {
-        res.render('error',{ title: 'Bad request'})
-    }
+app.get('/gallery', async (req,res) => {
+    const title = "Gallery"
+    res.render('gallery',{ title })
 })
 
-app.get('/login', async(req,res) => {
-    const { err } = req.query;
-
-    const title = "Login"
-    res.render('login', { title })
-})
-
-app.get('/settings', async(req,res) => {
-    try {
-        const title = "Settings"
-        res.render('settings',{ title })
-
-    } catch (error) {
-        res.render('error',{ title: 'Bad request'})
-    }
-})
 
 app.get('*', (req,res) => {
     const title = "404"

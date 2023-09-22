@@ -3934,3 +3934,14 @@ input[type="checkbox"]:checked + .checkbox-container {
 	/* min-height: 300px; */
 	width: 100%;
 }
+
+.gallery-img-container {
+	max-height: 400px;
+	padding: 30px;
+}
+
+.gallery-img-container img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
