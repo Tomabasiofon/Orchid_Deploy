@@ -18,7 +18,7 @@ const startPayment = async (req, res, next) => {
                 tx_ref,
                 amount,
                 currency: "NGN",
-                redirect_url: "https://orchidspring2.onrender.com/api/payment/pay",
+                redirect_url: `${process.env.ENDPOINT}/api/payment/pay`,
                 // meta: {
                 //     reservation_ids,
                 // },
@@ -89,9 +89,9 @@ const completePayment = async (req,res,next) => {
         await sendEmailWithPDF((person.firstname + ' ' + person.lastname), person.email, amount, tx_ref )
 
         if(!newPayment) createError(500, 'Error creating payment')
-        res.redirect(`https://orchidspring2.onrender.com/confirmation?status=${status}&tx_ref=${tx_ref}`)
+        res.redirect(`${process.env.ENDPOINT}/confirmation?status=${status}&tx_ref=${tx_ref}`)
     } else {
-      res.redirect(`https://orchidspring2.onrender.com/confirmation?status=${status}&tx_ref=${tx_ref}`)
+      res.redirect(`${process.env.ENDPOINT}/confirmation?status=${status}&tx_ref=${tx_ref}`)
     }
     // If everything is successful, commit the transaction
     await session.commitTransaction();

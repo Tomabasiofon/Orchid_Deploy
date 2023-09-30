@@ -805,14 +805,14 @@
                     if(tx_ref.length > 7) {
                         alert('Please eneter a valid Invoice id')
                     } else {
-                        window.location.href = `https://orchidspring2.onrender.com/confirmation?tx_ref=${tx_ref}&status=successful`;
+                        window.location.href = `${process.env.ENDPOINT}/confirmation?tx_ref=${tx_ref}&status=successful`;
                     }
 
                 })
 
                 const clients = document.getElementById('happy-client')
                 const options = {
-                    url: 'https://orchidspring2.onrender.com/api/people',
+                    url: `${process.env.ENDPOINT}/api/people`,
                     method: 'GET',
                     headers: {
                     'Accept': 'application/json',

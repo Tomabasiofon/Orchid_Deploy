@@ -117,7 +117,7 @@
                 
                     // axios POST request
                         const options = {
-                            url: 'https://orchidspring2.onrender.com/api/contact',
+                            url: `${process.env.ENDPOINT}/api/contact`,
                             method: 'POST',
                             headers: {
                             'Accept': 'application/json',

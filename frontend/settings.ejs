@@ -43,7 +43,7 @@
 
                       //   // axios POST request
                     const options = {
-                        url: 'https://orchidspring2.onrender.com/api/space',
+                        url: `${process.env.ENDPOINT}/api/space`,
                         method: 'POST',
                         headers: {
                         'Accept': 'application/json',
@@ -81,7 +81,7 @@
 
                       //   // axios POST request
                     const options = {
-                        url: 'https://orchidspring2.onrender.com/api/promo',
+                        url: `${process.env.ENDPOINT}/api/promo`,
                         method: 'POST',
                         headers: {
                         'Accept': 'application/json',

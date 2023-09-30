@@ -293,7 +293,7 @@
                     const pcode = queryParams.pcode || null
 
                     const options = {
-                        url: 'https://orchidspring2.onrender.com/api/reservation',
+                        url: `${process.env.ENDPOINT}/api/reservation`,
                         method: 'POST',
                         headers: {
                         'Accept': 'application/json',

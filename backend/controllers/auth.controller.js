@@ -52,7 +52,7 @@ const login = async (req, res, next) => {
 
 const logout = async (req,res,next) => {
     try {
-        res.clearCookie("access_token").redirect('https://orchidspring2.onrender.com/')
+      res.clearCookie("access_token").redirect(`${process.env.ENDPOINT}`)
     } catch (error) {
         next(error)
     }

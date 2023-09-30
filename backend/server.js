@@ -6,6 +6,7 @@ const { connectDB } = require('./config/db');
 const { handleErrorsMiddleware } = require('./middleware/errorHandler');
 const dotenv = require('dotenv').config();
 const bodyparser = require('body-parser');
+const compression = require('compression');
 
 const officeSpaceRoutes = require('./routes/officespace');
 const reservationRoutes = require('./routes/reservation');
@@ -23,14 +24,19 @@ const { verifyToken } = require('./middleware/authHandler');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-app.use(cors());
+app.set('view engine', 'ejs');
+app.set('views', 'frontend');
+//Serve frontend
+app.use(express.static(path.join(__dirname, '../frontend')));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieparser());
-app.use(bodyparser.urlencoded({ extended: true}));
+app.use(cors());
+app.use(bodyparser.urlencoded({ extended: true }));
+app.use(compression());
 
-app.set('view engine', 'ejs');
-app.set('views', 'frontend');
+
 
 app.get('/api',(req,res) => res.render('welcome',{ title: "API" }))
 app.use('/api/space', officeSpaceRoutes);
@@ -48,8 +54,6 @@ app.post('/api/test', (req,res) => {
     // res.render('booking')
 })
 
-//Serve frontend
-app.use(express.static(path.join(__dirname, '../frontend')));
 
 app.get('/', (req,res) => {
     const title = "Home"
@@ -64,12 +68,12 @@ app.get('/admin', (req,res) => {
 app.get('/booking', async (req,res) => {
     try {
         const title = "Booking"
-        const deskspaces = await axios.get('https://orchidspring2.onrender.com/api/space?type=space');
-        const roomspaces = await axios.get('https://orchidspring2.onrender.com/api/space?type=room');
+        const deskspaces = await axios.get(`${process.env.ENDPOINT}/api/space?type=space`);
+        const roomspaces = await axios.get(`${process.env.ENDPOINT}/api/space?type=room`);
         const { start_date, end_date, pcode } = req.query;
         let promoCode = null
         if(pcode) {
-            promoCode = await axios.get(`https://orchidspring2.onrender.com/api/promo/${pcode}`)
+            promoCode = await axios.get(`${process.env.ENDPOINT}/api/promo/${pcode}`)
         }
         if(!start_date || !end_date) res.redirect('/');
     
@@ -93,7 +97,7 @@ app.get('/booking-details', async(req,res) => {
 
 app.post('/payment', async(req,res) => {
     try {
-        const { data } = await axios.post('https://orchidspring2.onrender.com/api/reservation/cost', req.body);
+        const { data } = await axios.post(`${process.env.ENDPOINT}/api/reservation/cost`, req.body);
         if(data) {
             const title = "Payment"
             res.render('pay', { title, data });
@@ -106,7 +110,7 @@ app.post('/payment', async(req,res) => {
 app.get('/confirmation', async (req,res) => {
     const { status, tx_ref } = req.query;
     try {
-        const { data } = await axios.get(`https://orchidspring2.onrender.com/api/payment/${tx_ref}`);
+        const { data } = await axios.get(`${process.env.ENDPOINT}/api/payment/${tx_ref}`);
         const title = "Confirmation"
         res.render('confirmation',{ title, status, data })
 
@@ -134,7 +138,6 @@ app.get('/gallery', async (req,res) => {
     const title = "Gallery"
     res.render('gallery',{ title })
 })
-
 
 app.get('*', (req,res) => {
     const title = "404"
