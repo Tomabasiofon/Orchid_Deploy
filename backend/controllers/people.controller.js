@@ -31,4 +31,18 @@ const getPersonByReservationId = async (req,res,next) => {
   }
 }
 
-module.exports = { getPeople, getPersonByReservationId }
+const updatePerson = async (req,res,next) => {
+  const { id } = req.params
+  try {
+    if(id) {
+      const person = await People.findByIdAndUpdate(id, {...req.body}, { new: true },);
+      res.status(200).json(person);
+    } else {
+      createError(500, "Error retrieving space record")
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { getPeople, getPersonByReservationId, updatePerson }
