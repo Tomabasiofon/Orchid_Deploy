@@ -15,12 +15,12 @@ const sendContactDetails = async (req,res,next) => {
             const contact = await Contact.findOne({ email: email })
             if(contact) {
                 await Contact.updateOne({ email }, { $push: { message: message }}, {new: true})
-                contact.save();
-                res.status(200).json(contact)
+                await contact.save();
+                res.status(200).json({ sent, contact })
             } else{
                 const newContact = new Contact(req.body);
                 const savedContact = await newContact.save();
-                res.status(201).json({ sent , conatct: savedContact});
+                res.status(201).json({ sent , contact: savedContact});
             }
         } else {
             res.status(200).json({ sent })
