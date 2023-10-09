@@ -24,6 +24,13 @@ const { verifyToken } = require('./middleware/authHandler');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+const corsOptions ={
+    origin: '*', 
+    credentials: true,
+    optionsSuccessStatus: 200
+}
+app.use(cors(corsOptions));
+
 app.set('view engine', 'ejs');
 app.set('views', 'frontend');
 //Serve frontend
@@ -32,12 +39,6 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieparser());
-const corsOptions ={
-    origin: '*', 
-    credentials: true,
-    optionsSuccessStatus: 200
-}
-app.use(cors(corsOptions));
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(compression());
 
