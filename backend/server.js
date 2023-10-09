@@ -32,7 +32,12 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieparser());
-app.use(cors());
+const corsOptions ={
+    origin: '*', 
+    credentials: true,
+    optionsSuccessStatus: 200
+}
+app.use(cors(corsOptions));
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(compression());
 
