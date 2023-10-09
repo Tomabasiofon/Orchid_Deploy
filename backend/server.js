@@ -27,7 +27,8 @@ const PORT = process.env.PORT || 8080;
 const corsOptions ={
     origin: [
         'https://spaces.orchidsprings.group',
-        'http://admin.orchidsprings.group'
+        'http://admin.orchidsprings.group',
+        '*'
     ], 
     credentials: true,
     optionsSuccessStatus: 200
@@ -57,10 +58,8 @@ app.use('/api/promo', promoRoutes);
 app.use('/api/auth', authRoutes);
 
 app.post('/api/test', (req,res) => {
-    // res.status(200).json(req.body)
     console.log(req.body)
     res.status(200).json(req.body)
-    // res.render('booking')
 })
 
 
