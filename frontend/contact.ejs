@@ -117,7 +117,7 @@
                 
                     // axios POST request
                         const options = {
-                            url: `https://orchidsprings.cyclic.cloud/api/contact`,
+                            url: `https://bored-zipper.cyclic.cloud/api/contact`,
                             method: 'POST',
                             headers: {
                             'Accept': 'application/json',
@@ -127,22 +127,21 @@
                         };
                         axios(options)
                           .then(response => {
-                            console.log({ response, formDataObject })
-                            //   if(response.data.sent) {
-                            //     failedAlert.style.display = 'block'
-                            //     submitButton.innerText = 'Submit'
+                              if(response.data.sent) {
+                                failedAlert.style.display = 'block'
+                                submitButton.innerText = 'Submit'
 
-                            //     setTimeout(() => {
-                            //         failedAlert.style.display = 'none'
-                            //     }, 4000)
-                            //   } else {
-                            //     successAlert.style.display = 'block'
-                            //     setTimeout(() => {
-                            //         successAlert.style.display = 'none'
-                            //     }, 4000)
-                            //     submitButton.innerText = 'Submit'
-                            //     form.reset()
-                            //   }
+                                setTimeout(() => {
+                                    failedAlert.style.display = 'none'
+                                }, 4000)
+                              } else {
+                                successAlert.style.display = 'block'
+                                setTimeout(() => {
+                                    successAlert.style.display = 'none'
+                                }, 4000)
+                                submitButton.innerText = 'Submit'
+                                form.reset()
+                              }
                           }).catch((err) => {
                             console.log(err)
                           });
