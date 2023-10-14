@@ -27,8 +27,10 @@ const PORT = process.env.PORT || 8080;
 const corsOptions ={
     origin: [
         'https://spaces.orchidsprings.group',
+        'http://spaces.orchidsprings.group',
         'http://admin.orchidsprings.group',
-        'https://admin.orchidsprings.group'
+        'https://admin.orchidsprings.group',
+        'http://localhost:3000'
     ], 
     credentials: true,
     optionsSuccessStatus: 200
