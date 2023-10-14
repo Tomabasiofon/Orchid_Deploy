@@ -28,6 +28,7 @@ const corsOptions ={
     origin: [
         'https://spaces.orchidsprings.group',
         'http://admin.orchidsprings.group',
+        'https://admin.orchidsprings.group'
     ], 
     credentials: true,
     optionsSuccessStatus: 200
