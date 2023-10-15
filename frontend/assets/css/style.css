@@ -49,6 +49,11 @@ img,
 	max-width: 100%;
 	transition: all 0.3s ease-out 0s;
 }
+
+.brand-item img {
+	width: 60%;
+}
+
 .f-left {
 	float: left
 }
@@ -1856,7 +1861,7 @@ label {
 	margin-bottom: 35px;
 }
 .faq-area .faq-content .accordion-button {
-	color: #571336;
+	color: #083860;
 	font-size: 22px;
 	font-weight: 600;
 	font-family: 'Barlow', sans-serif;
@@ -1922,7 +1927,7 @@ label {
 	margin-bottom: 0;
 }
 .faq-area .faq-content .accordion-item {
-	background-color: #500d30;
+	background-color: #083860;
 	border: none;
 	margin-bottom: 15px;
 }
