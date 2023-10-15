@@ -49,6 +49,11 @@ img,
 	max-width: 100%;
 	transition: all 0.3s ease-out 0s;
 }
+
+.brand-item img {
+	width: 60%;
+}
+
 .f-left {
 	float: left
 }
@@ -1021,7 +1026,7 @@ label {
 }
 .booking-form .form-grp {
 	position: relative;
-	border-right: 1px solid #dedcd7;
+	/* border-right: 1px solid #dedcd7; */
 }
 .booking-form .form-grp input {
 	/* width: 100%; */
@@ -1047,7 +1052,7 @@ label {
 }
 .booking-form .form-grp .exchange-icon {
 	position: absolute;
-	left: -19px;
+	left: -150px;
 	top: 50%;
 	transform: translateY(-50%);
 	width: 35px;
@@ -1067,9 +1072,7 @@ label {
 	color: #fff;
 	border-color: #010D33;
 }
-.booking-form ul li:nth-child(2) .form-grp input {
-	/* padding: 20px 20px 20px 40px; */
-}
+
 .booking-form .form-grp label {
 	color: #8d5f77;
 	font-size: 12px;
@@ -1084,7 +1087,7 @@ label {
 	font-weight: 500;
 	color: #2a2a2a;
 	vertical-align: middle;
-	background: url("../img/icon/select_down_arrow.png") no-repeat scroll 97.5% center;
+	/* background: url("../img/icon/select_down_arrow.png") no-repeat scroll 97.5% center; */
 	background-color: transparent;
 	border-radius: 0;
 	box-shadow: none;
@@ -1858,7 +1861,7 @@ label {
 	margin-bottom: 35px;
 }
 .faq-area .faq-content .accordion-button {
-	color: #571336;
+	color: #083860;
 	font-size: 22px;
 	font-weight: 600;
 	font-family: 'Barlow', sans-serif;
@@ -1924,7 +1927,7 @@ label {
 	margin-bottom: 0;
 }
 .faq-area .faq-content .accordion-item {
-	background-color: #500d30;
+	background-color: #083860;
 	border: none;
 	margin-bottom: 15px;
 }
