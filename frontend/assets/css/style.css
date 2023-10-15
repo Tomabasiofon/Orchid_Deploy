@@ -1021,7 +1021,7 @@ label {
 }
 .booking-form .form-grp {
 	position: relative;
-	border-right: 1px solid #dedcd7;
+	/* border-right: 1px solid #dedcd7; */
 }
 .booking-form .form-grp input {
 	/* width: 100%; */
@@ -1047,7 +1047,7 @@ label {
 }
 .booking-form .form-grp .exchange-icon {
 	position: absolute;
-	left: -19px;
+	left: -150px;
 	top: 50%;
 	transform: translateY(-50%);
 	width: 35px;
@@ -1067,9 +1067,7 @@ label {
 	color: #fff;
 	border-color: #010D33;
 }
-.booking-form ul li:nth-child(2) .form-grp input {
-	/* padding: 20px 20px 20px 40px; */
-}
+
 .booking-form .form-grp label {
 	color: #8d5f77;
 	font-size: 12px;
@@ -1084,7 +1082,7 @@ label {
 	font-weight: 500;
 	color: #2a2a2a;
 	vertical-align: middle;
-	background: url("../img/icon/select_down_arrow.png") no-repeat scroll 97.5% center;
+	/* background: url("../img/icon/select_down_arrow.png") no-repeat scroll 97.5% center; */
 	background-color: transparent;
 	border-radius: 0;
 	box-shadow: none;
