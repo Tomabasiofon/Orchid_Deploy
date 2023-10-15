@@ -144,7 +144,15 @@
                               }
                           }).catch((err) => {
                             console.log(err)
+                            failedAlert.style.display = 'block'
+                            submitButton.innerText = 'Submit'
+
+                            setTimeout(() => {
+                                failedAlert.style.display = 'none'
+                            }, 4000)
+
                           });
+                          submitButton.innerText = 'Submit'
                 }
 
                 
