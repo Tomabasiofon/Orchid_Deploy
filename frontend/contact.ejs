@@ -128,25 +128,23 @@
                         axios(options)
                           .then(response => {
                               if(response.data) {
-                                failedAlert.style.display = 'block'
-                                submitButton.innerText = 'Submit'
-
-                                setTimeout(() => {
-                                    failedAlert.style.display = 'none'
-                                }, 4000)
-                              } else {
                                 successAlert.style.display = 'block'
+
                                 setTimeout(() => {
                                     successAlert.style.display = 'none'
                                 }, 4000)
-                                submitButton.innerText = 'Submit'
+
                                 form.reset()
+                              } else {
+                                failedAlert.style.display = 'block'
+                                setTimeout(() => {
+                                    failedAlert.style.display = 'none'
+                                }, 4000)
                               }
                           }).catch((err) => {
                             console.log(err)
                             failedAlert.style.display = 'block'
                             submitButton.innerText = 'Submit'
-                            
 
                             setTimeout(() => {
                                 failedAlert.style.display = 'none'
