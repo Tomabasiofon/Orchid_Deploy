@@ -443,10 +443,12 @@
 }
 .booking-form ul li {
 	width: 100% !important;
+	padding: 5px;
 }
 .booking-form .form-grp {
 	margin-top: -1px;
 	margin-left: 0;
+	height: fit-content;
 }
 .booking-form ul li:first-child .form-grp {
 	margin-top: 0;
@@ -456,7 +458,7 @@
 }
 .booking-form .form-grp .exchange-icon {
 	left: 50%;
-	top: -19px;
+	top: -43px;
 	transform: translateX(-50%);
 }
 .booking-form ul li:nth-child(2) .form-grp input {
