@@ -139,9 +139,16 @@ app.get('/about', (req,res) => {
     res.render('about',{ title })
 })
 
-app.get('/promo', async(req,res) => {
+app.get('/promo2', async(req,res) => {
     const title = "Promo"
     res.render('promo',{ title })
+})
+
+app.post('/promo', async(req,res) => {
+    const { type, code} = req.body;
+
+    const title = "Promo"
+    res.render('promo2',{ title, type, code })
 })
 
 app.get('/gallery', async (req,res) => {

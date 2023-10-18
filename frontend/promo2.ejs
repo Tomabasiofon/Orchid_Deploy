@@ -1,0 +1,216 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <%- include('./partials/head.ejs') %>
+    <body class="white-background">
+
+		<!-- Scroll-top -->
+        <button class="scroll-top scroll-to-target" data-target="html">
+            <i class="fas fa-angle-up"></i>
+        </button>
+        <!-- Scroll-top-end-->
+
+        <!-- header-area -->
+        <%- include('./partials/nav.ejs') %>
+        <!-- header-area-end -->
+
+
+        <!-- main-area -->
+        <main>
+
+            <!-- breadcrumb-area -->
+            <section class="breadcrumb-area breadcrumb-bg">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="breadcrumb-content text-center mt-10">
+                                <h2 class="title">Orchid Springs Booking</h2>
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Promos</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- breadcrumb-area-end -->
+
+            
+
+            <!-- booking-area -->
+            <div class="booking-area booking-style-two">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="booking-wrap">
+                                <% if(type) { %>
+                                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                        <% if(type === 'weekly') {%>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" id="bOOKing-tab" data-bs-toggle="tab"
+                                                data-bs-target="#bOOKing-tab-pane" type="button" role="tab"
+                                                aria-controls="bOOKing-tab-pane" aria-selected="true">Weekly Promo</button>
+                                        </li>
+                                        <% } else if(type === 'daily') { %>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="trips-tab" data-bs-toggle="tab"
+                                                data-bs-target="#trips-tab-pane" type="button" role="tab" aria-controls="trips-tab-pane"
+                                                aria-selected="false">Daily Promo</button>
+                                        </li>
+                                        <% } %>
+                                    </ul>
+                                <% } %>
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="bOOKing-tab-pane" role="tabpanel"
+                                        aria-labelledby="bOOKing-tab" tabindex="0">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="tab-content-wrap">
+                                                    <div class="content-top">
+                                                        <p class="alert alert-secondary"> Please select a start date as this promo is only valid for a 7 day selections</p>
+                                                    </div>
+                                                    <form action="/booking" id="weekly-promo-form" method="get">
+                                                        <div class="booking-form">
+
+                                                            <ul>
+                                                                <li>
+                                                                    <div class="form-grp date">
+                                                                        <ul>
+                                                                            <li>
+                                                                                <label for="shortBy">Start Date</label>
+                                                                                <input type="text" class="date"
+                                                                                    placeholder="Select Date" name="start_date" id="promo-start-date" required>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </li>
+                                                                <li>
+                                                                    <div class="form-grp date">
+                                                                        <button class="exchange-icon"><i
+                                                                            class="flaticon-exchange-1"></i></button>
+                                                                        <ul>
+                                                                            <li>
+                                                                                <label for="shortBy">End Date</label>
+                                                                                <input type="text" class="date"
+                                                                                    placeholder="Select Date" name="end_date" required id="promo-end-date">
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="content-bottom">
+                                                            <input type="text" class="my-promo" value="<%= code %>" placeholder="Add Promo Code (optional)" name="pcode">
+                                                            <button type="submit" class="btn">Select Spots </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="trips-tab-pane" role="tabpanel" aria-labelledby="trips-tab"
+                                        tabindex="0">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="tab-content-wrap">
+                                                    <div class="content-top">
+
+                                                    </div>
+                                                    <form action="/booking" id="weekly-promo-form" method="get">
+                                                        <div class="booking-form">
+                                                            <ul>
+                                                                <li>
+                                                                    <div class="form-grp date">
+                                                                        <ul>
+                                                                            <li>
+                                                                                <label for="shortBy">Start Date</label>
+                                                                                <input type="text" class="date"
+                                                                                    placeholder="Select Date" name="start_date" id="" required>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </li>
+                                                                <li>
+                                                                    <div class="form-grp date">
+                                                                        <button class="exchange-icon"><i
+                                                                            class="flaticon-exchange-1"></i></button>
+                                                                        <ul>
+                                                                            <li>
+                                                                                <label for="shortBy">End Date</label>
+                                                                                <input type="text" class="date"
+                                                                                    placeholder="Select Date" name="end_date" required id="">
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="content-bottom">
+                                                            <input type="text" class="my-promo" placeholder="Add Promo Code (optional)" name="pcode">
+                                                            <button type="submit" class="btn">Select Spots </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- booking-area-end -->
+
+
+        </main>
+        <!-- main-area-end -->
+
+        <!-- footer-area -->
+        <%- include('./partials/footer.ejs') %>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // document.getElementById('promo-start-date').value = new Date()
+                const wPromoForm = document.getElementById('weekly-promo-form');
+
+                const calculateDays = (start_date, end_date) => {
+                    if (!(start_date instanceof Date)) {
+                        start_date = new Date(start_date);
+                    }
+                    if (!(end_date instanceof Date)) {
+                        end_date = new Date(end_date);
+                    }
+
+                    const timeDiff = end_date - start_date;
+                    const days = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+                    if(days === 0){
+                        return 1
+                    } else {
+                        return days;
+                    }
+                };
+
+                wPromoForm.addEventListener('submit', (e) => {
+                    // Assuming you've obtained start_date and end_date values from your date input fields
+                    const start_date = document.getElementById('promo-start-date').value;
+                    const end_date = document.getElementById('promo-end-date').value;
+
+                    // Calculate the number of days between start_date and end_date using your calculateDays function
+                    const daysDifference = calculateDays(start_date, end_date);
+
+                    // Prevent form submission if the date range is less than 7 days
+                    if (daysDifference < 6) {
+                        e.preventDefault();
+                        alert("Date range for this promo must be at least 7 days. Select a start date to begin!");
+                    }
+                });
+
+            })
+        </script>
+
+    </body>
+</html>
