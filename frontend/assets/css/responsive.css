@@ -477,6 +477,15 @@
 .tab-content-wrap .content-bottom {
 	justify-content: center;
 }
+.tab-content-wrap .content-bottom .my-promo {
+	font-size: 16px;
+    color: #945274;
+    font-weight: 500;
+    font-family: 'Barlow', sans-serif;
+    border: 1px solid #ffa903;
+    padding: 12px;
+    margin: 5px auto;
+}
 .tab-content-wrap .content-bottom .promo-code {
 	margin-right: 0;
 	margin-bottom: 10px;
