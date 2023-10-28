@@ -228,9 +228,8 @@ const pdfTemplate = (name,email, amount, tx_ref) => {
 
 const sendEmailWithPDF = async (fullname, email, amount, tx_ref ) => {
   try {
-    // Create a PDF using puppeteer with the new headless mode
     const browser = await puppeteer.launch({
-      headless: "new", // Use the new headless mode
+      headless: true, 
     });
     const page = await browser.newPage();
 
