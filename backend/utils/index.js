@@ -271,7 +271,11 @@ const sendEmailWithPDF = async (fullname, email, amount, tx_ref ) => {
     };
 
     // Send the email with the PDF attachment
-    await transporter.sendMail(mailOptions);
+    try {
+      await transporter.sendMail(mailOptions);
+    } catch (error) {
+      console.log(error)
+    }
 
     return true;
   } catch (error) {
@@ -310,9 +314,6 @@ function calculateTotalAmount(data) {
   
   return totalAmount;
 }
-
-
-
 
 
 

@@ -83,8 +83,6 @@ const completePayment = async (req,res,next) => {
               amount,
               transaction_id: transaction_id || null
             })
-
-            console.log({ newPayment })
           
         await sendEmailWithPDF((person.firstname + ' ' + person.lastname), person.email, amount, tx_ref )
 
