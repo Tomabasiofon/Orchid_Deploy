@@ -225,64 +225,86 @@ const pdfTemplate = (name,email, amount, tx_ref) => {
   `;
 }
 
-
 const sendEmailWithPDF = async (fullname, email, amount, tx_ref ) => {
   try {
-    const browser = await puppeteer.launch({
-      headless: true, 
-    });
-    const page = await browser.newPage();
-
-    // Your HTML content goes here (replace this with your HTML content)
-    const htmlContent = pdfTemplate(fullname, email, amount, tx_ref);
-
-    // Navigate to a data URL containing your HTML content
-    await page.goto(`data:text/html,${htmlContent}`, { waitUntil: 'networkidle0' });
-
-    // Generate a PDF from the page
-    const pdfBuffer = await page.pdf({ format: 'A4' });
-
-    await browser.close();
-
-    const message = `Thank you ${fullname} your payment is successfull. Please find attached below your receipt`
-    // Create a nodemailer transporter
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_SERVER,
-      port: 465,
-      secure: true,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    });
-
-    // Define mail options
-    const mailOptions = {
-      from: `${process.env.EMAIL_USER}`,
-      to: { name: `${fullname}`, address: email },
-      subject: 'OSL Spaces',
-      html: myhtml(fullname, message),
-      attachments: [
-        {
-          filename: 'oslspace.pdf', // Set the filename for the attachment
-          content: pdfBuffer, // Attach the PDF content
-        },
-      ],
-    };
-
-    // Send the email with the PDF attachment
-    try {
-      await transporter.sendMail(mailOptions);
-    } catch (error) {
-      console.log(error)
+      const htmlContent = pdfTemplate(fullname, email, amount, tx_ref);
+      const transporter = nodemailer.createTransport({
+          host: process.env.SMTP_SERVER,
+          port: 465,
+          secure: true,
+          auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASSWORD
+          }
+      });
+  
+      const mailOptions = {
+        from: `${process.env.EMAIL_USER}`,
+        to: { name: `${fullname}`, address: email },
+        subject: "OSL Spaces: Payment Receipt",
+        html: htmlContent,
     }
+    await transporter.sendMail(mailOptions);
+    return true
 
-    return true;
   } catch (error) {
-    console.error(error);
-    return false;
+    return false
   }
 };
+
+// const sendEmailWithPDF = async (fullname, email, amount, tx_ref ) => {
+//   try {
+//     const browser = await puppeteer.launch({
+//       headless: true, 
+//     });
+//     const page = await browser.newPage();
+
+//     // Your HTML content goes here (replace this with your HTML content)
+//     const htmlContent = pdfTemplate(fullname, email, amount, tx_ref);
+
+//     // Navigate to a data URL containing your HTML content
+//     await page.goto(`data:text/html,${htmlContent}`, { waitUntil: 'networkidle0' });
+
+//     // Generate a PDF from the page
+//     const pdfBuffer = await page.pdf({ format: 'A4' });
+
+//     await browser.close();
+
+//     const message = `Thank you ${fullname} your payment is successfull. Please find attached below your receipt`
+//     // Create a nodemailer transporter
+//     const transporter = nodemailer.createTransport({
+//       host: process.env.SMTP_SERVER,
+//       port: 465,
+//       secure: true,
+//       auth: {
+//         user: process.env.EMAIL_USER,
+//         pass: process.env.EMAIL_PASSWORD,
+//       },
+//     });
+
+//     // Define mail options
+//     const mailOptions = {
+//       from: `${process.env.EMAIL_USER}`,
+//       to: { name: `${fullname}`, address: email },
+//       subject: 'OSL Spaces',
+//       html: myhtml(fullname, message),
+//       attachments: [
+//         {
+//           filename: 'oslspace.pdf', // Set the filename for the attachment
+//           content: pdfBuffer, // Attach the PDF content
+//         },
+//       ],
+//     };
+
+//     // Send the email with the PDF attachment
+//     await transporter.sendMail(mailOptions);
+
+//     return true;
+//   } catch (error) {
+//     console.error(error);
+//     return false;
+//   }
+// };
 
 
 const myNanoid = async () => {
