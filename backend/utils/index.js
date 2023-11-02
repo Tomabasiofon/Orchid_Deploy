@@ -174,7 +174,6 @@ const pdfTemplate = (name,email, amount, tx_ref) => {
     <main class="container">
       <div class="row justify-content-center py-10">
         <div class="col-10">
-  
           <div>
               <div class="d-flex align-items-center">
                   <img src="https://i.ibb.co/SPFqDXd/Email-logo.png" alt="Orchid Springs" border="0">
@@ -204,18 +203,19 @@ const pdfTemplate = (name,email, amount, tx_ref) => {
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Details</th>
                 <th scope="col">Amount</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <th scope="row">1</th>
                 <td>Amout paid</td>
-                <td>${amount}</td>
+                <td>₦ ${amount}</td>
               </tr>
             </tbody>
           </table>
+          <div class="mt-3">
+            click <a href='${process.env.ENDPOINT}/confirmation?status=successful&tx_ref=${tx_ref}'>here</a> to go to payment page.
+          </div>
         </div>
       </div>
     </main>

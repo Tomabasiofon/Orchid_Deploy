@@ -11,76 +11,76 @@
   </head>
   <body>
     <main class="container" style="margin-top: 20px;">
-        <div class="row justify-content-center" id="main-content">
-            <div class="col-10">
-                <div class="card">
-                    <div class="card-body mx-4">
-                      <div class="container">
-                        <div class="bg-primary">
-                            <img src="https://i.ibb.co/56GqzQ6/logo-last.png" alt="logo-last" border="0">
-                        </div>
-                        <nav style="--bs-breadcrumb-divider: '>'; min-height: 40px; margin-top: 20px;" aria-label="breadcrumb">
-                          <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Reservation Details</li>
-                          </ol>
-                        </nav>
-                        <% if(data){ %>
-                        <h6 class="lead" style="margin-top: 20px; margin-bottom: 20px;">Thanks for choosing Orchid Springs Spaces</h6>
-                        <div class="row">
-                          <ul class="list-unstyled">
-                            <li class="text-muted fw-bold"><span class="text-black">Name:</span> <%= data.name %></li>
-                            <li class="text-muted fw-bold"><span class="text-black">Email:</span> <%= data.email %></li>
-                            <li class="text-muted mt-1 fw-bold"><span class="text-black">Invoice:</span> <%= data.tx_ref %></li>
-                            <li class="text-muted mt-1 fw-bold"><span class="text-black">Date:</span> <%= data.paymentDate %></li>
-                          </ul>
-                          <hr>
-                          <div class="col-xl-10">
-                            <p>Spaces</p>
-                          </div>
-                          <div class="col-xl-2">
-                            <p class="float-end">
-                                <span>
-                                    <% if (data.reservations.length > 0) { %>
-                                      <% data.reservations.forEach((detail) => { %>
-                                        <% if (detail.space_id.type === 'room') { %>
-                                          <span>Conference Room (<%= detail.space_id.seat_number %>)</span><br>
-                                        <% } else { %>
-                                          <span class="fw-bold">Seat (<%= detail.space_id.seat_number %>)</span><br>
-                                        <% } %>
-                                        <% detail.dates.forEach((date) => { %>
-                                          <span>Date (<%= date %>)</span><br>
-                                        <% }); %>
-                                      <% }); %>
-                                    <% } %>
-                                </span>
-                            </p>
-                          </div>
-                          <hr>
-                        </div>
-                        
-                        <div class="row text-black">
-                  
-                          <div class="col-xl-12">
-                            <p class="float-end fw-bold">Total: ₦ <%= data.amount %>
-                            </p>
-                          </div>
-                          <hr style="border: 2px solid black;">
-                        </div>
-                        <!-- <div class="text-center text-xs" style="margin-top: 90px;">
-                            <a class="text-info">Print</a>
-                          <p>Orchid Springs Limited is a registered Energy, Data and Optimization consultancy. Our focus is on our clients' most critical concerns and opportunities. </p>
-                        </div> -->
-                        <%} else {%>
-                          <h6 class="alert alert-danger my-6">
-                            No reservation with such Invoice number exists!!
-                          </h6>
-                        <% } %>
+      <div class="row justify-content-center" id="main-content">
+          <div class="col-10">
+              <div class="card">
+                  <div class="card-body mx-4">
+                    <div class="container">
+                      <div class="bg-primary">
+                          <img src="https://i.ibb.co/56GqzQ6/logo-last.png" alt="logo-last" border="0">
                       </div>
+                      <nav style="--bs-breadcrumb-divider: '>'; min-height: 40px; margin-top: 20px;" aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                          <li class="breadcrumb-item"><a href="/">Home</a></li>
+                          <li class="breadcrumb-item active" aria-current="page">Reservation Details</li>
+                        </ol>
+                      </nav>
+                      <% if(data){ %>
+                      <h6 class="lead" style="margin-top: 20px; margin-bottom: 20px;">Thanks for choosing Orchid Springs Spaces</h6>
+                      <div class="row">
+                        <ul class="list-unstyled">
+                          <li class="text-muted fw-bold"><span class="text-black">Name:</span> <%= data.name %></li>
+                          <li class="text-muted fw-bold"><span class="text-black">Email:</span> <%= data.email %></li>
+                          <li class="text-muted mt-1 fw-bold"><span class="text-black">Invoice:</span> <%= data.tx_ref %></li>
+                          <li class="text-muted mt-1 fw-bold"><span class="text-black">Date:</span> <%= data.paymentDate %></li>
+                        </ul>
+                        <hr>
+                        <div class="col-xl-10">
+                          <p>Spaces</p>
+                        </div>
+                        <div class="col-xl-2">
+                          <p class="float-end">
+                              <span>
+                                  <% if (data.reservations.length > 0) { %>
+                                    <% data.reservations.forEach((detail) => { %>
+                                      <% if (detail.space_id.type === 'room') { %>
+                                        <span>Conference Room (<%= detail.space_id.seat_number %>)</span><br>
+                                      <% } else { %>
+                                        <span class="fw-bold">Seat (<%= detail.space_id.seat_number %>)</span><br>
+                                      <% } %>
+                                      <% detail.dates.forEach((date) => { %>
+                                        <span>Date (<%= date %>)</span><br>
+                                      <% }); %>
+                                    <% }); %>
+                                  <% } %>
+                              </span>
+                          </p>
+                        </div>
+                        <hr>
+                      </div>
+                      
+                      <div class="row text-black">
+                
+                        <div class="col-xl-12">
+                          <p class="float-end fw-bold">Total: ₦ <%= data.amount %>
+                          </p>
+                        </div>
+                        <hr style="border: 2px solid black;">
+                      </div>
+                      <!-- <div class="text-center text-xs" style="margin-top: 90px;">
+                          <a class="text-info">Print</a>
+                        <p>Orchid Springs Limited is a registered Energy, Data and Optimization consultancy. Our focus is on our clients' most critical concerns and opportunities. </p>
+                      </div> -->
+                      <%} else {%>
+                        <h6 class="alert alert-danger my-6">
+                          No reservation with such Invoice number exists!!
+                        </h6>
+                      <% } %>
                     </div>
                   </div>
-            </div>
-        </div>
+                </div>
+          </div>
+      </div>
     </main>
-</body>
+  </body>
 </html>
