@@ -4,6 +4,16 @@
     <body class="white-background">
         <%- include('./partials/nav.ejs') %>
 
+        <div id="myModal" class="myModal">
+            <div class="myModal-content">
+                <span class="close">&times;</span>
+                <h4>Osl Spaces</h4>
+                <div class="alert" role="alert" id="alert_date">
+                    A simple primary alert—check it out!
+                </div>
+            </div>
+        </div>
+
         <!-- main-area -->
         <main>
 
@@ -64,11 +74,11 @@
             </section>
             <!-- customer-details-area-end -->
 
-            <div class="container">
+            <!-- <div class="container">
                 <div class="alert alert-primary" role="alert" id="alert_date">
                     A simple primary alert—check it out!
                 </div>
-            </div>
+            </div> -->
 
              <!-- booking-area -->
              <section class="booking-details-area">
@@ -214,7 +224,6 @@
         </main>
         <!-- main-area-end -->
         <%- include('./partials/footer.ejs') %>
-
         <script>
             
             const queryString = window.location.search;
@@ -294,7 +303,7 @@
 
 
                     const options = {
-                        url: `https://orchidsprings.cyclic.cloud/api/reservation`,
+                        url: `https://spaces.orchidsprings.group/api/reservation`,
                         method: 'POST',
                         headers: {
                         'Accept': 'application/json',
@@ -345,6 +354,7 @@
                 startDate.innerText = `You are booking for: ${queryParams.start_date} to ${queryParams.end_date} please use the arrows to navigate and select your space(s)`
 
                 const loadingAlert = document.querySelector('#loading-alert');
+                const myModal = document.querySelector('#myModal');
                 const checkboxes = document.querySelectorAll('.hide-checkbox');
                 const requests = [];
 
@@ -376,6 +386,8 @@
                 Promise.all(requests)
                 .then(() => {
                     loadingAlert.style.display = 'none';
+                    myModal.style.display = 'block';
+
                 })
                 .catch((error) => {
                     console.error('Error in one or more requests:', error);

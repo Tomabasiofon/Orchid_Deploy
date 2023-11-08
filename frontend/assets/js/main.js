@@ -330,8 +330,8 @@ $(document).ready(function () {
 
 $(document).ready(function(){
 	$('.test-slick').slick({
-		prevArrow: '<span class="slick-prev"><i class="fa-solid fa-arrow-left"></i></span>',
-		nextArrow: '<span class="slick-next"><i class="fa-solid fa-arrow-right"></i></span>',
+		prevArrow: '<span class="slick-prev shrink-enlarge days-navigate-button"><i class="fa-solid fa-arrow-left"></i></span>',
+		nextArrow: '<span class="slick-next shrink-enlarge days-navigate-button"><i class="fa-solid fa-arrow-right"></i></span>',
 		appendArrows: ".service-nav",
 		responsive: [
 			{
@@ -367,8 +367,24 @@ $(document).ready(function(){
 	});
   });
 
+  $(document).ready(function() {
+    // Open the modal when the button is clicked
+    $("#openModalBtn").click(function() {
+        $("#myModal").css("display", "block");
+    });
 
+    // Close the modal when the close button is clicked
+    $(".close").click(function() {
+        $("#myModal").css("display", "none");
+    });
 
+    // Close the modal when the background is clicked
+    $(window).click(function(event) {
+        if (event.target.id === "myModal") {
+            $("#myModal").css("display", "none");
+        }
+    });
+});
 
 /*=============================================
 	=    	 Slider Range Active  	         =

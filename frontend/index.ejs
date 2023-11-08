@@ -904,14 +904,14 @@
                     if(tx_ref.length > 7) {
                         alert('Please eneter a valid Invoice id')
                     } else {
-                        window.location.href = `https://orchidsprings.cyclic.cloud/confirmation?tx_ref=${tx_ref}&status=successful`;
+                        window.location.href = `https://spaces.orchidsprings.group/confirmation?tx_ref=${tx_ref}&status=successful`;
                     }
 
                 })
 
                 const clients = document.getElementById('happy-client')
                 const options = {
-                    url: `https://orchidsprings.cyclic.cloud/api/people`,
+                    url: `https://spaces.orchidsprings.group/api/people`,
                     method: 'GET',
                     headers: {
                     'Accept': 'application/json',
