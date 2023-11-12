@@ -2787,7 +2787,7 @@ label {
 	font-family: 'Barlow', sans-serif;
 	opacity: .88;
 	display: flex;
-	align-items: start;
+	align-items: start !important;
 	justify-content: space-between;
 	margin-bottom: 8px;
 	flex-wrap: wrap;
@@ -2797,8 +2797,8 @@ label {
 	margin-bottom: 0;
 }
 .booking-sidebar .price-summary-detail ul li span {
-	font-size: 15px;
-	font-weight: 500;
+	font-size: 14px;
+	font-weight: 400;
 }
 .booking-sidebar .price-summary-detail ul li:last-child,
 .booking-sidebar .price-summary-detail ul li:nth-child(3) {
