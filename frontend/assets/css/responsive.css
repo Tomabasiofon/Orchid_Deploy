@@ -397,6 +397,11 @@
 	padding: 40px 30px 60px;
 }
 
+.myModal-content {
+    width: 90%;
+	font-size: 12px;
+}
+
 
 }
 

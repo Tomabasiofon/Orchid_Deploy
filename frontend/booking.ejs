@@ -4,15 +4,17 @@
     <body class="white-background">
         <%- include('./partials/nav.ejs') %>
 
-        <div id="myModal" class="myModal">
-            <div class="myModal-content">
-                <span class="close">&times;</span>
-                <h4>Osl Spaces</h4>
-                <div class="alert" role="alert" id="alert_date">
-                    A simple primary alert—check it out!
+        <% if (dates.length > 1) { %>
+            <div id="myModal" class="myModal">
+                <div class="myModal-content">
+                    <span class="close">&times;</span>
+                    <h4>Osl Spaces</h4>
+                    <div class="alert" role="alert" id="alert_date">
+                        A simple primary alert—check it out!
+                    </div>
                 </div>
             </div>
-        </div>
+        <% } %>
 
         <!-- main-area -->
         <main>

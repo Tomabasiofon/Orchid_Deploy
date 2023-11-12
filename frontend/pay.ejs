@@ -81,6 +81,24 @@
                                             <!-- <li>Amount</li> -->
                                         </ul>
                                     </div>
+                                    <% 
+                                        const outputFormat = 'yyyy-MM-dd';
+                                        function formatDate(inputDateString, outputFormat) {
+                                            const inputDate = new Date(inputDateString);
+                                            if (isNaN(inputDate)) return 'Invalid Date';
+                            
+                                            const dateValues = {
+                                                'yyyy': inputDate.getFullYear(),
+                                                'MM': String(inputDate.getMonth() + 1).padStart(2, '0'),
+                                                'dd': String(inputDate.getDate()).padStart(2, '0'),
+                                            };
+                            
+                                            const formattedDate = outputFormat.replace(/(yyyy|MM|dd)/g, (match) => dateValues[match] || match);
+                            
+                                            return formattedDate;
+                                        }
+                    
+                                    %>
                                         <div class="price-summary-detail">
                                             <ul>
                                                 <li>Name<span><%= data.name %></span></li>
@@ -92,10 +110,10 @@
                                                           <% if (detail.seatType === 'room') { %>
                                                             <span>Conference Room (<%= detail.seatNumber %>)</span><br>
                                                           <% } else { %>
-                                                            <span>Seat (<%= detail.seatNumber %>)</span><br>
+                                                            <b><span class="fw-bold">Seat (<%= detail.seatNumber %>)</span></b><br>
                                                           <% } %>
                                                           <% detail.dates.forEach((date) => { %>
-                                                            <span>Date (<%= date %>)</span><br>
+                                                            <span>Date (<%= formatDate(date, 'yyyy-MM-dd') %>)</span><br>
                                                           <% }); %>
                                                         <% }); %>
                                                       <% } %>
