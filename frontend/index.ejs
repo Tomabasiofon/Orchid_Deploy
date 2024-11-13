@@ -15,7 +15,6 @@
         <%- include('./partials/nav.ejs') %>
         <!-- main-area -->
         <main>
-
             <!-- slider-area -->
             <section class="slider-area">
                 <div class="slider-active">
@@ -898,20 +897,20 @@
 
                 retrieveForm.addEventListener('submit', (e) =>{
                     e.preventDefault();
-                    console.log(retieveInput.value.length);
+                    // console.log(retieveInput.value.length);
                     const tx_ref = retieveInput.value;
 
                     if(tx_ref.length > 7) {
                         alert('Please eneter a valid Invoice id')
                     } else {
-                        window.location.href = `https://spaces.orchidsprings.group/confirmation?tx_ref=${tx_ref}&status=successful`;
+                        window.location.href = `http://localhost:8000/confirmation?tx_ref=${tx_ref}&status=successful`;
                     }
 
                 })
 
                 const clients = document.getElementById('happy-client')
                 const options = {
-                    url: `https://spaces.orchidsprings.group/api/people`,
+                    url: `http://localhost:8000/api/people`,
                     method: 'GET',
                     headers: {
                     'Accept': 'application/json',

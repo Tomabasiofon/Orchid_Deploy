@@ -305,7 +305,7 @@
 
 
                     const options = {
-                        url: `https://spaces.orchidsprings.group/api/reservation`,
+                        url: `http://localhost:8000/api/reservation`,
                         method: 'POST',
                         headers: {
                         'Accept': 'application/json',
@@ -319,7 +319,7 @@
     
                     axios(options)
                         .then(response => {
-                            console.log({res: response.data, data: selectedData })
+                            // console.log({res: response.data, data: selectedData })
     
                             const reservation = response.data;
                             const reservationIds =  []
@@ -372,6 +372,7 @@
                     })
                     .then((response) => {
                     if (response.data.available) {
+                        console.log(response.data)
                         checkbox.checked = false;
                     } else {
                         checkbox.checked = true;

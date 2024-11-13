@@ -22,7 +22,7 @@ const { calculateDaysWithDatesArray, calculateTotalAmount } = require('./utils')
 const { verifyToken } = require('./middleware/authHandler');
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8000;
 
 const corsOptions ={
     origin: [
@@ -60,7 +60,7 @@ app.use('/api/promo', promoRoutes);
 app.use('/api/auth', authRoutes);
 
 app.post('/api/test', (req,res) => {
-    console.log(req.body)
+    // console.log(req.body)
     res.status(200).json(req.body)
 })
 
